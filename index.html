@@ -79,7 +79,7 @@ function p2(n){return(n<10?"0":"")+n}
 function fmt(d){return d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate())}
 function parse(s){return new Date(s+"T00:00:00")}
 function addDays(d,n){var x=new Date(d);x.setDate(x.getDate()+n);return x}
-var TD=fmt(new Date()),sel=TD,view="h",open=null,armed=null,hist={},imps="",R=null,S=null,bk="",bkm="",GKM="";
+var TD=fmt(new Date()),sel=TD,view="h",opn=null,armed=null,hist={},imps="",R=null,S=null,bk="",bkm="",GKM="";
 function sub(n){return{id:id(),name:n,cats:DEF.map(function(c){return{id:id(),name:c,a:0,t:0}})}}
 function mk(n,sp){return{id:id(),name:n,subs:sp.map(function(p){return{id:id(),name:p[0],cats:p[1].map(function(c){return{id:id(),name:c,a:0,t:0}})}})}}
 function preset(){var LT=["লেকচার","টিউটোরিয়াল"],LW=["লেকচার","ওয়ার্ড"],WD=["ওয়ার্ড"];
@@ -130,7 +130,7 @@ async function pull(first){
     if(c&&c.profiles&&c.profiles.length){
       var lt=R.ts||0,ct=c.ts||0,useCloud=ct>lt;
       if(!lt&&first&&ct&&hasData())useCloud=confirm("ক্লাউডে আগের ডাটা আছে। ক্লাউডের ডাটা নিতে OK চাপুন। এই ফোনের ডাটা ক্লাউডে পাঠাতে Cancel চাপুন।");
-      if(useCloud){try{localStorage.setItem("att-bak",JSON.stringify(R))}catch(e){}R=c;act();open=null;hist={};save(false);changed=true}
+      if(useCloud){try{localStorage.setItem("att-bak",JSON.stringify(R))}catch(e){}R=c;act();opn=null;hist={};save(false);changed=true}
       else if(lt!==ct){if(!lt){R.ts=Date.now();save(false)}await gput()}
     }else await gput();
     GS.msg=gdone()}
@@ -192,7 +192,7 @@ function hView(Y){
   var all=[];Y.subs.forEach(function(s){all=all.concat(s.cats)});
   var c=calc(tot(all)),m=tView(Y)+'<div class="hero" style="margin-top:10px"><div class="row"><input class="nm" id="yn" value="'+esc(Y.name)+'" style="font-size:16px;color:#fff"><label style="font-size:12px;white-space:nowrap">লক্ষ্য <input id="tg" class="num" type="number" min="1" max="100" value="'+S.target+'">%</label></div><div class="row" style="margin-top:4px"><span style="font-size:12px;opacity:.85">এই Phase-এর মোট</span><span class="pct">'+bn(c.v.toFixed(1))+'%</span></div>'+barx(c.v,"#fff")+'<div class="msg">'+c.txt+'</div></div>';
   Y.subs.forEach(function(s,i){
-    var col=SC[i%8],k=calc(tot(s.cats)),o=open===s.id;
+    var col=SC[i%8],k=calc(tot(s.cats)),o=opn===s.id;
     m+='<div class="card sub" style="--c:'+col+'"><div class="row hd" data-act="tog" data-s="'+s.id+'"><b>'+esc(s.name)+'</b><span class="pct" style="color:'+stc(k.v)+'">'+bn(k.v.toFixed(1))+'% <small class="mu">'+(o?"▴":"▾")+'</small></span></div>';
     if(!o)m+=barx(k.v,col)+'<div class="tags">'+s.cats.map(function(x){return'<span class="tag" style="--c:'+cc(x.name)+'">'+esc(x.name)+' '+bn(pctOf(eff(x)).toFixed(0))+'%</span>'}).join("")+'</div>';
     else{
@@ -259,11 +259,11 @@ document.addEventListener("click",function(e){
   else if(a==="gout"){var t=GS.tok;try{if(t&&window.google)google.accounts.oauth2.revoke(t,function(){})}catch(x){}GS.tok="";GS.exp=0;GS.fid="";GS.msg="লগআউট হয়েছে";try{localStorage.removeItem("att-gs")}catch(x){}}
   else if(a==="exp"){bk=JSON.stringify(R);bkm="নিচের লেখাটি কপি করুন (ট্যাপ করলে সিলেক্ট হবে), তারপর অন্য ডিভাইসে ইমপোর্টে পেস্ট করুন।";try{navigator.clipboard.writeText(bk).catch(function(){})}catch(x){}}
   else if(a==="imp"){var tv=(document.getElementById("ib")||{}).value||"";try{var dd=JSON.parse(tv);if(!dd||!dd.profiles||!dd.profiles.length)throw 0;dd.profiles.forEach(function(p){p.id=id();p.name=(p.name||"Profile")+" (import)";R.profiles.push(p)});R.pid=R.profiles[R.profiles.length-1].id;act();bkm="✅ ইমপোর্ট হয়েছে (নতুন প্রোফাইল হিসেবে)।"}catch(x){bkm="❌ ডাটা ঠিক নেই।"}}
-  else if(a==="usep"){R.pid=b.dataset.p;act();open=null;sel=TD}
-  else if(a==="addp"){var nv=document.getElementById("np").value.trim()||"প্রোফাইল "+bn(R.profiles.length+1),np=newP(id(),nv,b.dataset.pre==="1");R.profiles.push(np);R.pid=np.id;act();open=null;view="h"}
+  else if(a==="usep"){R.pid=b.dataset.p;act();opn=null;sel=TD}
+  else if(a==="addp"){var nv=document.getElementById("np").value.trim()||"প্রোফাইল "+bn(R.profiles.length+1),np=newP(id(),nv,b.dataset.pre==="1");R.profiles.push(np);R.pid=np.id;act();opn=null;view="h"}
   else if(a==="addyear"){var y=new Date().getFullYear();S.years.push({id:id(),name:"Phase "+(S.years.length+1),subs:[],start:y+"-01-01",end:y+"-12-31",rt:[],off:[],rec:{}});S.cy=S.years.length-1}
-  else if(a==="addsub"){var n=sub("নতুন সাবজেক্ট");Y.subs.push(n);open=n.id}
-  else if(a==="tog")open=open===b.dataset.s?null:b.dataset.s;
+  else if(a==="addsub"){var n=sub("নতুন সাবজেক্ট");Y.subs.push(n);opn=n.id}
+  else if(a==="tog")opn=opn===b.dataset.s?null:b.dataset.s;
   else if(a==="addcat")find(b.dataset.s)[0].cats.push({id:id(),name:"নতুন ধরন",a:0,t:0});
   else if(a==="del"){var k=b.dataset.k;if(armed!==k){armed=k;render();return}armed=null;
     if(k[0]==="y"){if(S.years.length>1){S.years.splice(S.cy,1);S.cy=0}}
