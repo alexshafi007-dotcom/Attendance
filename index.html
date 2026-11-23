@@ -109,8 +109,9 @@ function gon(){try{return localStorage.getItem("att-gs")==="1"}catch(e){return f
 function gok(){return!!GS.tok&&Date.now()<GS.exp}
 function chipTxt(){return gok()?"☁ ✓":gon()?"☁ সিঙ্ক করুন":"☁"}
 function gstat(){var c=document.getElementById("gchip");if(c)c.innerHTML=tr(chipTxt());var m=document.getElementById("gmsg");if(m)m.innerHTML=tr(GS.msg)}
-function gtc(){if(TC)return TC;if(!window.google||!google.accounts||!google.accounts.oauth2)return null;TC=google.accounts.oauth2.initTokenClient({client_id:CID,scope:SCP,callback:gTok});return TC}
-function gIn(){var t=gtc();if(!t){GS.msg="❌ Google লোড হয়নি। ইন্টারনেট চেক করুন।";gstat();return}t.requestAccessToken({prompt:""})}
+function gtc(){if(TC)return TC;if(!window.google||!google.accounts||!google.accounts.oauth2)return null;TC=google.accounts.oauth2.initTokenClient({client_id:CID,scope:SCP,callback:gTok,error_callback:gErr});return TC}
+function gErr(er){var t=er&&er.type||"unknown";GS.msg=t==="popup_failed_to_open"?"❌ লগইন উইন্ডো খোলেনি। Chrome-এ (ইনস্টল করা অ্যাপে নয়) পেজ খুলে আবার চাপুন, আর পপআপ Allow করুন।":t==="popup_closed"?"❌ লগইন উইন্ডো বন্ধ করা হয়েছে।":"❌ লগইন ব্যর্থ ("+t+")";gstat();try{alert(GS.msg)}catch(x){}}
+function gIn(){var t;try{t=gtc()}catch(x){t=null}if(!t){GS.msg="❌ Google লোড হয়নি। ইন্টারনেট চেক করুন, অ্যাড-ব্লকার বন্ধ করে পেজ রিফ্রেশ করুন।";gstat();try{alert(GS.msg)}catch(x){}return}try{t.requestAccessToken({prompt:""})}catch(x){gErr({type:String(x)})}}
 function gTok(r){if(!r||r.error||!r.access_token){GS.msg="❌ লগইন হয়নি";render();return}GS.tok=r.access_token;GS.exp=Date.now()+((+r.expires_in||3600)-120)*1000;try{localStorage.setItem("att-gs","1")}catch(e){}pull(true)}
 async function gf(url,o){o=o||{};o.headers=Object.assign({Authorization:"Bearer "+GS.tok},o.headers||{});var r=await fetch(url,o);if(r.status===401){GS.tok="";GS.exp=0;throw 401}if(!r.ok)throw r.status;return r}
 async function gfind(){if(GS.fid)return GS.fid;var r=await gf("https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q="+encodeURIComponent("name='attendance.json'")+"&fields=files(id)");var j=await r.json();GS.fid=j.files&&j.files[0]?j.files[0].id:"";return GS.fid}
