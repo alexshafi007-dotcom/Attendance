@@ -63,6 +63,19 @@ button{font:inherit;font-size:13px;cursor:pointer;border-radius:9px;border:1px s
 .nav .act{color:var(--ac);font-weight:700}
 textarea{width:100%;height:70px;font:11px monospace;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:6px;margin-top:8px}
 a{color:var(--ac);text-decoration:none}
+#iv{position:fixed;inset:0;z-index:30;background:#000;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
+#iv .h{display:flex;gap:8px;align-items:center;padding:6px 10px;background:var(--bg)}
+#iv .h b{flex:1}
+#iv .s{flex:1;overflow:auto;touch-action:pan-x pan-y pinch-zoom}
+#iv img{display:block;width:100%;height:auto;max-width:none}
+#pv{position:fixed;inset:0;z-index:30;background:var(--bg);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
+#pv .h,#pv .t{display:flex;gap:6px;align-items:center;padding:6px 10px}
+#pv .h b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#pv .t input{flex:1}
+#pv .s{flex:1;overflow:auto;padding:6px;text-align:center;background:var(--card)}
+#pv canvas{box-shadow:0 1px 6px rgba(0,0,0,.25);background:#fff}
+#pv .hits{display:flex;flex-wrap:wrap;gap:4px;padding:0 10px;max-height:60px;overflow:auto}
+#pv .m{padding:0 10px;min-height:16px}
 </style>
 </head>
 <body>
@@ -72,7 +85,7 @@ a{color:var(--ac);text-decoration:none}
 var DEF=["লেকচার","টিউটোরিয়াল","ওয়ার্ড"],DN=["রবিবার","সোমবার","মঙ্গলবার","বুধবার","বৃহস্পতিবার","শুক্রবার","শনিবার"],ORD=[6,0,1,2,3,4,5];
 var SC=["#6366f1","#ec4899","#f59e0b","#10b981","#06b6d4","#8b5cf6","#ef4444","#84cc16"];
 var CID="727310690079-tn7p5apjr8e8adc3q6t535uuvmt3hqve.apps.googleusercontent.com",SCP="https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/drive.file";
-var EN={"📅 আজকের ক্লাস":"📅 Today's classes","রুটিন ট্যাবে ছবি দিন বা হাতে যোগ করুন, তাহলে এখানে আজকের ক্লাস অটোমেটিক দেখাবে।":"Add your routine in the Routine tab (photo or manual) and today's classes will show here automatically.","🏖 আজ ছুটি":"🏖 Holiday today","আজ কোনো ক্লাস নেই।":"No classes today.","💾 ব্যাকআপ ও ট্রান্সফার":"💾 Backup & transfer","এক ডিভাইসের রুটিন ও হিসাব অন্য ডিভাইসে নেওয়ার জন্য।":"For moving your routine and stats to another device.","⬆ এক্সপোর্ট (কপি)":"⬆ Export (copy)","⬇ ইমপোর্ট":"⬇ Import","এখানে পেস্ট করুন":"Paste here","নিচের লেখাটি কপি করুন (ট্যাপ করলে সিলেক্ট হবে), তারপর অন্য ডিভাইসে ইমপোর্টে পেস্ট করুন।":"Copy the text below (tap to select), then paste it into Import on the other device.","✅ ইমপোর্ট হয়েছে (নতুন প্রোফাইল হিসেবে)।":"✅ Imported (as a new profile).","❌ ডাটা ঠিক নেই।":"❌ Invalid data.","উপস্থিতি":"Attendance","হিসাব":"Stats","ক্যালেন্ডার থেকে যোগ:":"From calendar:","ক্যালেন্ডার":"Calendar","রুটিন":"Routine","সেটিং":"Settings","আমার প্রোফাইল":"My profile","প্রোফাইল":"Profile","লেকচার":"Lecture","টিউটোরিয়াল":"Tutorial","ওয়ার্ড":"Ward","অন্যান্য":"Other","লক্ষ্য":"Target","এই Phase-এর মোট":"This phase total","🗑 এই Phase মুছুন":"🗑 Delete this phase","নিশ্চিত? আবার চাপুন":"Sure? Tap again","সর্বমোট":"overall","মোট":"Total","অনুপস্থিত":"Absent","উপস্থিত":"Present","🗑 মুছুন":"🗑 Delete","✕ মুছুন":"✕ Remove","＋ নতুন ধরন (যেমন: প্র্যাক্টিক্যাল)":"＋ New type (e.g. Practical)","নতুন ধরন":"New type","🗑 এই সাবজেক্ট মুছুন":"🗑 Delete this subject","＋ নতুন সাবজেক্ট":"＋ New subject","নতুন সাবজেক্ট":"New subject","＋ Phase":"＋ Phase","এখনো কিছু যোগ হয়নি":"Nothing added yet","✅ লক্ষ্য পূরণ। এখন আরও ":"✅ Target met. Can miss ","টি মিস করা যাবে":" more","% হতে আরও টানা ":"% — attend next ","টি উপস্থিত থাকতে হবে":" classes in a row","🚫 বাকি ":"🚫 Even attending all ","টি ক্লাস করলেও Phase শেষে ":" remaining classes, phase-end stays below ","% হবে না":"%","📅 বাকি ":"📅 Of the remaining ","টি ক্লাসের মধ্যে কমপক্ষে ":" classes, attend at least ","টিতে থাকতে হবে (মিস করা যাবে ":" (can miss ","টি)":")","আজকে যান":"Go to today"," · আজ":" · Today","🏖 এদিন ছুটি, কোনো ক্লাস গোনা হবে না।":"🏖 Holiday — no classes counted.","🏖 এদিন ছুটি":"🏖 Mark holiday","ছুটি বাতিল":"Cancel holiday","টি আগের ক্লাস এখনো চিহ্নিত হয়নি।":" past classes not marked yet.","প্রথমটিতে যান":"Go to first","আগে \"রুটিন\" ট্যাবে সাপ্তাহিক ক্লাস যোগ করুন।":"First add weekly classes in the Routine tab.","এই দিনে কোনো ক্লাস নেই।":"No classes on this day.","✓ উপস্থিত":"✓ Present","✗ অনুপস্থিত":"✗ Absent","Phase-এর সময়কাল":"Phase duration","শুরু":"Start","শেষ":"End","📷 ছবি থেকে রুটিন তৈরি":"📷 Build routine from photo","রুটিনের ছবি বা স্ক্রিনশট দিন। বর্তমান রুটিন বদলে যাবে।":"Upload a photo or screenshot. Current routine will be replaced.","আগে সেটিং ট্যাবে Gemini API key দিন।":"First add your Gemini API key in Settings.","সময়":"Time","＋ ক্লাস যোগ":"＋ Add class","আগে \"হিসাব\" ট্যাবে সাবজেক্ট যোগ করুন।":"First add subjects in the Stats tab.","ছুটির দিন":"Holidays","⏳ রুটিন পড়া হচ্ছে...":"⏳ Reading routine...","টি ক্লাস যোগ হয়েছে। নিচে মিলিয়ে দেখুন, ভুল থাকলে ঠিক করুন।":" classes added. Check below and fix any mistakes.","❌ পড়া যায়নি। পরিষ্কার ছবি দিন, অথবা নিচে হাতে যোগ করুন।":"❌ Couldn't read it. Try a clearer photo or add manually below.","❌ আগে Gemini key দিন।":"❌ Add your Gemini key first.","❌ Gemini key ঠিক নেই বা অনুমতি নেই।":"❌ Gemini key is invalid or not allowed.","❌ আজকের ফ্রি সীমা শেষ, একটু পরে চেষ্টা করুন।":"❌ Free limit reached, try again later.","🌐 ভাষা":"🌐 Language","👤 প্রোফাইল":"👤 Profiles","✓ চলমান":"✓ Active","ব্যবহার":"Use","নতুন প্রোফাইলের নাম":"New profile name","＋ প্রিসেট সহ (Phase 1–4)":"＋ With preset (Phase 1–4)","＋ ফাঁকা":"＋ Blank","প্রতিটি প্রোফাইলের ডাটা আলাদা।":"Each profile keeps its own data.","ধরন":"Type","সাবজেক্ট":"Subject","ক্লাস":"classes","যোগ":"Add","রবিবার":"Sunday","সোমবার":"Monday","মঙ্গলবার":"Tuesday","বুধবার":"Wednesday","বৃহস্পতিবার":"Thursday","শুক্রবার":"Friday","শনিবার":"Saturday","☁️ Google Drive সিঙ্ক":"☁️ Google Drive sync","লগইন করলে আপনার সব ডাটা আপনার Google Drive-এ (অ্যাপের লুকানো ফোল্ডারে) সেভ থাকবে। অন্য ফোনে একই Google অ্যাকাউন্টে লগইন করলেই সব ফিরে পাবেন। প্রতি এক ঘণ্টা পর ☁ চেপে আবার সংযুক্ত হতে হতে পারে।":"Your data is saved in your own Google Drive (hidden app folder). Sign in with the same Google account on another phone to get everything back. You may need to tap ☁ again after an hour.","Google দিয়ে লগইন":"Sign in with Google","এখনই সিঙ্ক":"Sync now","লগআউট":"Sign out","☁ সিঙ্ক করুন":"☁ Sync","⏳ সিঙ্ক হচ্ছে...":"⏳ Syncing...","✅ সিঙ্ক হয়েছে — ":"✅ Synced — ","❌ সেশন শেষ। ☁ চেপে আবার লগইন করুন।":"❌ Session expired. Tap ☁ to sign in again.","❌ সিঙ্ক ব্যর্থ (":"❌ Sync failed (","❌ Google লোড হয়নি। ইন্টারনেট চেক করুন।":"❌ Google didn't load. Check your internet.","❌ লগইন হয়নি":"❌ Sign-in failed","লগআউট হয়েছে":"Signed out","🤖 Gemini API key (ছবি থেকে রুটিনের জন্য)":"🤖 Gemini API key (for photo routine)","aistudio.google.com/apikey থেকে ফ্রি key নিন। key শুধু এই ফোনে থাকে, ক্লাউডে যায় না।":"Get a free key from aistudio.google.com/apikey. The key stays on this phone only.","Gemini API key এখানে দিন":"Paste Gemini API key here","✅ key সেভ হয়েছে":"✅ Key saved","📎 PDF ফাইল":"📎 PDF files","＋ PDF যোগ":"＋ Add PDF","এখনো কোনো PDF নেই":"No PDFs yet","Drive-এর \"Attendance Notes\" ফোল্ডারেও ফাইল পাবেন।":"Files are also in your Drive's \"Attendance Notes\" folder.","❌ আগে ☁ চেপে Google দিয়ে লগইন করুন।":"❌ Tap ☁ and sign in with Google first.","❌ Drive ফাইলের অনুমতি দেওয়া হয়নি। আবার লগইন করে সব অনুমতি টিক দিন।":"❌ Drive file permission not granted. Sign in again and tick all permissions.","❌ শুধু PDF ফাইল দিন।":"❌ PDF files only.","❌ ফাইল ১০০ MB-এর বেশি।":"❌ File is over 100 MB.","⏳ আপলোড হচ্ছে: ":"⏳ Uploading: ","✅ আপলোড হয়েছে: ":"✅ Uploaded: ","❌ অনুমতি নেই। ☁ চেপে আবার লগইন করে Drive-এর অনুমতি দিন।":"❌ No permission. Tap ☁ and sign in again to allow Drive.","❌ আপলোড ব্যর্থ (":"❌ Upload failed ("};
+var EN={"📅 আজকের ক্লাস":"📅 Today's classes","রুটিন ট্যাবে ছবি দিন বা হাতে যোগ করুন, তাহলে এখানে আজকের ক্লাস অটোমেটিক দেখাবে।":"Add your routine in the Routine tab (photo or manual) and today's classes will show here automatically.","🏖 আজ ছুটি":"🏖 Holiday today","আজ কোনো ক্লাস নেই।":"No classes today.","💾 ব্যাকআপ ও ট্রান্সফার":"💾 Backup & transfer","এক ডিভাইসের রুটিন ও হিসাব অন্য ডিভাইসে নেওয়ার জন্য।":"For moving your routine and stats to another device.","⬆ এক্সপোর্ট (কপি)":"⬆ Export (copy)","⬇ ইমপোর্ট":"⬇ Import","এখানে পেস্ট করুন":"Paste here","নিচের লেখাটি কপি করুন (ট্যাপ করলে সিলেক্ট হবে), তারপর অন্য ডিভাইসে ইমপোর্টে পেস্ট করুন।":"Copy the text below (tap to select), then paste it into Import on the other device.","✅ ইমপোর্ট হয়েছে (নতুন প্রোফাইল হিসেবে)।":"✅ Imported (as a new profile).","❌ ডাটা ঠিক নেই।":"❌ Invalid data.","উপস্থিতি":"Attendance","হিসাব":"Stats","ক্যালেন্ডার থেকে যোগ:":"From calendar:","ক্যালেন্ডার":"Calendar","রুটিন":"Routine","সেটিং":"Settings","আমার প্রোফাইল":"My profile","প্রোফাইল":"Profile","লেকচার":"Lecture","টিউটোরিয়াল":"Tutorial","ওয়ার্ড":"Ward","অন্যান্য":"Other","লক্ষ্য":"Target","এই Phase-এর মোট":"This phase total","🗑 এই Phase মুছুন":"🗑 Delete this phase","নিশ্চিত? আবার চাপুন":"Sure? Tap again","সর্বমোট":"overall","মোট":"Total","অনুপস্থিত":"Absent","উপস্থিত":"Present","🗑 মুছুন":"🗑 Delete","✕ মুছুন":"✕ Remove","＋ নতুন ধরন (যেমন: প্র্যাক্টিক্যাল)":"＋ New type (e.g. Practical)","নতুন ধরন":"New type","🗑 এই সাবজেক্ট মুছুন":"🗑 Delete this subject","＋ নতুন সাবজেক্ট":"＋ New subject","নতুন সাবজেক্ট":"New subject","＋ Phase":"＋ Phase","এখনো কিছু যোগ হয়নি":"Nothing added yet","✅ লক্ষ্য পূরণ। এখন আরও ":"✅ Target met. Can miss ","টি মিস করা যাবে":" more","% হতে আরও টানা ":"% — attend next ","টি উপস্থিত থাকতে হবে":" classes in a row","🚫 বাকি ":"🚫 Even attending all ","টি ক্লাস করলেও Phase শেষে ":" remaining classes, phase-end stays below ","% হবে না":"%","📅 বাকি ":"📅 Of the remaining ","টি ক্লাসের মধ্যে কমপক্ষে ":" classes, attend at least ","টিতে থাকতে হবে (মিস করা যাবে ":" (can miss ","টি)":")","আজকে যান":"Go to today"," · আজ":" · Today","🏖 এদিন ছুটি, কোনো ক্লাস গোনা হবে না।":"🏖 Holiday — no classes counted.","🏖 এদিন ছুটি":"🏖 Mark holiday","ছুটি বাতিল":"Cancel holiday","টি আগের ক্লাস এখনো চিহ্নিত হয়নি।":" past classes not marked yet.","প্রথমটিতে যান":"Go to first","আগে \"রুটিন\" ট্যাবে সাপ্তাহিক ক্লাস যোগ করুন।":"First add weekly classes in the Routine tab.","এই দিনে কোনো ক্লাস নেই।":"No classes on this day.","✓ উপস্থিত":"✓ Present","✗ অনুপস্থিত":"✗ Absent","Phase-এর সময়কাল":"Phase duration","শুরু":"Start","শেষ":"End","📷 ছবি থেকে রুটিন তৈরি":"📷 Build routine from photo","রুটিনের ছবি বা স্ক্রিনশট দিন। বর্তমান রুটিন বদলে যাবে।":"Upload a photo or screenshot. Current routine will be replaced.","আগে সেটিং ট্যাবে Gemini API key দিন।":"First add your Gemini API key in Settings.","সময়":"Time","＋ ক্লাস যোগ":"＋ Add class","আগে \"হিসাব\" ট্যাবে সাবজেক্ট যোগ করুন।":"First add subjects in the Stats tab.","ছুটির দিন":"Holidays","⏳ রুটিন পড়া হচ্ছে...":"⏳ Reading routine...","টি ক্লাস যোগ হয়েছে। নিচে মিলিয়ে দেখুন, ভুল থাকলে ঠিক করুন।":" classes added. Check below and fix any mistakes.","❌ পড়া যায়নি। পরিষ্কার ছবি দিন, অথবা নিচে হাতে যোগ করুন।":"❌ Couldn't read it. Try a clearer photo or add manually below.","❌ আগে Gemini key দিন।":"❌ Add your Gemini key first.","❌ Gemini key ঠিক নেই বা অনুমতি নেই।":"❌ Gemini key is invalid or not allowed.","❌ আজকের ফ্রি সীমা শেষ, একটু পরে চেষ্টা করুন।":"❌ Free limit reached, try again later.","🌐 ভাষা":"🌐 Language","👤 প্রোফাইল":"👤 Profiles","✓ চলমান":"✓ Active","ব্যবহার":"Use","নতুন প্রোফাইলের নাম":"New profile name","＋ প্রিসেট সহ (Phase 1–4)":"＋ With preset (Phase 1–4)","＋ ফাঁকা":"＋ Blank","প্রতিটি প্রোফাইলের ডাটা আলাদা।":"Each profile keeps its own data.","ধরন":"Type","সাবজেক্ট":"Subject","ক্লাস":"classes","যোগ":"Add","রবিবার":"Sunday","সোমবার":"Monday","মঙ্গলবার":"Tuesday","বুধবার":"Wednesday","বৃহস্পতিবার":"Thursday","শুক্রবার":"Friday","শনিবার":"Saturday","☁️ Google Drive সিঙ্ক":"☁️ Google Drive sync","লগইন করলে আপনার সব ডাটা আপনার Google Drive-এ (অ্যাপের লুকানো ফোল্ডারে) সেভ থাকবে। অন্য ফোনে একই Google অ্যাকাউন্টে লগইন করলেই সব ফিরে পাবেন। প্রতি এক ঘণ্টা পর ☁ চেপে আবার সংযুক্ত হতে হতে পারে।":"Your data is saved in your own Google Drive (hidden app folder). Sign in with the same Google account on another phone to get everything back. You may need to tap ☁ again after an hour.","Google দিয়ে লগইন":"Sign in with Google","এখনই সিঙ্ক":"Sync now","লগআউট":"Sign out","☁ সিঙ্ক করুন":"☁ Sync","⏳ সিঙ্ক হচ্ছে...":"⏳ Syncing...","✅ সিঙ্ক হয়েছে — ":"✅ Synced — ","❌ সেশন শেষ। ☁ চেপে আবার লগইন করুন।":"❌ Session expired. Tap ☁ to sign in again.","❌ সিঙ্ক ব্যর্থ (":"❌ Sync failed (","❌ Google লোড হয়নি। ইন্টারনেট চেক করুন।":"❌ Google didn't load. Check your internet.","❌ লগইন হয়নি":"❌ Sign-in failed","লগআউট হয়েছে":"Signed out","🤖 Gemini API key (ছবি থেকে রুটিনের জন্য)":"🤖 Gemini API key (for photo routine)","aistudio.google.com/apikey থেকে ফ্রি key নিন। key শুধু এই ফোনে থাকে, ক্লাউডে যায় না।":"Get a free key from aistudio.google.com/apikey. The key stays on this phone only.","Gemini API key এখানে দিন":"Paste Gemini API key here","✅ key সেভ হয়েছে":"✅ Key saved","📎 PDF ফাইল":"📎 PDF files","＋ PDF যোগ":"＋ Add PDF","এখনো কোনো PDF নেই":"No PDFs yet","Drive-এর \"Attendance Notes\" ফোল্ডারেও ফাইল পাবেন।":"Files are also in your Drive's \"Attendance Notes\" folder.","❌ আগে ☁ চেপে Google দিয়ে লগইন করুন।":"❌ Tap ☁ and sign in with Google first.","❌ Drive ফাইলের অনুমতি দেওয়া হয়নি। আবার লগইন করে সব অনুমতি টিক দিন।":"❌ Drive file permission not granted. Sign in again and tick all permissions.","❌ শুধু PDF ফাইল দিন।":"❌ PDF files only.","❌ ফাইল ১০০ MB-এর বেশি।":"❌ File is over 100 MB.","⏳ আপলোড হচ্ছে: ":"⏳ Uploading: ","✅ আপলোড হয়েছে: ":"✅ Uploaded: ","❌ অনুমতি নেই। ☁ চেপে আবার লগইন করে Drive-এর অনুমতি দিন।":"❌ No permission. Tap ☁ and sign in again to allow Drive.","❌ আপলোড ব্যর্থ (":"❌ Upload failed (","পরীক্ষা":"Exams","📝 নতুন পরীক্ষা":"📝 New exam","পরীক্ষার নাম (যেমন: Card Test 1)":"Exam name (e.g. Card Test 1)","মোট নম্বর":"Total marks","＋ যোগ":"＋ Add","আসন্ন পরীক্ষা":"Upcoming exams","কোনো আসন্ন পরীক্ষা নেই।":"No upcoming exams.","হয়ে গেছে":"Done"," গড় ":" avg ","শেষ":"Over","প্রাপ্ত":"Marks"," দিন বাকি":" days left","আগে \"হিসাব\" ট্যাবে সাবজেক্ট যোগ করুন।":"First add subjects in the Stats tab.","✓ সব উপস্থিত":"✓ All present","✗ সব অনুপস্থিত":"✗ All absent","↩︎ সব মুছুন":"↩︎ Clear all","🏖 আজ ছুটি":"🏖 Holiday today","⚠ ঝুঁকির তালিকা":"⚠ At-risk list","✅ সব সাবজেক্ট লক্ষ্যের ওপরে আছে।":"✅ All subjects are above target.","📆 ফোনের Calendar-এ রিমাইন্ডার":"📆 Reminders in phone Calendar","রুটিনের সব ক্লাস (ছুটি বাদে) ও পরীক্ষা ফোনের Calendar-এ যাবে, ক্লাসের আগে নোটিফিকেশন আসবে।":"All routine classes (except holidays) and exams go to your phone Calendar, with notifications before class.","ক্লাসের কত মিনিট আগে":"Minutes before class","🛡 ডাটা সুরক্ষা":"🛡 Data safety","⬇ ব্যাকআপ ফাইল (.json)":"⬇ Backup file (.json)","⬆ ফাইল থেকে রিস্টোর":"⬆ Restore from file","এই ফোনের কপি":"Copies on this phone","এখনো নেই":"None yet","রিস্টোর":"Restore","☁ Drive ব্যাকআপ তালিকা":"☁ Drive backups","এই ব্যাকআপ ফিরিয়ে আনবেন? বর্তমান ডাটা বদলে যাবে।":"Restore this backup? Current data will be replaced.","এই ফাইল থেকে ডাটা ফিরিয়ে আনবেন? বর্তমান ডাটা বদলে যাবে।":"Restore data from this file? Current data will be replaced.","এই ফোনে স্বয়ংক্রিয়ভাবে গত ৭ দিনের কপি থাকে। Drive-এ লগইন থাকলে প্রতিদিন একটা ব্যাকআপ জমা হয় (শেষ ৭টি)।":"This phone keeps automatic copies of the last 7 days. When signed in to Drive, one backup is saved daily (last 7).","⚠ আপনার ডাটা শুধু এই ফোনে আছে। ফোন হারালে বা ব্রাউজার ডেটা মুছলে হারিয়ে যাবে।":"⚠ Your data exists only on this phone. It can be lost if the phone is lost or browser data is cleared.","Google লগইন":"Google sign-in","☁ সিঙ্ক বন্ধ আছে (সেশন শেষ)। নতুন বদল Drive-এ যাচ্ছে না।":"☁ Sync is off (session expired). New changes are not reaching Drive.","সংযুক্ত করুন":"Reconnect","✅ ব্যাকআপ ফাইল নামানো হয়েছে।":"✅ Backup file downloaded.","✅ ফিরিয়ে আনা হয়েছে।":"✅ Restored.","❌ ফাইল ঠিক নেই।":"❌ Invalid file.","❌ ব্যর্থ হয়েছে।":"❌ Failed.","✅ ফাইল নামানো হয়েছে। এখন Downloads থেকে ফাইলটা ট্যাপ করে Calendar-এ যোগ করুন।":"✅ File downloaded. Tap it in Downloads to add to Calendar.","❌ কোনো ক্লাস বা পরীক্ষা নেই।":"❌ No classes or exams.","📈 উপস্থিতির ধারা":"📈 Attendance trend","সপ্তাহ":"Week","মাস":"Month","ক্যালেন্ডারে মার্ক করা ক্লাস থেকে · ড্যাশ লাইন = লক্ষ্য":"From classes marked in Calendar · dashed line = target","ক্যালেন্ডারে ক্লাস মার্ক করলে এখানে ধারা দেখাবে।":"Mark classes in Calendar to see the trend here.","PDF-এ খুঁজুন":"Search in PDF","⏳ খোলা হচ্ছে...":"⏳ Opening...","❌ PDF ভিউয়ার লোড হয়নি। ইন্টারনেট চেক করুন।":"❌ PDF viewer didn't load. Check your internet.","❌ খোলা যায়নি।":"❌ Couldn't open.","এই PDF-এ খোঁজার মতো লেখা নেই (স্ক্যান করা ছবি হতে পারে)":"No searchable text in this PDF (may be a scanned image)","কিছু পাওয়া যায়নি":"Nothing found"," টি পৃষ্ঠায় পাওয়া গেছে":" pages matched"};
 var ENK=Object.keys(EN).sort(function(a,b){return b.length-a.length});
 var IC="icon-192.png";
 var uid=Date.now();function id(){return"i"+(uid++)}
@@ -96,7 +109,7 @@ function fix(y){var yr=new Date().getFullYear();y.start=y.start||yr+"-01-01";y.e
 function act(){S=R.profiles.filter(function(p){return p.id===R.pid})[0]||R.profiles[0];R.pid=S.id;S.years.forEach(fix);if(S.cy>=S.years.length)S.cy=0}
 act();
 var PT=0;
-function save(ch){try{if(ch)R.ts=Date.now();localStorage.setItem("att-v4",JSON.stringify(R))}catch(e){}if(ch)sched()}
+function save(ch){try{if(ch)R.ts=Date.now();localStorage.setItem("att-v4",JSON.stringify(R))}catch(e){}if(ch){snap();sched()}}
 function commit(b){save(JSON.stringify(R)!==b);render()}
 function bn(n){return String(n).replace(/\d/g,function(d){return"০১২৩৪৫৬৭৮৯"[d]})}
 function tr(s){if(R.lang!=="en")return s;ENK.forEach(function(k){s=s.split(k).join(EN[k])});return s.replace(/[০-৯]/g,function(d){return"০১২৩৪৫৬৭৮৯".indexOf(d)})}
@@ -105,15 +118,15 @@ function cc(n){n=n.toLowerCase();return/lec|লেক/.test(n)?"#6366f1":/tut|�
 
 /* ---------- Google Drive sync ---------- */
 var GS={tok:"",exp:0,msg:"",busy:false,fid:""},TC=null;
-function gk(){try{return localStorage.getItem("att-gk")||""}catch(e){return""}}
 function gon(){try{return localStorage.getItem("att-gs")==="1"}catch(e){return false}}
 function gok(){return!!GS.tok&&Date.now()<GS.exp}
 function chipTxt(){return gok()?"☁ ✓":gon()?"☁ সিঙ্ক করুন":"☁"}
 function gstat(){var c=document.getElementById("gchip");if(c)c.innerHTML=tr(chipTxt());var m=document.getElementById("gmsg");if(m)m.innerHTML=tr(GS.msg)}
 function gtc(){if(TC)return TC;if(!window.google||!google.accounts||!google.accounts.oauth2)return null;TC=google.accounts.oauth2.initTokenClient({client_id:CID,scope:SCP,callback:gTok,error_callback:gErr});return TC}
-function gErr(er){var t=er&&er.type||"unknown";GS.msg=t==="popup_failed_to_open"?"❌ লগইন উইন্ডো খোলেনি। Chrome-এ (ইনস্টল করা অ্যাপে নয়) পেজ খুলে আবার চাপুন, আর পপআপ Allow করুন।":t==="popup_closed"?"❌ লগইন উইন্ডো বন্ধ করা হয়েছে।":"❌ লগইন ব্যর্থ ("+t+")";gstat();try{alert(GS.msg)}catch(x){}}
+function gSilent(){if(!gon()||gok()||GS.sil)return;var t;try{t=gtc()}catch(e){return}if(!t)return;GS.sil=1;try{t.requestAccessToken({prompt:"none"})}catch(e){GS.sil=0}}
+function gErr(er){if(GS.sil){GS.sil=0;return}var t=er&&er.type||"unknown";GS.msg=t==="popup_failed_to_open"?"❌ লগইন উইন্ডো খোলেনি। Chrome-এ (ইনস্টল করা অ্যাপে নয়) পেজ খুলে আবার চাপুন, আর পপআপ Allow করুন।":t==="popup_closed"?"❌ লগইন উইন্ডো বন্ধ করা হয়েছে।":"❌ লগইন ব্যর্থ ("+t+")";gstat();try{alert(GS.msg)}catch(x){}}
 function gIn(){var t;try{t=gtc()}catch(x){t=null}if(!t){GS.msg="❌ Google লোড হয়নি। ইন্টারনেট চেক করুন, অ্যাড-ব্লকার বন্ধ করে পেজ রিফ্রেশ করুন।";gstat();try{alert(GS.msg)}catch(x){}return}try{t.requestAccessToken({prompt:""})}catch(x){gErr({type:String(x)})}}
-function gTok(r){if(!r||r.error||!r.access_token){GS.msg="❌ লগইন হয়নি";render();return}try{GS.pdf=google.accounts.oauth2.hasGrantedAllScopes(r,"https://www.googleapis.com/auth/drive.file")}catch(e){GS.pdf=true}GS.tok=r.access_token;GS.exp=Date.now()+((+r.expires_in||3600)-120)*1000;try{localStorage.setItem("att-gs","1")}catch(e){}pull(true)}
+function gTok(r){var sl=GS.sil;GS.sil=0;if(!r||r.error||!r.access_token){if(!sl){GS.msg="❌ লগইন হয়নি";render()}return}try{GS.pdf=google.accounts.oauth2.hasGrantedAllScopes(r,"https://www.googleapis.com/auth/drive.file")}catch(e){GS.pdf=true}GS.tok=r.access_token;GS.exp=Date.now()+((+r.expires_in||3600)-120)*1000;try{localStorage.setItem("att-gs","1")}catch(e){}pull(true)}
 async function gf(url,o){o=o||{};o.headers=Object.assign({Authorization:"Bearer "+GS.tok},o.headers||{});var r=await fetch(url,o);if(r.status===401){GS.tok="";GS.exp=0;throw 401}if(!r.ok)throw r.status;return r}
 async function gfind(){if(GS.fid)return GS.fid;var r=await gf("https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q="+encodeURIComponent("name='attendance.json'")+"&fields=files(id)");var j=await r.json();GS.fid=j.files&&j.files[0]?j.files[0].id:"";return GS.fid}
 async function gget(i){var r=await gf("https://www.googleapis.com/drive/v3/files/"+i+"?alt=media");return r.json()}
@@ -121,10 +134,10 @@ async function gput(){var body=JSON.stringify(R),i=await gfind();
   if(i){await gf("https://www.googleapis.com/upload/drive/v3/files/"+i+"?uploadType=media",{method:"PATCH",headers:{"Content-Type":"application/json"},body:body})}
   else{var bd="xBND"+Date.now(),meta=JSON.stringify({name:"attendance.json",parents:["appDataFolder"]});
     var mp="--"+bd+"\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n"+meta+"\r\n--"+bd+"\r\nContent-Type: application/json\r\n\r\n"+body+"\r\n--"+bd+"--";
-    var r=await gf("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id",{method:"POST",headers:{"Content-Type":"multipart/related; boundary="+bd},body:mp});GS.fid=(await r.json()).id}}
+    var r=await gf("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id",{method:"POST",headers:{"Content-Type":"multipart/related; boundary="+bd},body:mp});GS.fid=(await r.json()).id}dbak().catch(function(){})}
 function hasData(){return R.profiles.some(function(p){return p.years.some(function(y){return Object.keys(y.rec||{}).length||(y.rt||[]).length||y.subs.some(function(s){return s.cats.some(function(c){return c.a||c.t})})})})}
 function gerr(e){return e===401?"❌ সেশন শেষ। ☁ চেপে আবার লগইন করুন।":"❌ সিঙ্ক ব্যর্থ ("+e+")"}
-function gdone(){return"✅ সিঙ্ক হয়েছে — "+new Date().toLocaleTimeString()}
+function gdone(){try{localStorage.setItem("att-ls",String(Date.now()))}catch(e){}return"✅ সিঙ্ক হয়েছে — "+new Date().toLocaleTimeString()}
 async function pull(first){
   if(!gok()||GS.busy)return;GS.busy=true;GS.msg="⏳ সিঙ্ক হচ্ছে...";gstat();var changed=false;
   try{var i=await gfind(),c=i?await gget(i):null;
@@ -136,24 +149,152 @@ async function pull(first){
     }else await gput();
     GS.msg=gdone()}
   catch(e){GS.msg=gerr(e)}
-  GS.busy=false;if(changed)render();else{gstat()}}
+  GS.busy=false;if(changed){RU=null;render()}else{gstat()}rsync().catch(function(){})}
 function sched(){clearTimeout(PT);if(!gok())return;PT=setTimeout(async function(){
   if(!gok())return;if(GS.busy){sched();return}
   GS.busy=true;try{await gput();GS.msg=gdone()}catch(e){GS.msg=gerr(e)}GS.busy=false;gstat()},1500)}
 
+/* ---------- Trend graph ---------- */
+var GO=false,GM="w";
+function trendSvg(Y,mode){var g={};
+  Object.keys(Y.rec).forEach(function(k){var ds=k.split("|")[0],d=parse(ds),key=mode==="m"?ds.slice(0,7):fmt(addDays(d,-((d.getDay()+1)%7))),o=g[key]=g[key]||{a:0,t:0};o.t++;if(Y.rec[k]==="p")o.a++});
+  var ks=Object.keys(g).sort().slice(-12);
+  if(!ks.length)return'<div class="mu" style="margin-top:8px">ক্যালেন্ডারে ক্লাস মার্ক করলে এখানে ধারা দেখাবে।</div>';
+  var W=320,H=150,pl=24,pb=20,pt=8,bw=(W-pl-4)/ks.length,s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="উপস্থিতির ধারা" style="margin-top:6px">';
+  [0,50,100].forEach(function(v){var y=pt+(H-pt-pb)*(1-v/100);s+='<line x1="'+pl+'" x2="'+W+'" y1="'+y+'" y2="'+y+'" stroke="var(--bd)"/><text x="'+(pl-4)+'" y="'+(y+3)+'" font-size="8" text-anchor="end" fill="var(--mu)">'+v+'</text>'});
+  ks.forEach(function(k,i){var o=g[k],v=o.a*100/o.t,h=(H-pt-pb)*v/100,x=pl+i*bw+bw*.15,lb=mode==="m"?bn(+k.slice(5)):bn(+k.slice(8))+"/"+bn(+k.slice(5,7));
+    s+='<rect x="'+x+'" y="'+(H-pb-h)+'" width="'+bw*.7+'" height="'+h+'" rx="3" fill="'+(v>=S.target?"var(--ok)":"var(--bad)")+'"/><text x="'+(x+bw*.35)+'" y="'+(H-pb+10)+'" font-size="7" text-anchor="middle" fill="var(--mu)">'+lb+'</text>'});
+  var ty=pt+(H-pt-pb)*(1-S.target/100);
+  return s+'<line x1="'+pl+'" x2="'+W+'" y1="'+ty+'" y2="'+ty+'" stroke="var(--tx)" stroke-dasharray="3 3" opacity=".5"/></svg>'}
+function gCard(Y){var m='<div class="card"><div class="row hd" data-act="gtog"><b>📈 উপস্থিতির ধারা</b><span class="mu">'+(GO?"▴":"▾")+'</span></div>';
+  if(GO)m+='<div class="seg" style="margin-top:8px"><button class="'+(GM==="w"?"on":"")+'" data-act="gm" data-m="w">সপ্তাহ</button><button class="'+(GM==="m"?"on":"")+'" data-act="gm" data-m="m">মাস</button></div>'+trendSvg(Y,GM)+'<div class="mu">ক্যালেন্ডারে মার্ক করা ক্লাস থেকে · ড্যাশ লাইন = লক্ষ্য</div>';
+  return m+'</div>'}
+
+/* ---------- PDF viewer ---------- */
+var V=null,PJ="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+function loadPdfJs(){return new Promise(function(res,rej){if(window.pdfjsLib)return res();var s=document.createElement("script");s.src=PJ+"pdf.min.js";s.onload=function(){pdfjsLib.GlobalWorkerOptions.workerSrc=PJ+"pdf.worker.min.js";res()};s.onerror=function(){rej("net")};document.head.appendChild(s)})}
+function vm(t){var e=document.getElementById("vm");if(e)e.innerHTML=tr(t)}
+async function openPdf(fid,name){
+  if(!gok()){alert(tr("❌ আগে ☁ চেপে Google দিয়ে লগইন করুন।"));return}
+  var o=document.getElementById("pv");if(!o){o=document.createElement("div");o.id="pv";document.body.appendChild(o)}
+  V={id:fid,pg:1,n:0,z:1,tx:[]};
+  o.innerHTML=tr('<div class="h"><button data-act="vclose">✕</button><b>'+esc(name)+'</b></div><div class="t"><input id="vq" placeholder="PDF-এ খুঁজুন"><button data-act="vfind">🔍</button></div><div class="t"><button data-act="vgo" data-n="-1">◀</button><span id="vp" class="mu" style="flex:1;text-align:center"></span><button data-act="vgo" data-n="1">▶</button><button data-act="vz" data-n="-0.25">−</button><button data-act="vz" data-n="0.25">＋</button></div><div id="vh" class="hits"></div><div id="vm" class="m mu"></div><div class="s"><canvas id="vc"></canvas></div>');
+  vm("⏳ খোলা হচ্ছে...");
+  try{await loadPdfJs();var r=await gf("https://www.googleapis.com/drive/v3/files/"+fid+"?alt=media"),buf=await r.arrayBuffer();
+    if(!V||V.id!==fid)return;V.pdf=await pdfjsLib.getDocument({data:buf}).promise;V.n=V.pdf.numPages;vm("");await vpage()}
+  catch(e){vm(e==="net"?"❌ PDF ভিউয়ার লোড হয়নি। ইন্টারনেট চেক করুন।":e===401?"❌ সেশন শেষ। ☁ চেপে আবার লগইন করুন।":"❌ খোলা যায়নি।")}}
+async function vpage(){if(!V||!V.pdf)return;if(V.busy){V.pend=1;return}V.busy=1;
+  try{var p=await V.pdf.getPage(V.pg),c=document.getElementById("vc"),box=c.parentNode,v1=p.getViewport({scale:1}),dpr=window.devicePixelRatio||1,sc=(box.clientWidth-12)/v1.width*V.z,vp=p.getViewport({scale:sc*dpr});
+    c.width=vp.width;c.height=vp.height;c.style.width=vp.width/dpr+"px";c.style.height=vp.height/dpr+"px";
+    await p.render({canvasContext:c.getContext("2d"),viewport:vp}).promise;box.scrollTop=0;
+    document.getElementById("vp").textContent=tr(bn(V.pg)+" / "+bn(V.n))}catch(e){}
+  if(V)V.busy=0;if(V&&V.pend){V.pend=0;vpage()}}
+async function vfind(){if(!V||!V.pdf)return;var q=document.getElementById("vq").value.trim().toLowerCase();if(!q)return;var hits=[],tot=0;
+  for(var i=1;i<=V.n&&V;i++){if(V.tx[i]==null){var t=await (await V.pdf.getPage(i)).getTextContent();V.tx[i]=t.items.map(function(x){return x.str}).join(" ").toLowerCase();if(i%10===0)vm("⏳ "+i+" / "+V.n)}
+    tot+=V.tx[i].length;var c=V.tx[i].split(q).length-1;if(c)hits.push([i,c])}
+  if(!V)return;
+  document.getElementById("vh").innerHTML=hits.slice(0,40).map(function(h){return'<button class="chip" data-act="vgo2" data-p="'+h[0]+'">'+tr(bn(h[0]))+(R.lang==="en"?" p":" পৃ")+' ('+tr(bn(h[1]))+')</button>'}).join("");
+  vm(hits.length?bn(hits.length)+" টি পৃষ্ঠায় পাওয়া গেছে":tot<20?"এই PDF-এ খোঁজার মতো লেখা নেই (স্ক্যান করা ছবি হতে পারে)":"কিছু পাওয়া যায়নি");if(hits.length)V.pg=hits[0][0],vpage()}
+function vact(a,b){
+  if(a==="vpdf")openPdf(b.dataset.id,b.dataset.nm);
+  else if(!V)return;
+  else if(a==="vclose"){var o=document.getElementById("pv");if(o)o.remove();V=null}
+  else if(a==="vfind")vfind();
+  else if(a==="vgo"){V.pg=Math.min(V.n,Math.max(1,V.pg+ +b.dataset.n));vpage()}
+  else if(a==="vgo2"){V.pg=+b.dataset.p;vpage()}
+  else if(a==="vz"){V.z=Math.min(3,Math.max(.5,V.z+ +b.dataset.n));vpage()}}
+document.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.id==="vq")vfind()});
+
+/* ---------- Calendar reminders (.ics) ---------- */
+function dlFile(name,text,type){try{var b=new Blob([text],{type:type||"text/plain"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500);return true}catch(e){return false}}
+function icsEsc(s){return String(s).replace(/[\\;,]/g,"\\$&").replace(/\n/g,"\\n")}
+function icsD(d){return d.getFullYear()+p2(d.getMonth()+1)+p2(d.getDate())}
+function tparse(t){t=String(t||"");var m=t.match(/(\d{1,2})[:.](\d{2})\s*(?:-|–|—|~|to)\s*(\d{1,2})[:.](\d{2})/);if(m)return[[+m[1],+m[2]],[+m[3],+m[4]]];var o=t.match(/(\d{1,2})[:.](\d{2})/);return o?[[+o[1],+o[2]],[+o[1]+1,+o[2]]]:null}
+function icsT(d,hm){return icsD(d)+"T"+p2(Math.min(23,hm[0]))+p2(hm[1])+"00"}
+function alarm(min,txt){return["BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+icsEsc(txt),"TRIGGER:-PT"+min+"M","END:VALARM"]}
+function mkIcs(Y,min){
+  var L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Attendance//BN","CALSCALE:GREGORIAN"],st=new Date().toISOString().replace(/[-:]/g,"").split(".")[0]+"Z",n=0,e=parse(Y.end),un=icsD(e)+"T235959";
+  valid(Y).forEach(function(r){var f=find(r.sid,r.cid),d=parse(Y.start),g=0;while(d.getDay()!==r.day&&g<8){d=addDays(d,1);g++}
+    if(d>e)return;var tp=tparse(r.time),title=f[0].name+" ("+f[1].name+")",ex=Y.off.filter(function(x){var xd=parse(x);return xd.getDay()===r.day&&xd>=d&&xd<=e});
+    L.push("BEGIN:VEVENT","UID:"+r.id+"@attendance","DTSTAMP:"+st,"SUMMARY:"+icsEsc(title));
+    if(tp){L.push("DTSTART:"+icsT(d,tp[0]),"DTEND:"+icsT(d,tp[1]));if(ex.length)L.push("EXDATE:"+ex.map(function(x){return icsT(parse(x),tp[0])}).join(","))}
+    else{L.push("DTSTART;VALUE=DATE:"+icsD(d),"DTEND;VALUE=DATE:"+icsD(addDays(d,1)));if(ex.length)L.push("EXDATE;VALUE=DATE:"+ex.map(function(x){return icsD(parse(x))}).join(","))}
+    L.push("RRULE:FREQ=WEEKLY;UNTIL="+(tp?un:icsD(e)));
+    if(tp)L=L.concat(alarm(min,title));L.push("END:VEVENT");n++});
+  (Y.exams||[]).forEach(function(x){if(!x.date)return;var d=parse(x.date),f=find(x.sid)[0];L.push("BEGIN:VEVENT","UID:"+x.id+"@attendance","DTSTAMP:"+st,"SUMMARY:"+icsEsc("📝 "+x.name+(f?" – "+f.name:"")),"DTSTART;VALUE=DATE:"+icsD(d),"DTEND;VALUE=DATE:"+icsD(addDays(d,1)));
+    L=L.concat(alarm(1440,x.name));L.push("END:VEVENT");n++});
+  L.push("END:VCALENDAR");
+  SM2=n?(dlFile("attendance-"+Y.name.replace(/\s+/g,"")+".ics",L.join("\r\n"),"text/calendar")?"✅ ফাইল নামানো হয়েছে। এখন Downloads থেকে ফাইলটা ট্যাপ করে Calendar-এ যোগ করুন।":"❌ ব্যর্থ হয়েছে।"):"❌ কোনো ক্লাস বা পরীক্ষা নেই।"}
+function icsCard(){return'<div class="card"><b>📆 ফোনের Calendar-এ রিমাইন্ডার</b><div class="mu" style="margin-top:4px">রুটিনের সব ক্লাস (ছুটি বাদে) ও পরীক্ষা ফোনের Calendar-এ যাবে, ক্লাসের আগে নোটিফিকেশন আসবে।</div><div class="row" style="margin-top:8px"><label class="mu">ক্লাসের কত মিনিট আগে <select id="remmin"><option value="5">৫</option><option value="10">১০</option><option value="15" selected>১৫</option><option value="30">৩০</option><option value="60">৬০</option></select></label><button class="p" data-act="ics" style="flex:none">⬇ .ics</button></div><div class="mu" style="margin-top:6px">'+SM2+'</div></div>'}
+
+/* ---------- Data safety ---------- */
+var SM2="";
+var SM="",DBL=null;
+function snaps(){try{return JSON.parse(localStorage.getItem("att-snap")||"[]")}catch(e){return[]}}
+function snap(){try{var d=fmt(new Date()),L=snaps();if(L.length&&L[0].d===d)L[0].v=JSON.stringify(R);else L.unshift({d:d,v:JSON.stringify(R)});localStorage.setItem("att-snap",JSON.stringify(L.slice(0,7)))}catch(e){}}
+function okd(c){return c&&Array.isArray(c.profiles)&&c.profiles.length&&c.profiles.every(function(p){return p&&Array.isArray(p.years)&&p.years.length})}
+function applyData(c){try{localStorage.setItem("att-bak",JSON.stringify(R))}catch(e){}R=c;act();opn=null;hist={};save(true)}
+function dlJson(){try{var b=new Blob([JSON.stringify(R)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="attendance-backup-"+fmt(new Date())+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500);SM="✅ ব্যাকআপ ফাইল নামানো হয়েছে।"}catch(e){SM="❌ ব্যর্থ হয়েছে।"}}
+function readFile(f){if(!f)return;var rd=new FileReader();rd.onload=function(){try{var c=JSON.parse(rd.result);if(!okd(c))throw 0;if(confirm(tr("এই ফাইল থেকে ডাটা ফিরিয়ে আনবেন? বর্তমান ডাটা বদলে যাবে।"))){applyData(c);SM="✅ ফিরিয়ে আনা হয়েছে।"}}catch(e){SM="❌ ফাইল ঠিক নেই।"}render()};rd.readAsText(f)}
+async function dlist(){var r=await gf("https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q="+encodeURIComponent("name contains 'backup-'")+"&fields=files(id,name)&orderBy=name%20desc&pageSize=30");return(await r.json()).files||[]}
+async function dbak(){var d=fmt(new Date());try{if(localStorage.getItem("att-dbak")===d)return}catch(e){}
+  var L=await dlist(),nm="backup-"+d+".json";
+  if(!L.some(function(f){return f.name===nm})){var bd="xBK"+Date.now(),mp="--"+bd+"\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n"+JSON.stringify({name:nm,parents:["appDataFolder"]})+"\r\n--"+bd+"\r\nContent-Type: application/json\r\n\r\n"+JSON.stringify(R)+"\r\n--"+bd+"--";
+    await gf("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id",{method:"POST",headers:{"Content-Type":"multipart/related; boundary="+bd},body:mp});L=await dlist()}
+  for(var i=7;i<L.length;i++)await gf("https://www.googleapis.com/drive/v3/files/"+L[i].id,{method:"DELETE"}).catch(function(){});
+  try{localStorage.setItem("att-dbak",d)}catch(e){}}
+async function loadDL(){if(!gok()){SM="❌ আগে ☁ চেপে লগইন করুন।";render();return}SM="⏳ ...";render();try{DBL=await dlist();SM=DBL.length?"":"এখনো Drive ব্যাকআপ নেই। আজকের সিঙ্কের পর তৈরি হবে।"}catch(e){SM=gerr(e)}render()}
+async function rdrive(i){var f=DBL&&DBL[i];if(!f||!gok())return;if(!confirm(tr("এই ব্যাকআপ ফিরিয়ে আনবেন? বর্তমান ডাটা বদলে যাবে।")))return;try{var c=await gget(f.id);if(!okd(c))throw 0;applyData(c);SM="✅ ফিরিয়ে আনা হয়েছে: "+f.name}catch(e){SM="❌ ব্যর্থ হয়েছে।"}render()}
+function warnBox(){
+  if(!gon())return'<div class="warn">⚠ আপনার ডাটা শুধু এই ফোনে আছে। ফোন হারালে বা ব্রাউজার ডেটা মুছলে হারিয়ে যাবে। <button data-act="view" data-v="s" style="padding:2px 8px;margin-left:4px">Google লগইন</button></div>';
+  if(!gok())return'<div class="warn">☁ সিঙ্ক বন্ধ আছে (সেশন শেষ)। নতুন বদল Drive-এ যাচ্ছে না। <button data-act="gsync" style="padding:2px 8px;margin-left:4px">সংযুক্ত করুন</button></div>';
+  return""}
+function safeCard(){var m='<div class="card"><b>🛡 ডাটা সুরক্ষা</b><div class="mu" style="margin-top:4px">এই ফোনে স্বয়ংক্রিয়ভাবে গত ৭ দিনের কপি থাকে। Drive-এ লগইন থাকলে প্রতিদিন একটা ব্যাকআপ জমা হয় (শেষ ৭টি)।</div><div class="btns"><button data-act="dl">⬇ ব্যাকআপ ফাইল (.json)</button><label class="add" style="margin:0;flex:1;text-align:center;cursor:pointer;border:1px dashed var(--bd);border-radius:9px;padding:6px 10px">⬆ ফাইল থেকে রিস্টোর<input type="file" accept=".json,application/json" hidden data-f="rfile"></label></div>';
+  var L=snaps();m+='<div class="mu" style="margin-top:8px"><b>এই ফোনের কপি</b></div>';
+  if(!L.length)m+='<div class="mu">এখনো নেই</div>';
+  L.forEach(function(s,i){m+='<div class="row ln"><span>'+bn(s.d)+'</span><button data-act="rs" data-i="'+i+'">রিস্টোর</button></div>'});
+  m+='<div class="btns"><button data-act="dlist" style="flex:1">☁ Drive ব্যাকআপ তালিকা</button></div>';
+  (DBL||[]).forEach(function(f,i){m+='<div class="row ln"><span>'+esc(f.name.replace("backup-","").replace(".json",""))+'</span><button data-act="rd" data-i="'+i+'">রিস্টোর</button></div>'});
+  return m+'<div class="mu" style="margin-top:6px">'+SM+'</div></div>'}
+
 /* ---------- Gemini routine reader ---------- */
-var PROMPT='This image is the weekly class routine / timetable of a medical student in Bangladesh (text may be Bengali or English). Extract every recurring weekly class. Reply with only a JSON array: [{"day":0-6 where 0=Sunday,1=Monday,2=Tuesday,3=Wednesday,4=Thursday,5=Friday,6=Saturday,"subject":"subject name in English as written","type":"Lecture|Tutorial|Ward|other","time":"HH:MM-HH:MM in 24h format, or empty"}]. Do not invent classes that are not in the image.';
-function shrink(file){return new Promise(function(res,rej){var im=new Image(),u=URL.createObjectURL(file);im.onload=function(){var m=1800,s=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",.9).split(",")[1])};im.onerror=function(){rej(0)};im.src=u})}
-async function gem(file){
-  var k=gk();if(!k)throw"nokey";
-  var b=await shrink(file);
-  var body=JSON.stringify({contents:[{parts:[{text:PROMPT},{inline_data:{mime_type:"image/jpeg",data:b}}]}],generationConfig:{responseMimeType:"application/json",temperature:0}});
-  var ms=["gemini-flash-latest","gemini-2.5-flash"],last=0;
-  for(var i=0;i<ms.length;i++){
-    var r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+ms[i]+":generateContent?key="+encodeURIComponent(k),{method:"POST",headers:{"Content-Type":"application/json"},body:body});
-    if(r.ok){var j=await r.json();var t=j.candidates[0].content.parts.map(function(p){return p.text||""}).join("");t=t.replace(/```json|```/g,"").trim();return JSON.parse(t)}
-    last=r.status;if(r.status!==404&&r.status!==503)break}
-  throw last}
+
+/* ---------- Routine image ---------- */
+var RU=null,RM="",IZ=1;
+function idb(){return new Promise(function(res,rej){var q=indexedDB.open("att-img",1);q.onupgradeneeded=function(){q.result.createObjectStore("i")};q.onsuccess=function(){res(q.result)};q.onerror=function(){rej()}})}
+async function iget(k){var d=await idb();return new Promise(function(res){var t=d.transaction("i").objectStore("i").get(k);t.onsuccess=function(){res(t.result||null)};t.onerror=function(){res(null)}})}
+async function iset(k,v){var d=await idb();return new Promise(function(res,rej){var s=d.transaction("i","readwrite").objectStore("i"),t=v?s.put(v,k):s.delete(k);t.onsuccess=function(){res()};t.onerror=function(){rej()}})}
+function shrinkBlob(file){return new Promise(function(res,rej){var im=new Image(),u=URL.createObjectURL(file);im.onload=function(){var m=2000,s=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(function(b){b?res(b):rej()},"image/jpeg",.85)};im.onerror=function(){rej()};im.src=u})}
+async function rload(Y){var k=Y.id,b=null;if(Y.rimg)try{b=await iget("r"+k)}catch(e){}
+  if(!b&&Y.rimg&&Y.rimg.id&&gok()){try{b=await (await gf("https://www.googleapis.com/drive/v3/files/"+Y.rimg.id+"?alt=media")).blob();await iset("r"+k,b)}catch(e){}}
+  if(RU&&RU.key===k){RU.ld=0;RU.url=b?URL.createObjectURL(b):"";render()}}
+function rimgCard(Y){
+  if(!RU||RU.key!==Y.id){RU={key:Y.id,url:"",ld:1};rload(Y)}
+  var lb=function(t,c){return'<label class="'+c+'" style="margin:0;flex:1;text-align:center;cursor:pointer;border:1px dashed var(--bd);border-radius:9px;padding:6px 10px">'+t+'<input type="file" accept="image/*" hidden data-f="rimg"></label>'};
+  var m='<div class="card"><b>🖼 আমার রুটিন</b>';
+  if(RU.url)m+='<img src="'+RU.url+'" alt="" data-act="iopen" style="display:block;width:100%;max-height:220px;object-fit:contain;background:var(--bg);border-radius:10px;margin-top:8px;cursor:pointer"><div class="mu" style="margin-top:4px">ছবিতে ট্যাপ করলে পূর্ণ পর্দায় খুলবে</div><div class="btns">'+lb("🔄 বদলান","")+dbtn("r"+Y.id,"🗑 মুছুন")+'</div>';
+  else if(RU.ld)m+='<div class="mu" style="margin-top:6px">⏳</div>';
+  else m+='<div class="mu" style="margin-top:4px">'+(Y.rimg?"ছবিটি এই ফোনে নেই। ☁ লগইন করলে Drive থেকে আসবে।":"রুটিনের ছবি রেখে দিন, এখান থেকে এক ট্যাপে দেখতে পারবেন।")+'</div><div class="btns">'+lb("＋ রুটিনের ছবি যোগ","add")+'</div>';
+  return m+'<div class="mu" style="margin-top:6px">'+RM+'</div></div>'}
+async function setRimg(file){var Y=S.years[S.cy];RM="⏳ ...";render();
+  try{var bl=await shrinkBlob(file);await iset("r"+Y.id,bl);Y.rimg={ts:Date.now(),id:(Y.rimg&&Y.rimg.id)||"",up:0};RU=null;save(true);RM="✅ ছবি সেভ হয়েছে।";render();rsync().catch(function(){})}
+  catch(e){RM="❌ ছবি খোলা যায়নি। JPG বা PNG ছবি দিন।";render()}}
+async function delRimg(Y){var id0=Y.rimg&&Y.rimg.id;Y.rimg=null;RU=null;try{await iset("r"+Y.id,null)}catch(e){}
+  if(id0&&gok())gf("https://www.googleapis.com/drive/v3/files/"+id0,{method:"DELETE"}).catch(function(){})}
+async function rsync(){if(!gok())return;var ch=0;
+  for(var pi=0;pi<R.profiles.length;pi++)for(var yi=0;yi<R.profiles[pi].years.length;yi++){var y=R.profiles[pi].years[yi],ri=y.rimg;if(!ri||ri.up===ri.ts)continue;
+    var bl=null;try{bl=await iget("r"+y.id)}catch(e){}if(!bl)continue;
+    try{var done=false;
+      if(ri.id){try{await gf("https://www.googleapis.com/upload/drive/v3/files/"+ri.id+"?uploadType=media",{method:"PATCH",headers:{"Content-Type":"image/jpeg"},body:bl});done=true}catch(e){if(e===401)throw e}}
+      if(!done){var a=await gfold("Attendance Notes","root"),f=await gfold("Routine",a),bd="xRT"+Date.now(),
+        body=new Blob(["--"+bd+"\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n"+JSON.stringify({name:"routine-"+y.name.replace(/\s+/g,"")+".jpg",parents:[f],mimeType:"image/jpeg"})+"\r\n--"+bd+"\r\nContent-Type: image/jpeg\r\n\r\n",bl,"\r\n--"+bd+"--"]),
+        r=await gf("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id",{method:"POST",headers:{"Content-Type":"multipart/related; boundary="+bd},body:body});ri.id=(await r.json()).id}
+      ri.up=ri.ts;ch=1}catch(e){if(e===401)return}}
+  if(ch)save(true)}
+function ivOpen(){if(!RU||!RU.url||document.getElementById("iv"))return;var o=document.createElement("div");o.id="iv";IZ=1;
+  o.innerHTML=tr('<div class="h"><button data-act="iclose">✕</button><b>আমার রুটিন</b><button data-act="iz" data-n="-0.5">−</button><button data-act="iz" data-n="0.5">＋</button></div><div class="s"><img id="ivi" src="'+RU.url+'" alt=""></div>');document.body.appendChild(o)}
+function ivAct(a,b){if(a==="iopen")ivOpen();else if(a==="iclose"){var o=document.getElementById("iv");if(o)o.remove()}
+  else{IZ=Math.min(4,Math.max(1,IZ+ +b.dataset.n));var i=document.getElementById("ivi");if(i)i.style.width=IZ*100+"%"}}
 
 /* ---------- PDF notes (Drive folder) ---------- */
 var UM="",FOLD="application/vnd.google-apps.folder";
@@ -186,7 +327,7 @@ async function upf(file,sid,Y){
 async function upAll(fl,sid,Y,B){for(var i=0;i<fl.length;i++)await upf(fl[i],sid,Y);commit(B)}
 function fileBox(s){var L=s.files||[],m='<div class="cat"><b>📎 PDF ফাইল</b>';
   if(!L.length)m+='<div class="mu" style="margin-top:4px">এখনো কোনো PDF নেই</div>';
-  L.forEach(function(f){m+='<div class="row ln"><a href="'+esc(f.link||"#")+'" target="_blank" rel="noopener" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(f.name)+'</a><span class="mu">'+szs(f.size||0)+'</span>'+dbtn("f"+f.id,"🗑")+'</div>'});
+  L.forEach(function(f){m+='<div class="row ln"><a href="#" data-act="vpdf" data-id="'+esc(f.id)+'" data-nm="'+esc(f.name)+'" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(f.name)+'</a><a href="'+esc(f.link||"#")+'" target="_blank" rel="noopener" class="mu" title="Drive">↗</a><span class="mu">'+szs(f.size||0)+'</span>'+dbtn("f"+f.id,"🗑")+'</div>'});
   m+='<label class="add" style="display:block;text-align:center;cursor:pointer;border:1px dashed var(--bd);border-radius:9px;padding:6px 10px">＋ PDF যোগ<input type="file" accept="application/pdf,.pdf" multiple hidden data-f="pdf" data-s="'+s.id+'"></label><div class="mu" id="umsg" style="margin-top:6px">'+UM+'</div><div class="mu">Drive-এর "Attendance Notes" ফোল্ডারেও ফাইল পাবেন।</div></div>';
   return m}
 
@@ -223,10 +364,18 @@ function tView(Y){
   if(!L.length)return m+'<div class="mu" style="margin-top:6px">আজ কোনো ক্লাস নেই।</div></div>';
   L.forEach(function(r){var f=find(r.sid,r.cid),v=Y.rec[TD+"|"+r.id],at='data-e="'+r.id+'" data-ds="'+TD+'"',i=Y.subs.indexOf(f[0]);
     m+='<div class="ln"><div class="row"><span class="row" style="justify-content:flex-start"><span class="dot" style="background:'+SC[i%8]+'"></span><b>'+esc(f[0].name)+'</b><span class="tag" style="--c:'+cc(f[1].name)+'">'+esc(f[1].name)+'</span></span><span class="mu">'+esc(r.time||"")+'</span></div><div class="btns"><button class="p'+(v==="p"?" ps":"")+'" data-act="mk" data-m="p" '+at+'>✓ উপস্থিত</button><button class="a'+(v==="a"?" as":"")+'" data-act="mk" data-m="a" '+at+'>✗ অনুপস্থিত</button><button data-act="mk" data-m="" '+at+'>↩︎</button></div></div>'});
+  m+=allBtns(TD)+'<div class="btns"><button data-act="offd" data-ds="'+TD+'" style="flex:1">🏖 আজ ছুটি</button></div>';
+  return m+'</div>'}
+function allBtns(ds){return'<div class="btns"><button class="p" data-act="all" data-m="p" data-ds="'+ds+'">✓ সব উপস্থিত</button><button class="a" data-act="all" data-m="a" data-ds="'+ds+'">✗ সব অনুপস্থিত</button><button data-act="all" data-m="" data-ds="'+ds+'">↩︎ সব মুছুন</button></div>'}
+function riskCard(Y){var L=[];Y.subs.forEach(function(s){var e=tot(s.cats);if(!e.t)return;var k=calc(e);if(k.cls==="bad")L.push({n:s.name,v:k.v,t:k.txt.split("<br>")[0]})});
+  if(!L.length)return'<div class="card ok" style="margin-top:10px">✅ সব সাবজেক্ট লক্ষ্যের ওপরে আছে।</div>';
+  L.sort(function(a,b){return a.v-b.v});
+  var m='<div class="card" style="margin-top:10px;border-color:var(--bad)"><b style="color:var(--bad)">⚠ ঝুঁকির তালিকা ('+bn(L.length)+')</b>';
+  L.forEach(function(x){m+='<div class="ln"><div class="row"><b>'+esc(x.n)+'</b><span class="pct" style="color:var(--bad)">'+bn(x.v.toFixed(1))+'%</span></div><div class="mu">'+x.t.replace("⚠️ ","")+'</div></div>'});
   return m+'</div>'}
 function hView(Y){
   var all=[];Y.subs.forEach(function(s){all=all.concat(s.cats)});
-  var c=calc(tot(all)),m=tView(Y)+'<div class="hero" style="margin-top:10px"><div class="row"><input class="nm" id="yn" value="'+esc(Y.name)+'" style="font-size:16px;color:#fff"><label style="font-size:12px;white-space:nowrap">লক্ষ্য <input id="tg" class="num" type="number" min="1" max="100" value="'+S.target+'">%</label></div><div class="row" style="margin-top:4px"><span style="font-size:12px;opacity:.85">এই Phase-এর মোট</span><span class="pct">'+bn(c.v.toFixed(1))+'%</span></div>'+barx(c.v,"#fff")+'<div class="msg">'+c.txt+'</div></div>';
+  var c=calc(tot(all)),m=warnBox()+tView(Y)+'<div class="hero" style="margin-top:10px"><div class="row"><input class="nm" id="yn" value="'+esc(Y.name)+'" style="font-size:16px;color:#fff"><label style="font-size:12px;white-space:nowrap">লক্ষ্য <input id="tg" class="num" type="number" min="1" max="100" value="'+S.target+'">%</label></div><div class="row" style="margin-top:4px"><span style="font-size:12px;opacity:.85">এই Phase-এর মোট</span><span class="pct">'+bn(c.v.toFixed(1))+'%</span></div>'+barx(c.v,"#fff")+'<div class="msg">'+c.txt+'</div></div>';m+=riskCard(Y);
   Y.subs.forEach(function(s,i){
     var col=SC[i%8],k=calc(tot(s.cats)),o=opn===s.id;
     m+='<div class="card sub" style="--c:'+col+'"><div class="row hd" data-act="tog" data-s="'+s.id+'"><b>'+esc(s.name)+'</b><span class="pct" style="color:'+stc(k.v)+'">'+bn(k.v.toFixed(1))+'% <small class="mu">'+(o?"▴":"▾")+'</small></span></div>';
@@ -241,7 +390,7 @@ function hView(Y){
       m+=fileBox(s);
       m+='<button class="add" data-act="addcat" data-s="'+s.id+'">＋ নতুন ধরন (যেমন: প্র্যাক্টিক্যাল)</button>'+dbtn("s"+s.id,"🗑 এই সাবজেক্ট মুছুন")}
     m+='</div>'});
-  return m+'<button class="add" data-act="addsub">＋ নতুন সাবজেক্ট</button><div style="text-align:center;margin-top:6px">'+dbtn("y"+Y.id,"🗑 এই Phase মুছুন")+'</div>'}
+  return m+gCard(Y)+'<button class="add" data-act="addsub">＋ নতুন সাবজেক্ট</button><div style="text-align:center;margin-top:6px">'+dbtn("y"+Y.id,"🗑 এই Phase মুছুন")+'</div>'}
 function valid(Y){return Y.rt.filter(function(r){return find(r.sid,r.cid)[1]})}
 function cView(Y){
   var d=parse(sel),ds=sel,off=Y.off.indexOf(ds)>=0;
@@ -253,10 +402,30 @@ function cView(Y){
   if(!L.length)return m+'<div class="card mu">এই দিনে কোনো ক্লাস নেই।</div>';
   L.forEach(function(r){var f=find(r.sid,r.cid),v=Y.rec[ds+"|"+r.id],at='data-e="'+r.id+'"',i=Y.subs.indexOf(f[0]);
     m+='<div class="card sub" style="--c:'+SC[i%8]+'"><div class="row"><b>'+esc(f[0].name)+'</b>'+(r.time?'<span class="mu">'+esc(r.time)+'</span>':'')+'</div><span class="tag" style="--c:'+cc(f[1].name)+'">'+esc(f[1].name)+'</span><div class="btns"><button class="p'+(v==="p"?" ps":"")+'" data-act="mk" data-m="p" '+at+'>✓ উপস্থিত</button><button class="a'+(v==="a"?" as":"")+'" data-act="mk" data-m="a" '+at+'>✗ অনুপস্থিত</button><button data-act="mk" data-m="" '+at+'>↩︎</button></div></div>'});
+  return m+'<div class="card">'+allBtns(ds)+'</div>'}
+function dleft(ds){return Math.round((parse(ds)-parse(TD))/86400000)}
+function exCard(x,Y,subs){
+  var d=x.date?dleft(x.date):null,tag=d===null?"":d<0?"শেষ":d===0?"আজ":bn(d)+" দিন বাকি",hot=d!==null&&d>=0&&d<=3,
+  has=x.marks!=null&&x.total>0,pc=has?x.marks*100/x.total:null,at='data-x="'+x.id+'"';
+  return'<div class="card"><div class="row"><input class="nm" data-f="xname" '+at+' value="'+esc(x.name)+'"><span class="tag" style="--c:'+(hot?"#ef4444":"#6366f1")+'">'+tag+'</span></div>'+
+  '<div class="row" style="margin-top:6px"><input type="date" data-f="xdate" '+at+' value="'+(x.date||"")+'"><select data-f="xsub" '+at+' style="flex:1">'+opts(subs,x.sid)+'</select></div>'+
+  '<div class="row mu" style="margin-top:6px"><span>প্রাপ্ত <input class="num" type="number" min="0" step="any" data-f="xm" '+at+' value="'+(x.marks==null?"":x.marks)+'"></span><span>মোট <input class="num" type="number" min="0" step="any" data-f="xtot" '+at+' value="'+(x.total||"")+'"></span><span class="pct" style="color:'+(pc==null?"var(--mu)":pc>=S.target?"var(--ok)":"var(--bad)")+'">'+(pc==null?"—":bn(pc.toFixed(0))+"%")+'</span></div>'+dbtn("x"+x.id,"🗑 মুছুন")+'</div>'}
+function eView(Y){Y.exams=Y.exams||[];
+  var subs=Y.subs.map(function(s){return[s.id,s.name]});
+  if(!subs.length)return'<div class="card mu">আগে "হিসাব" ট্যাবে সাবজেক্ট যোগ করুন।</div>';
+  var m='<div class="card"><b>📝 নতুন পরীক্ষা</b><input id="xn" placeholder="পরীক্ষার নাম (যেমন: Card Test 1)" style="width:100%;margin-top:8px"><div class="row" style="margin-top:6px"><input type="date" id="xd" style="flex:1"><input id="xt" class="num" type="number" min="0" placeholder="মোট নম্বর" style="width:96px"></div><select id="xs" style="width:100%;margin-top:6px">'+opts(subs,"")+'</select><button class="add" data-act="addexam">＋ যোগ</button></div>';
+  var up=Y.exams.filter(function(x){return!x.date||dleft(x.date)>=0}).sort(function(a,b){return(a.date||"9").localeCompare(b.date||"9")}),
+  past=Y.exams.filter(function(x){return x.date&&dleft(x.date)<0}).sort(function(a,b){return b.date.localeCompare(a.date)});
+  m+='<div class="mu" style="margin:12px 4px 0"><b>আসন্ন পরীক্ষা ('+bn(up.length)+')</b></div>';
+  if(!up.length)m+='<div class="card mu">কোনো আসন্ন পরীক্ষা নেই।</div>';
+  up.forEach(function(x){m+=exCard(x,Y,subs)});
+  var sc=past.filter(function(x){return x.marks!=null&&x.total>0}),avg=sc.length?sc.reduce(function(a,x){return a+x.marks*100/x.total},0)/sc.length:null;
+  m+='<div class="mu" style="margin:12px 4px 0"><b>হয়ে গেছে ('+bn(past.length)+')</b>'+(avg==null?"":" · গড় "+bn(avg.toFixed(1))+"%")+'</div>';
+  past.forEach(function(x){m+=exCard(x,Y,subs)});
   return m}
 function rView(Y){
-  var m='<div class="card"><b>Phase-এর সময়কাল</b><div class="row" style="margin-top:6px"><label class="mu">শুরু <input type="date" data-f="ys" value="'+Y.start+'"></label><label class="mu">শেষ <input type="date" data-f="ye" value="'+Y.end+'"></label></div></div>';
-  m+='<div class="card"><b>📷 ছবি থেকে রুটিন তৈরি</b><div class="mu">রুটিনের ছবি বা স্ক্রিনশট দিন। বর্তমান রুটিন বদলে যাবে।</div>'+(gk()?'<input type="file" id="rf" accept="image/*" style="margin-top:6px;width:100%">':'<div class="warn">আগে সেটিং ট্যাবে Gemini API key দিন।</div>')+'<div class="mu" style="margin-top:4px">'+imps+'</div></div>';
+  var m=rimgCard(Y)+'<div class="card"><b>Phase-এর সময়কাল</b><div class="row" style="margin-top:6px"><label class="mu">শুরু <input type="date" data-f="ys" value="'+Y.start+'"></label><label class="mu">শেষ <input type="date" data-f="ye" value="'+Y.end+'"></label></div></div>';
+  m+=icsCard();
   var subs=Y.subs.map(function(s){return[s.id,s.name]});
   ORD.forEach(function(dy){
     var L=Y.rt.filter(function(r){return r.day===dy}).sort(function(a,b){return(a.time||"").localeCompare(b.time||"")});
@@ -270,7 +439,7 @@ function rView(Y){
 function sView(){
   var m='<div class="card"><b>🌐 ভাষা</b><div class="seg"><button class="'+(R.lang==="bn"?"on":"")+'" data-act="lang" data-l="bn">বাংলা</button><button class="'+(R.lang==="en"?"on":"")+'" data-act="lang" data-l="en">English</button></div></div>';
   m+='<div class="card"><b>☁️ Google Drive সিঙ্ক</b><div class="mu" style="margin-top:4px">লগইন করলে আপনার সব ডাটা আপনার Google Drive-এ (অ্যাপের লুকানো ফোল্ডারে) সেভ থাকবে। অন্য ফোনে একই Google অ্যাকাউন্টে লগইন করলেই সব ফিরে পাবেন। প্রতি এক ঘণ্টা পর ☁ চেপে আবার সংযুক্ত হতে হতে পারে।</div><div class="btns">'+(gok()?'<button class="p" data-act="gsync">এখনই সিঙ্ক</button><button data-act="gout">লগআউট</button>':'<button class="p" data-act="gsync">Google দিয়ে লগইন</button>')+'</div><div class="mu" id="gmsg" style="margin-top:6px">'+GS.msg+'</div></div>';
-  m+='<div class="card"><b>🤖 Gemini API key (ছবি থেকে রুটিনের জন্য)</b><div class="mu" style="margin-top:4px">aistudio.google.com/apikey থেকে ফ্রি key নিন। key শুধু এই ফোনে থাকে, ক্লাউডে যায় না।</div><input id="gk" type="password" autocomplete="off" placeholder="Gemini API key এখানে দিন" value="'+esc(gk())+'" style="width:100%;margin-top:8px"><div class="mu" style="margin-top:6px">'+GKM+'</div></div>';
+  m+=safeCard();
   m+='<div class="card"><b>👤 প্রোফাইল</b>';
   R.profiles.forEach(function(p){var on=p.id===R.pid;
     m+='<div class="row ln"><input class="nm" data-f="pn" data-p="'+p.id+'" value="'+esc(p.name)+'"><button class="'+(on?"on":"")+'" data-act="usep" data-p="'+p.id+'">'+(on?"✓ চলমান":"ব্যবহার")+'</button>'+(R.profiles.length>1?dbtn("p"+p.id,"🗑"):"")+'</div>'});
@@ -283,16 +452,24 @@ function render(){
   put("top",'<div class="brand"><img src="'+IC+'" alt=""><div><h1>Attendance</h1><small>Created and developed by : Shahriar Shafi</small></div></div><div class="chips"><button class="chip" id="gchip" data-act="gsync">'+chipTxt()+'</button><button class="chip" data-act="view" data-v="s">👤 '+esc(S.name)+'</button></div>');
   if(view!=="s"){S.years.forEach(function(y,i){h+='<button class="y'+(i==S.cy?" on":"")+'" data-act="year" data-i="'+i+'">'+esc(y.name)+'</button>'});h+='<button class="y" data-act="addyear">＋ Phase</button>'}
   put("ys",h);
-  put("nav",[["h","📊","হিসাব"],["c","📅","ক্যালেন্ডার"],["r","🗓","রুটিন"],["s","⚙️","সেটিং"]].map(function(x){return'<button class="'+(view===x[0]?"act":"")+'" data-act="view" data-v="'+x[0]+'"><span>'+x[1]+'</span>'+x[2]+'</button>'}).join(""));
-  put("main",view==="h"?hView(Y):view==="c"?cView(Y):view==="r"?rView(Y):sView());var tb=document.getElementById("bk");if(tb)tb.value=bk}
+  put("nav",[["h","📊","হিসাব"],["c","📅","ক্যালেন্ডার"],["r","🗓","রুটিন"],["e","📝","পরীক্ষা"],["s","⚙️","সেটিং"]].map(function(x){return'<button class="'+(view===x[0]?"act":"")+'" data-act="view" data-v="'+x[0]+'"><span>'+x[1]+'</span>'+x[2]+'</button>'}).join(""));
+  put("main",view==="h"?hView(Y):view==="c"?cView(Y):view==="r"?rView(Y):view==="e"?eView(Y):sView());var tb=document.getElementById("bk");if(tb)tb.value=bk}
 document.addEventListener("click",function(e){
   var b=e.target.closest("[data-act]");if(!b)return;
   var a=b.dataset.act,Y=S.years[S.cy],B=JSON.stringify(R);
   if(a!=="del")armed=null;
+  if(/^v(pdf|close|find|go|go2|z)$/.test(a)){e.preventDefault();vact(a,b);return}
+  if(a==="iopen"||a==="iclose"||a==="iz"){ivAct(a,b);return}
   if(a==="gsync"){if(gok())pull(false);else gIn();return}
   if(a==="year")S.cy=+b.dataset.i;
   else if(a==="view")view=b.dataset.v;
   else if(a==="lang")R.lang=b.dataset.l;
+  else if(a==="gtog")GO=!GO;
+  else if(a==="gm")GM=b.dataset.m;
+  else if(a==="dl")dlJson();
+  else if(a==="rs"){var sn=snaps()[+b.dataset.i];if(sn&&confirm(tr("এই ব্যাকআপ ফিরিয়ে আনবেন? বর্তমান ডাটা বদলে যাবে।"))){applyData(JSON.parse(sn.v));SM="✅ ফিরিয়ে আনা হয়েছে।"}}
+  else if(a==="dlist"){loadDL();return}
+  else if(a==="rd"){rdrive(+b.dataset.i);return}
   else if(a==="gout"){var t=GS.tok;try{if(t&&window.google)google.accounts.oauth2.revoke(t,function(){})}catch(x){}GS.tok="";GS.exp=0;GS.fid="";GS.msg="লগআউট হয়েছে";try{localStorage.removeItem("att-gs")}catch(x){}}
   else if(a==="exp"){bk=JSON.stringify(R);bkm="নিচের লেখাটি কপি করুন (ট্যাপ করলে সিলেক্ট হবে), তারপর অন্য ডিভাইসে ইমপোর্টে পেস্ট করুন।";try{navigator.clipboard.writeText(bk).catch(function(){})}catch(x){}}
   else if(a==="imp"){var tv=(document.getElementById("ib")||{}).value||"";try{var dd=JSON.parse(tv);if(!dd||!dd.profiles||!dd.profiles.length)throw 0;dd.profiles.forEach(function(p){p.id=id();p.name=(p.name||"Profile")+" (import)";R.profiles.push(p)});R.pid=R.profiles[R.profiles.length-1].id;act();bkm="✅ ইমপোর্ট হয়েছে (নতুন প্রোফাইল হিসেবে)।"}catch(x){bkm="❌ ডাটা ঠিক নেই।"}}
@@ -305,6 +482,8 @@ document.addEventListener("click",function(e){
   else if(a==="del"){var k=b.dataset.k;if(armed!==k){armed=k;render();return}armed=null;
     if(k[0]==="y"){if(S.years.length>1){S.years.splice(S.cy,1);S.cy=0}}
     else if(k[0]==="p"){var pid=k.slice(1);R.profiles=R.profiles.filter(function(p){return p.id!==pid});if(R.pid===pid)R.pid=R.profiles[0].id;act()}
+    else if(k[0]==="r"){delRimg(Y)}
+    else if(k[0]==="x"){var xid=k.slice(1);Y.exams=(Y.exams||[]).filter(function(x){return x.id!==xid})}
     else if(k[0]==="f"){var fid=k.slice(1);Y.subs.forEach(function(z){z.files=(z.files||[]).filter(function(f){return f.id!==fid})});if(gok())gf("https://www.googleapis.com/drive/v3/files/"+fid,{method:"DELETE"}).catch(function(){})}
     else if(k[0]==="s"){var sid=k.slice(1);Y.subs=Y.subs.filter(function(z){return z.id!==sid});Y.rt=Y.rt.filter(function(r){return r.sid!==sid})}
     else{var cid=k.slice(1);Y.subs.forEach(function(z){z.cats=z.cats.filter(function(c){return c.id!==cid})});Y.rt=Y.rt.filter(function(r){return r.cid!==cid})}}
@@ -316,6 +495,10 @@ document.addEventListener("click",function(e){
   else if(a==="off"){var i=Y.off.indexOf(sel);if(i>=0)Y.off.splice(i,1);else Y.off.push(sel)}
   else if(a==="addoff"){var v=document.getElementById("hd").value;if(v&&Y.off.indexOf(v)<0)Y.off.push(v)}
   else if(a==="deloff")Y.off=Y.off.filter(function(x){return x!==b.dataset.ds});
+  else if(a==="all"){var dd=parse(b.dataset.ds);valid(Y).filter(function(r){return r.day===dd.getDay()}).forEach(function(r){var k=b.dataset.ds+"|"+r.id;if(b.dataset.m)Y.rec[k]=b.dataset.m;else delete Y.rec[k]})}
+  else if(a==="offd"){var oi=Y.off.indexOf(b.dataset.ds);if(oi>=0)Y.off.splice(oi,1);else Y.off.push(b.dataset.ds)}
+  else if(a==="addexam"){var xn=document.getElementById("xn").value.trim();if(!xn||!Y.subs.length)return;Y.exams=Y.exams||[];Y.exams.push({id:id(),name:xn,date:document.getElementById("xd").value,sid:document.getElementById("xs").value,marks:null,total:+document.getElementById("xt").value||0})}
+  else if(a==="ics")mkIcs(Y,+(document.getElementById("remmin")||{}).value||15);
   else if(a==="mk"){var key=(b.dataset.ds||sel)+"|"+b.dataset.e;if(b.dataset.m)Y.rec[key]=b.dataset.m;else delete Y.rec[key]}
   else{var x=find(b.dataset.s,b.dataset.c)[1];if(!x)return;
     hist[x.id]=hist[x.id]||[];
@@ -324,9 +507,11 @@ document.addEventListener("click",function(e){
   commit(B)});
 document.addEventListener("change",function(e){
   var el=e.target,f=el.dataset.f,Y=S.years[S.cy],B=JSON.stringify(R);
-  if(el.id==="rf"){if(el.files[0])imp(el.files[0]);return}
   if(el.id==="sd"){if(el.value)sel=el.value}
-  else if(el.id==="gk"){try{localStorage.setItem("att-gk",el.value.trim())}catch(x){}GKM="✅ key সেভ হয়েছে"}
+  else if(f&&f[0]==="x"&&el.dataset.x){var xx=(Y.exams||[]).filter(function(z){return z.id===el.dataset.x})[0];if(!xx)return;
+    if(f==="xname")xx.name=el.value||"পরীক্ষা";else if(f==="xdate")xx.date=el.value;else if(f==="xsub")xx.sid=el.value;else if(f==="xm")xx.marks=el.value===""?null:+el.value;else if(f==="xtot")xx.total=+el.value||0}
+  else if(f==="rimg"){var rf=el.files[0];el.value="";if(rf)setRimg(rf);return}
+  else if(f==="rfile"){readFile(el.files[0]);el.value="";return}
   else if(f==="pdf"){var fl=Array.prototype.slice.call(el.files);el.value="";upAll(fl,el.dataset.s,Y,B);return}
   else if(el.id==="np")return;
   else if(el.id==="yn")Y.name=el.value||"Phase";
@@ -342,27 +527,12 @@ document.addEventListener("change",function(e){
     else{x[f]=Math.max(0,Math.floor(+el.value||0));if(x.a>x.t){if(f==="a")x.t=x.a;else x.a=x.t}}}
   else return;
   commit(B)});
-function tn(t){t=(t||"").toLowerCase();return t.indexOf("lec")>=0?"লেকচার":t.indexOf("tut")>=0?"টিউটোরিয়াল":t.indexOf("ward")>=0?"ওয়ার্ড":(t||"অন্যান্য")}
-async function imp(file){
-  var Y=S.years[S.cy];imps="⏳ রুটিন পড়া হচ্ছে...";render();var B=JSON.stringify(R);
-  try{
-    var r=await gem(file);
-    if(!Array.isArray(r))throw 0;
-    var out=[];
-    r.forEach(function(z){var nm=String(z.subject||"").trim(),dy=+z.day;if(!nm||!(dy>=0&&dy<=6))return;
-      var s=Y.subs.filter(function(q){return q.name.toLowerCase()===nm.toLowerCase()})[0];
-      if(!s){s=sub(nm);Y.subs.push(s)}
-      var cn=tn(z.type),c=s.cats.filter(function(q){return q.name===cn})[0];
-      if(!c){c={id:id(),name:cn,a:0,t:0};s.cats.push(c)}
-      out.push({id:id(),day:dy,sid:s.id,cid:c.id,time:String(z.time||"")})});
-    if(!out.length)throw 0;
-    Y.rt=out;imps="✅ "+bn(out.length)+"টি ক্লাস যোগ হয়েছে। নিচে মিলিয়ে দেখুন, ভুল থাকলে ঠিক করুন।"
-  }catch(e){imps=e==="nokey"?"❌ আগে Gemini key দিন।":(e===400||e===403)?"❌ Gemini key ঠিক নেই বা অনুমতি নেই।":e===429?"❌ আজকের ফ্রি সীমা শেষ, একটু পরে চেষ্টা করুন।":"❌ পড়া যায়নি। পরিষ্কার ছবি দিন, অথবা নিচে হাতে যোগ করুন।"}
-  commit(B)}
 document.addEventListener("visibilitychange",function(){
   if(document.visibilityState!=="visible")return;
   var n=fmt(new Date());if(n!==TD){TD=n;sel=n;render()}
-  if(gok()&&!GS.busy)pull(false)});
+  if(gok()&&!GS.busy)pull(false);else gSilent()});
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+setTimeout(gSilent,2000);
 render();
 if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0)navigator.serviceWorker.register('sw.js').catch(function(){});
 </script>
