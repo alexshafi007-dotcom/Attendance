@@ -95,6 +95,13 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 @keyframes spDrift{to{transform:translate(-320px,-240px)}}
 @keyframes spOut{to{opacity:0;visibility:hidden;pointer-events:none}}
 @media (prefers-reduced-motion:reduce){.splg,.spn,.spk,.spa{animation:none;opacity:1}.spbg{animation:none}#sp{animation:spOut .4s ease 1.4s forwards}}
+.av{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;object-fit:cover;color:#fff;font-weight:700;flex:none;vertical-align:middle}
+.chip.pc{display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 4px}
+.pbig{text-align:center;padding:18px 12px}
+.pbig label{position:relative;display:inline-block;cursor:pointer}
+.pbig .cam{position:absolute;right:-2px;bottom:-2px;width:28px;height:28px;border-radius:50%;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid var(--card)}
+.pbig .nm{text-align:center;font-size:20px;margin-top:10px;width:100%;box-sizing:border-box}
+.sfh{display:flex;align-items:center;justify-content:space-between;cursor:pointer}
 </style>
 </head>
 <body>
@@ -334,7 +341,24 @@ function acctCard(){var m='<div class="card"><b>☁️ অ্যাকাউন�
   if(FB.user)m+='<div class="mu" style="margin-top:4px">'+esc(FB.user.email||FB.user.displayName||"")+'<br>সব বদল নিজে থেকে সেভ ও সিঙ্ক হয়। অন্য ফোনে এই অ্যাকাউন্টে লগইন করলেই সব পাবেন।</div><div class="btns"><button data-act="fbout">লগআউট</button></div>';
   else m+='<div class="mu" style="margin-top:4px">একবার Google দিয়ে লগইন করলে ডাটা ক্লাউডে সেভ থাকবে। লগইন থেকে যাবে, বারবার করতে হবে না।</div><div class="btns"><button class="p" data-act="fbin">Google দিয়ে লগইন</button></div>';
   return m+'<div class="mu" id="gmsg" style="margin-top:6px">'+FB.msg+'</div></div>'}
-function safeCard(){var m='<div class="card"><b>🛡 ডাটা সুরক্ষা</b><div class="mu" style="margin-top:4px">এই ফোনে স্বয়ংক্রিয়ভাবে গত ৭ দিনের কপি থাকে। ক্লাউডে লগইন থাকলে প্রতিদিন একটা ব্যাকআপ জমা হয় (শেষ ৭টি)।</div><div class="btns"><button data-act="dl">⬇ ব্যাকআপ ফাইল (.json)</button><label class="add" style="margin:0;flex:1;text-align:center;cursor:pointer;border:1px dashed var(--bd);border-radius:9px;padding:6px 10px">⬆ ফাইল থেকে রিস্টোর<input type="file" accept=".json,application/json" hidden data-f="rfile"></label></div>';
+function avh(p,z){var u=p.av||(R.profiles[0]===p&&FB.user&&FB.user.photoURL)||"";
+  if(u)return'<img class="av" referrerpolicy="no-referrer" style="width:'+z+'px;height:'+z+'px" src="'+esc(u)+'" alt="">';
+  var n=0,t=p.name||"?";for(var i=0;i<t.length;i++)n+=t.charCodeAt(i);
+  return'<span class="av" style="width:'+z+'px;height:'+z+'px;font-size:'+Math.round(z*.45)+'px;background:'+SC[n%8]+'">'+esc(Array.from(t)[0]||"?")+'</span>'}
+function shrinkAv(file){return new Promise(function(res,rej){var im=new Image(),u=URL.createObjectURL(file);im.onload=function(){
+  try{var z=192,c=document.createElement("canvas");c.width=c.height=z;var m=Math.min(im.width,im.height),x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,z,z);x.drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,z,z);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",.82))}catch(e){rej(e)}};
+  im.onerror=function(){URL.revokeObjectURL(u);rej(new Error("img"))};im.src=u})}
+var sfo=false;
+function pView(){var Y=S.years[S.cy],all=[];Y.subs.forEach(function(x){all=all.concat(x.cats)});var c=calc(tot(all));
+  var m='<div class="card pbig"><label>'+avh(S,96)+'<span class="cam">📷</span><input type="file" accept="image/*" hidden data-f="av"></label><input class="nm" data-f="pn" data-p="'+S.id+'" value="'+esc(S.name)+'">'
+   +'<div class="mu">'+esc(Y.name)+' · '+bn(c.v.toFixed(1))+'%'+(FB.user&&R.profiles[0]===S?' · '+esc(FB.user.email||""):'')+'</div>'+(S.av?'<div class="btns" style="justify-content:center"><button data-act="avdel">ছবি সরান</button></div>':'')+'</div>';
+  m+='<div class="card"><b>প্রোফাইল বদলান</b>';
+  R.profiles.forEach(function(p){var on=p.id===R.pid;
+    m+='<div class="row ln"><span style="display:flex;align-items:center;gap:10px;min-width:0">'+avh(p,34)+'<b style="font-weight:600;overflow:hidden;text-overflow:ellipsis">'+esc(p.name)+'</b></span><span style="display:flex;gap:6px"><button class="'+(on?"on":"")+'" data-act="usep" data-p="'+p.id+'">'+(on?"✓ চলমান":"ব্যবহার")+'</button>'+(R.profiles.length>1?dbtn("p"+p.id,"🗑"):"")+'</span></div>'});
+  m+='<input id="np" placeholder="নতুন প্রোফাইলের নাম" style="width:100%;margin-top:8px"><div class="btns"><button class="p" data-act="addp" data-pre="1">＋ প্রিসেট সহ (Phase 1–4)</button><button data-act="addp" data-pre="0">＋ ফাঁকা</button></div><div class="mu" style="margin-top:8px">প্রতিটি প্রোফাইলের ডাটা ও ছবি আলাদা।</div></div>';
+  return m}
+function safeCard(){if(!sfo)return'<div class="card sfh" data-act="sfo"><b>🛡 ডাটা সুরক্ষা</b><span class="mu">▾</span></div>';
+  var m='<div class="card"><div class="sfh" data-act="sfo"><b>🛡 ডাটা সুরক্ষা</b><span class="mu">▴</span></div><div class="mu" style="margin-top:4px">এই ফোনে স্বয়ংক্রিয়ভাবে গত ৭ দিনের কপি থাকে। ক্লাউডে লগইন থাকলে প্রতিদিন একটা ব্যাকআপ জমা হয় (শেষ ৭টি)।</div><div class="btns"><button data-act="dl">⬇ ব্যাকআপ ফাইল (.json)</button><label class="add" style="margin:0;flex:1;text-align:center;cursor:pointer;border:1px dashed var(--bd);border-radius:9px;padding:6px 10px">⬆ ফাইল থেকে রিস্টোর<input type="file" accept=".json,application/json" hidden data-f="rfile"></label></div>';
   var L=snaps();m+='<div class="mu" style="margin-top:8px"><b>এই ফোনের কপি</b></div>';
   if(!L.length)m+='<div class="mu">এখনো নেই</div>';
   L.forEach(function(s,i){m+='<div class="row ln"><span>'+bn(s.d)+'</span><button data-act="rs" data-i="'+i+'">রিস্টোর</button></div>'});
@@ -528,20 +552,15 @@ function sView(){
   var m='<div class="card"><b>🌐 ভাষা</b><div class="seg"><button class="'+(R.lang==="bn"?"on":"")+'" data-act="lang" data-l="bn">বাংলা</button><button class="'+(R.lang==="en"?"on":"")+'" data-act="lang" data-l="en">English</button></div></div>';
   m+=acctCard();
   m+=safeCard();
-  m+='<div class="card"><b>👤 প্রোফাইল</b>';
-  R.profiles.forEach(function(p){var on=p.id===R.pid;
-    m+='<div class="row ln"><input class="nm" data-f="pn" data-p="'+p.id+'" value="'+esc(p.name)+'"><button class="'+(on?"on":"")+'" data-act="usep" data-p="'+p.id+'">'+(on?"✓ চলমান":"ব্যবহার")+'</button>'+(R.profiles.length>1?dbtn("p"+p.id,"🗑"):"")+'</div>'});
-  m+='<input id="np" placeholder="নতুন প্রোফাইলের নাম" style="width:100%;margin-top:8px"><div class="btns"><button class="p" data-act="addp" data-pre="1">＋ প্রিসেট সহ (Phase 1–4)</button><button data-act="addp" data-pre="0">＋ ফাঁকা</button></div><div class="mu" style="margin-top:8px">প্রতিটি প্রোফাইলের ডাটা আলাদা।</div></div>';
-  m+='<div class="card"><b>💾 ব্যাকআপ ও ট্রান্সফার</b><div class="mu">এক ডিভাইসের রুটিন ও হিসাব অন্য ডিভাইসে নেওয়ার জন্য।</div><div class="btns"><button data-act="exp">⬆ এক্সপোর্ট (কপি)</button><button data-act="imp">⬇ ইমপোর্ট</button></div>'+(bk?'<textarea id="bk" readonly onclick="this.select()"></textarea>':'')+'<textarea id="ib" placeholder="এখানে পেস্ট করুন"></textarea><div class="mu" style="margin-top:6px">'+bkm+'</div></div>';
   return m}
 function render(){
   var Y=S.years[S.cy],h="";stats(Y);
   function put(i,x){document.getElementById(i).innerHTML=tr(x)}
-  put("top",'<div class="brand"><img src="'+IC+'" alt=""><div><h1>Attendance</h1></div></div><div class="chips"><button class="chip" id="gchip" data-act="view" data-v="s">'+chipTxt()+'</button><button class="chip" data-act="view" data-v="s">👤 '+esc(S.name)+'</button></div>');
-  if(view!=="s"){S.years.forEach(function(y,i){h+='<button class="y'+(i==S.cy?" on":"")+'" data-act="year" data-i="'+i+'">'+esc(y.name)+'</button>'});h+='<button class="y" data-act="addyear">＋ Phase</button>'}
+  put("top",'<div class="brand"><img src="'+IC+'" alt=""><div><h1>Attendance</h1></div></div><div class="chips"><button class="chip" id="gchip" data-act="view" data-v="s">'+chipTxt()+'</button><button class="chip pc" data-act="view" data-v="p">'+avh(S,22)+esc(S.name)+'</button></div>');
+  if(view!=="s"&&view!=="p"){S.years.forEach(function(y,i){h+='<button class="y'+(i==S.cy?" on":"")+'" data-act="year" data-i="'+i+'">'+esc(y.name)+'</button>'});h+='<button class="y" data-act="addyear">＋ Phase</button>'}
   put("ys",h);
   put("nav",[["h","📊","হিসাব"],["c","📅","ক্যালেন্ডার"],["r","🗓","রুটিন"],["e","📝","পরীক্ষা"],["s","⚙️","সেটিং"]].map(function(x){return'<button class="'+(view===x[0]?"act":"")+'" data-act="view" data-v="'+x[0]+'"><span>'+x[1]+'</span>'+x[2]+'</button>'}).join(""));
-  put("main",view==="h"?hView(Y):view==="c"?cView(Y):view==="r"?rView(Y):view==="e"?eView(Y):sView());var tb=document.getElementById("bk");if(tb)tb.value=bk}
+  put("main",view==="h"?hView(Y):view==="c"?cView(Y):view==="r"?rView(Y):view==="e"?eView(Y):view==="p"?pView():sView());var tb=document.getElementById("bk");if(tb)tb.value=bk}
 document.addEventListener("click",function(e){
   var b=e.target.closest("[data-act]");if(!b)return;
   var a=b.dataset.act,Y=S.years[S.cy],B=JSON.stringify(R);
@@ -562,6 +581,8 @@ document.addEventListener("click",function(e){
   else if(a==="rd"){rdrive(+b.dataset.i);return}
   else if(a==="exp"){bk=JSON.stringify(R);bkm="নিচের লেখাটি কপি করুন (ট্যাপ করলে সিলেক্ট হবে), তারপর অন্য ডিভাইসে ইমপোর্টে পেস্ট করুন।";try{navigator.clipboard.writeText(bk).catch(function(){})}catch(x){}}
   else if(a==="imp"){var tv=(document.getElementById("ib")||{}).value||"";try{var dd=JSON.parse(tv);if(!dd||!dd.profiles||!dd.profiles.length)throw 0;dd.profiles.forEach(function(p){p.id=id();p.name=(p.name||"Profile")+" (import)";R.profiles.push(p)});R.pid=R.profiles[R.profiles.length-1].id;act();bkm="✅ ইমপোর্ট হয়েছে (নতুন প্রোফাইল হিসেবে)।"}catch(x){bkm="❌ ডাটা ঠিক নেই।"}}
+  else if(a==="sfo")sfo=!sfo;
+  else if(a==="avdel")delete S.av;
   else if(a==="usep"){R.pid=b.dataset.p;act();opn=null;sel=TD}
   else if(a==="addp"){var nv=document.getElementById("np").value.trim()||"প্রোফাইল "+bn(R.profiles.length+1),np=newP(id(),nv,b.dataset.pre==="1");R.profiles.push(np);R.pid=np.id;act();opn=null;view="h"}
   else if(a==="addyear"){var y=new Date().getFullYear();S.years.push({id:id(),name:"Phase "+(S.years.length+1),subs:[],start:y+"-01-01",end:y+"-12-31",rt:[],off:[],rec:{}});S.cy=S.years.length-1}
@@ -599,6 +620,7 @@ document.addEventListener("change",function(e){
   if(el.id==="sd"){if(el.value)sel=el.value}
   else if(f&&f[0]==="x"&&el.dataset.x){var xx=(Y.exams||[]).filter(function(z){return z.id===el.dataset.x})[0];if(!xx)return;
     if(f==="xname")xx.name=el.value||"পরীক্ষা";else if(f==="xdate")xx.date=el.value;else if(f==="xsub")xx.sid=el.value;else if(f==="xm")xx.marks=el.value===""?null:+el.value;else if(f==="xtot")xx.total=+el.value||0}
+  else if(f==="av"){var af=el.files[0];el.value="";if(af)shrinkAv(af).then(function(u){S.av=u;save(true);render()}).catch(function(){alert(tr("ছবি পড়া যায়নি।"))});return}
   else if(f==="rimg"){var rf=el.files[0];el.value="";if(rf)setRimg(rf);return}
   else if(f==="rfile"){readFile(el.files[0]);el.value="";return}
   else if(f==="pdf"){var fl=Array.prototype.slice.call(el.files);el.value="";upAll(fl,el.dataset.s,Y,B);return}
