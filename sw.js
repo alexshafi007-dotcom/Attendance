@@ -1,5 +1,5 @@
-var C='attendance-v2';
-var FILES=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png'];
+var C='attendance-v3';
+var FILES=['./','index.html','manifest.webmanifest','icon-v2-192.png','icon-v2-512.png'];
 self.addEventListener('install',function(e){
   self.skipWaiting();
   e.waitUntil(caches.open(C).then(function(c){return Promise.all(FILES.map(function(f){return c.add(f).catch(function(){})}))}));
