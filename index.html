@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Attendance"><meta name="theme-color" content="#6366f1">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
-:root{--bg:#f5f6fb;--card:#fff;--tx:#1a1d29;--mu:#7b8194;--bd:#eceef4;--ac:#6366f1;--ok:#059669;--bad:#e11d48;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg:#f5f6fb;--card:#fff;--tx:#1a1d29;--mu:#646b80;--bd:#eceef4;--ac:#6366f1;--ok:#059669;--bad:#e11d48;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1117;--card:#1a1d27;--tx:#eceef5;--mu:#8e95a8;--bd:#272b38;--ac:#8b8cff;--ok:#34d399;--bad:#fb7185;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#0f1117;--card:#1a1d27;--tx:#eceef5;--mu:#8e95a8;--bd:#272b38;--ac:#8b8cff;--ok:#34d399;--bad:#fb7185;color-scheme:dark}
 *{box-sizing:border-box}
@@ -116,6 +116,23 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .cl i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:baseline}
 .mh{display:flex;align-items:center;justify-content:space-between}
 .mh b{font-size:16px}
+.rg{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.rt{width:72px;border:none;background:none;padding:0;text-align:center;position:relative;cursor:pointer;color:var(--tx);margin:0}
+.rt .th{display:flex;width:72px;height:72px;border-radius:14px;overflow:hidden;background:var(--bg);border:1px solid var(--bd);align-items:center;justify-content:center;font-size:22px;color:var(--mu)}
+.rt img{width:100%;height:100%;object-fit:cover;display:block}
+.rt small{display:block;font-size:11px;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rt.rta .th{border-style:dashed;color:var(--ac);font-size:26px}
+.rt em{position:absolute;top:2px;right:2px;font-style:normal;font-size:12px}
+button{min-height:36px}
+.y{min-height:36px}
+.chip{min-height:30px}
+.btns button.p,.btns button.a{min-height:42px}
+.cal button.dc{min-height:0}
+.cn{flex:1;border-color:transparent;font-weight:600;background:color-mix(in srgb,var(--mu) 16%,var(--card));color:var(--mu)}
+.cns{background:var(--mu)!important;color:#fff!important}
+.btns button.cn{min-height:42px}
+.btns.mk button{padding:6px 6px;font-size:12.5px}
+.gd ol{margin:6px 0 0;padding-left:20px}.gd li{margin:3px 0}
 </style>
 </head>
 <body>
@@ -159,6 +176,10 @@ var DEF=["লেকচার","টিউটোরিয়াল","ওয়া�
 var SC=["#6366f1","#ec4899","#f59e0b","#10b981","#06b6d4","#8b5cf6","#ef4444","#84cc16"];
 var CID="727310690079-tn7p5apjr8e8adc3q6t535uuvmt3hqve.apps.googleusercontent.com",SCP="https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/drive.file";
 var EN={"📅 আজকের ক্লাস":"📅 Today's classes","রুটিন ট্যাবে ছবি দিন বা হাতে যোগ করুন, তাহলে এখানে আজকের ক্লাস অটোমেটিক দেখাবে।":"Add your routine in the Routine tab (photo or manual) and today's classes will show here automatically.","🏖 আজ ছুটি":"🏖 Holiday today","আজ কোনো ক্লাস নেই।":"No classes today.","💾 ব্যাকআপ ও ট্রান্সফার":"💾 Backup & transfer","এক ডিভাইসের রুটিন ও হিসাব অন্য ডিভাইসে নেওয়ার জন্য।":"For moving your routine and stats to another device.","⬆ এক্সপোর্ট (কপি)":"⬆ Export (copy)","⬇ ইমপোর্ট":"⬇ Import","এখানে পেস্ট করুন":"Paste here","নিচের লেখাটি কপি করুন (ট্যাপ করলে সিলেক্ট হবে), তারপর অন্য ডিভাইসে ইমপোর্টে পেস্ট করুন।":"Copy the text below (tap to select), then paste it into Import on the other device.","✅ ইমপোর্ট হয়েছে (নতুন প্রোফাইল হিসেবে)।":"✅ Imported (as a new profile).","❌ ডাটা ঠিক নেই।":"❌ Invalid data.","উপস্থিতি":"Attendance","হিসাব":"Stats","ক্যালেন্ডার থেকে যোগ:":"From calendar:","ক্যালেন্ডার":"Calendar","রুটিন":"Routine","সেটিং":"Settings","আমার প্রোফাইল":"My profile","প্রোফাইল":"Profile","লেকচার":"Lecture","টিউটোরিয়াল":"Tutorial","ওয়ার্ড":"Ward","অন্যান্য":"Other","লক্ষ্য":"Target","এই Phase-এর মোট":"This phase total","🗑 এই Phase মুছুন":"🗑 Delete this phase","নিশ্চিত? আবার চাপুন":"Sure? Tap again","সর্বমোট":"overall","মোট":"Total","অনুপস্থিত":"Absent","উপস্থিত":"Present","🗑 মুছুন":"🗑 Delete","✕ মুছুন":"✕ Remove","＋ নতুন ধরন (যেমন: প্র্যাক্টিক্যাল)":"＋ New type (e.g. Practical)","নতুন ধরন":"New type","🗑 এই সাবজেক্ট মুছুন":"🗑 Delete this subject","＋ নতুন সাবজেক্ট":"＋ New subject","নতুন সাবজেক্ট":"New subject","＋ Phase":"＋ Phase","এখনো কিছু যোগ হয়নি":"Nothing added yet","✅ লক্ষ্য পূরণ। এখন আরও ":"✅ Target met. Can miss ","টি মিস করা যাবে":" more","% হতে আরও টানা ":"% — attend next ","টি উপস্থিত থাকতে হবে":" classes in a row","🚫 বাকি ":"🚫 Even attending all ","টি ক্লাস করলেও Phase শেষে ":" remaining classes, phase-end stays below ","% হবে না":"%","📅 বাকি ":"📅 Of the remaining ","টি ক্লাসের মধ্যে কমপক্ষে ":" classes, attend at least ","টিতে থাকতে হবে (মিস করা যাবে ":" (can miss ","টি)":")","আজকে যান":"Go to today"," · আজ":" · Today","🏖 এদিন ছুটি, কোনো ক্লাস গোনা হবে না।":"🏖 Holiday — no classes counted.","🏖 এদিন ছুটি":"🏖 Mark holiday","ছুটি বাতিল":"Cancel holiday","টি আগের ক্লাস এখনো চিহ্নিত হয়নি।":" past classes not marked yet.","প্রথমটিতে যান":"Go to first","আগে \"রুটিন\" ট্যাবে সাপ্তাহিক ক্লাস যোগ করুন।":"First add weekly classes in the Routine tab.","এই দিনে কোনো ক্লাস নেই।":"No classes on this day.","✓ উপস্থিত":"✓ Present","✗ অনুপস্থিত":"✗ Absent","Phase-এর সময়কাল":"Phase duration","শুরু":"Start","শেষ":"End","📷 ছবি থেকে রুটিন তৈরি":"📷 Build routine from photo","রুটিনের ছবি বা স্ক্রিনশট দিন। বর্তমান রুটিন বদলে যাবে।":"Upload a photo or screenshot. Current routine will be replaced.","আগে সেটিং ট্যাবে Gemini API key দিন।":"First add your Gemini API key in Settings.","সময়":"Time","＋ ক্লাস যোগ":"＋ Add class","আগে \"হিসাব\" ট্যাবে সাবজেক্ট যোগ করুন।":"First add subjects in the Stats tab.","ছুটির দিন":"Holidays","⏳ রুটিন পড়া হচ্ছে...":"⏳ Reading routine...","টি ক্লাস যোগ হয়েছে। নিচে মিলিয়ে দেখুন, ভুল থাকলে ঠিক করুন।":" classes added. Check below and fix any mistakes.","❌ পড়া যায়নি। পরিষ্কার ছবি দিন, অথবা নিচে হাতে যোগ করুন।":"❌ Couldn't read it. Try a clearer photo or add manually below.","❌ আগে Gemini key দিন।":"❌ Add your Gemini key first.","❌ Gemini key ঠিক নেই বা অনুমতি নেই।":"❌ Gemini key is invalid or not allowed.","❌ আজকের ফ্রি সীমা শেষ, একটু পরে চেষ্টা করুন।":"❌ Free limit reached, try again later.","🌐 ভাষা":"🌐 Language","👤 প্রোফাইল":"👤 Profiles","✓ চলমান":"✓ Active","ব্যবহার":"Use","নতুন প্রোফাইলের নাম":"New profile name","＋ প্রিসেট সহ (Phase 1–4)":"＋ With preset (Phase 1–4)","＋ ফাঁকা":"＋ Blank","প্রতিটি প্রোফাইলের ডাটা আলাদা।":"Each profile keeps its own data.","ধরন":"Type","সাবজেক্ট":"Subject","ক্লাস":"classes","যোগ":"Add","রবিবার":"Sunday","সোমবার":"Monday","মঙ্গলবার":"Tuesday","বুধবার":"Wednesday","বৃহস্পতিবার":"Thursday","শুক্রবার":"Friday","শনিবার":"Saturday","☁️ Google Drive সিঙ্ক":"☁️ Google Drive sync","লগইন করলে আপনার সব ডাটা আপনার Google Drive-এ (অ্যাপের লুকানো ফোল্ডারে) সেভ থাকবে। অন্য ফোনে একই Google অ্যাকাউন্টে লগইন করলেই সব ফিরে পাবেন। প্রতি এক ঘণ্টা পর ☁ চেপে আবার সংযুক্ত হতে হতে পারে।":"Your data is saved in your own Google Drive (hidden app folder). Sign in with the same Google account on another phone to get everything back. You may need to tap ☁ again after an hour.","Google দিয়ে লগইন":"Sign in with Google","এখনই সিঙ্ক":"Sync now","লগআউট":"Sign out","☁ সিঙ্ক করুন":"☁ Sync","⏳ সিঙ্ক হচ্ছে...":"⏳ Syncing...","✅ সিঙ্ক হয়েছে — ":"✅ Synced — ","❌ সেশন শেষ। ☁ চেপে আবার লগইন করুন।":"❌ Session expired. Tap ☁ to sign in again.","❌ সিঙ্ক ব্যর্থ (":"❌ Sync failed (","❌ Google লোড হয়নি। ইন্টারনেট চেক করুন।":"❌ Google didn't load. Check your internet.","❌ লগইন হয়নি":"❌ Sign-in failed","লগআউট হয়েছে":"Signed out","🤖 Gemini API key (ছবি থেকে রুটিনের জন্য)":"🤖 Gemini API key (for photo routine)","aistudio.google.com/apikey থেকে ফ্রি key নিন। key শুধু এই ফোনে থাকে, ক্লাউডে যায় না।":"Get a free key from aistudio.google.com/apikey. The key stays on this phone only.","Gemini API key এখানে দিন":"Paste Gemini API key here","✅ key সেভ হয়েছে":"✅ Key saved","📎 PDF ফাইল":"📎 PDF files","＋ PDF যোগ":"＋ Add PDF","এখনো কোনো PDF নেই":"No PDFs yet","Drive-এর \"Attendance Notes\" ফোল্ডারেও ফাইল পাবেন।":"Files are also in your Drive's \"Attendance Notes\" folder.","❌ আগে ☁ চেপে Google দিয়ে লগইন করুন।":"❌ Tap ☁ and sign in with Google first.","❌ Drive ফাইলের অনুমতি দেওয়া হয়নি। আবার লগইন করে সব অনুমতি টিক দিন।":"❌ Drive file permission not granted. Sign in again and tick all permissions.","❌ শুধু PDF ফাইল দিন।":"❌ PDF files only.","❌ ফাইল ১০০ MB-এর বেশি।":"❌ File is over 100 MB.","⏳ আপলোড হচ্ছে: ":"⏳ Uploading: ","✅ আপলোড হয়েছে: ":"✅ Uploaded: ","❌ অনুমতি নেই। ☁ চেপে আবার লগইন করে Drive-এর অনুমতি দিন।":"❌ No permission. Tap ☁ and sign in again to allow Drive.","❌ আপলোড ব্যর্থ (":"❌ Upload failed (","পরীক্ষা":"Exams","📝 নতুন পরীক্ষা":"📝 New exam","পরীক্ষার নাম (যেমন: Card Test 1)":"Exam name (e.g. Card Test 1)","মোট নম্বর":"Total marks","＋ যোগ":"＋ Add","আসন্ন পরীক্ষা":"Upcoming exams","কোনো আসন্ন পরীক্ষা নেই।":"No upcoming exams.","হয়ে গেছে":"Done"," গড় ":" avg ","শেষ":"Over","প্রাপ্ত":"Marks"," দিন বাকি":" days left","আগে \"হিসাব\" ট্যাবে সাবজেক্ট যোগ করুন।":"First add subjects in the Stats tab.","✓ সব উপস্থিত":"✓ All present","✗ সব অনুপস্থিত":"✗ All absent","↩︎ সব মুছুন":"↩︎ Clear all","🏖 আজ ছুটি":"🏖 Holiday today","⚠ ঝুঁকির তালিকা":"⚠ At-risk list","✅ সব সাবজেক্ট লক্ষ্যের ওপরে আছে।":"✅ All subjects are above target.","📆 ফোনের Calendar-এ রিমাইন্ডার":"📆 Reminders in phone Calendar","রুটিনের সব ক্লাস (ছুটি বাদে) ও পরীক্ষা ফোনের Calendar-এ যাবে, ক্লাসের আগে নোটিফিকেশন আসবে।":"All routine classes (except holidays) and exams go to your phone Calendar, with notifications before class.","ক্লাসের কত মিনিট আগে":"Minutes before class","🛡 ডাটা সুরক্ষা":"🛡 Data safety","⬇ ব্যাকআপ ফাইল (.json)":"⬇ Backup file (.json)","⬆ ফাইল থেকে রিস্টোর":"⬆ Restore from file","এই ফোনের কপি":"Copies on this phone","এখনো নেই":"None yet","রিস্টোর":"Restore","☁ ক্লাউড ব্যাকআপ তালিকা":"☁ Drive backups","এই ব্যাকআপ ফিরিয়ে আনবেন? বর্তমান ডাটা বদলে যাবে।":"Restore this backup? Current data will be replaced.","এই ফাইল থেকে ডাটা ফিরিয়ে আনবেন? বর্তমান ডাটা বদলে যাবে।":"Restore data from this file? Current data will be replaced.","এই ফোনে স্বয়ংক্রিয়ভাবে গত ৭ দিনের কপি থাকে। ক্লাউডে লগইন থাকলে প্রতিদিন একটা ব্যাকআপ জমা হয় (শেষ ৭টি)।":"This phone keeps automatic copies of the last 7 days. When signed in to Drive, one backup is saved daily (last 7).","⚠ আপনার ডাটা শুধু এই ফোনে আছে। ফোন হারালে বা ব্রাউজার ডেটা মুছলে হারিয়ে যাবে।":"⚠ Your data exists only on this phone. It can be lost if the phone is lost or browser data is cleared.","Google লগইন":"Google sign-in","☁ সিঙ্ক বন্ধ আছে (সেশন শেষ)। নতুন বদল Drive-এ যাচ্ছে না।":"☁ Sync is off (session expired). New changes are not reaching Drive.","সংযুক্ত করুন":"Reconnect","✅ ব্যাকআপ ফাইল নামানো হয়েছে।":"✅ Backup file downloaded.","✅ ফিরিয়ে আনা হয়েছে।":"✅ Restored.","❌ ফাইল ঠিক নেই।":"❌ Invalid file.","❌ ব্যর্থ হয়েছে।":"❌ Failed.","✅ ফাইল নামানো হয়েছে। এখন Downloads থেকে ফাইলটা ট্যাপ করে Calendar-এ যোগ করুন।":"✅ File downloaded. Tap it in Downloads to add to Calendar.","❌ কোনো ক্লাস বা পরীক্ষা নেই।":"❌ No classes or exams.","📈 উপস্থিতির ধারা":"📈 Attendance trend","সপ্তাহ":"Week","মাস":"Month","ক্যালেন্ডারে মার্ক করা ক্লাস থেকে · ড্যাশ লাইন = লক্ষ্য":"From classes marked in Calendar · dashed line = target","ক্যালেন্ডারে ক্লাস মার্ক করলে এখানে ধারা দেখাবে।":"Mark classes in Calendar to see the trend here.","PDF-এ খুঁজুন":"Search in PDF","⏳ খোলা হচ্ছে...":"⏳ Opening...","❌ PDF ভিউয়ার লোড হয়নি। ইন্টারনেট চেক করুন।":"❌ PDF viewer didn't load. Check your internet.","❌ খোলা যায়নি।":"❌ Couldn't open.","এই PDF-এ খোঁজার মতো লেখা নেই (স্ক্যান করা ছবি হতে পারে)":"No searchable text in this PDF (may be a scanned image)","কিছু পাওয়া যায়নি":"Nothing found"," টি পৃষ্ঠায় পাওয়া গেছে":" pages matched","☁️ অ্যাকাউন্ট ও সিঙ্ক":"☁️ Account & sync","সব বদল নিজে থেকে সেভ ও সিঙ্ক হয়। অন্য ফোনে এই অ্যাকাউন্টে লগইন করলেই সব পাবেন।":"All changes are saved and synced automatically. Sign in with this account on another phone to get everything.","একবার Google দিয়ে লগইন করলে ডাটা ক্লাউডে সেভ থাকবে। লগইন থেকে যাবে, বারবার করতে হবে না।":"Sign in with Google once and your data is saved in the cloud. You stay signed in.","Google দিয়ে লগইন":"Sign in with Google","লগআউট":"Sign out","⚠ আপনার ডাটা শুধু এই ফোনে আছে।":"⚠ Your data exists only on this phone.","লগআউট করবেন? ডাটা এই ফোনে থেকে যাবে, শুধু ক্লাউড সিঙ্ক বন্ধ হবে।":"Sign out? Data stays on this phone; only cloud sync stops.","ইন্টারনেট নেই। নেট এলে নিজে সিঙ্ক হবে।":"No internet. Will sync automatically when online.","❌ আগে ক্লাউডে লগইন করুন।":"❌ Sign in to the cloud first.","🔑 Google Drive-এর অনুমতি দিন":"🔑 Allow Google Drive access","এখনো ক্লাউড ব্যাকআপ নেই। আজকের সিঙ্কের পর তৈরি হবে।":"No cloud backups yet. One is created after today's sync.","☁ ক্লাউড ব্যাকআপ তালিকা":"☁ Cloud backups","ক্লাউডে লগইন থাকলে প্রতিদিন একটা ব্যাকআপ জমা হয় (শেষ ৭টি)।":"When signed in, one backup is saved daily (last 7).","ক্লাউডে আগের ডাটা আছে। ক্লাউডের ডাটা নিতে OK চাপুন। এই ফোনের ডাটা ক্লাউডে পাঠাতে Cancel চাপুন।":"There is earlier data in the cloud. Press OK to use the cloud data, or Cancel to upload this phone's data.","ছবিটি এই ফোনে নেই। ক্লাউডে লগইন করলে আসবে।":"This image isn't on this phone. It will come after you sign in."};
+Object.assign(EN,{"আমার রুটিন": "My routines", "রুটিনের ছবি রেখে দিন (যেমন ক্লাস রুটিন, ওয়ার্ড রুটিন), এক ট্যাপে দেখতে পারবেন।": "Save routine photos (e.g. class routine, ward routine) and open them in one tap.", "নতুন ছবি": "New photo", "চিহ্নিত হয়নি": "Unmarked", "প্রোফাইল বদলান": "Switch profile", "প্রতিটি প্রোফাইলের ডাটা ও ছবি আলাদা।": "Each profile has its own data and photo.", "ছবি সরান": "Remove photo", "ছবি পড়া যায়নি।": "Couldn't read the image.", "✅ এই ফোনে সেভ হয়েছে। ক্লাউডে রাখতে লগইন করুন।": "✅ Saved on this phone. Log in to keep it in the cloud.", "✅ এই ফোনে সেভ হয়েছে।": "✅ Saved on this phone.", "✅ ক্লাউডেও সেভ হয়েছে।": "✅ Saved to the cloud too.", "⚠ ক্লাউডে যায়নি, নেট এলে নিজে চেষ্টা করবে।": "⚠ Not in the cloud yet. Will retry when online.", "টি ছবি এখনো ক্লাউডে যায়নি। নেট থাকলে নিজে চলে যাবে।": " photo(s) not in the cloud yet. They upload when online.", "⚠ ক্লাউডে সেভ রাখতে Google দিয়ে লগইন করুন।": "⚠ Log in with Google to keep these in the cloud.", "এই ছবিটি মুছে ফেলবেন?": "Delete this photo?", "ছবিটি এই ফোনে নেই। ক্লাউডে লগইন করে নেট চালু করুন।": "This photo isn't on this phone. Log in and go online to fetch it.", "সর্বোচ্চ ১০টি ছবি রাখা যায়।": "You can keep up to 10 photos.", "❌ ছবি খোলা যায়নি। JPG বা PNG ছবি দিন।": "❌ Couldn't open the image. Use JPG or PNG.", "রুটিনের নাম": "Routine name", "ক্লাউড সংযোগ হয়নি। ইন্টারনেট এলে নিজে চেষ্টা করবে।": "Couldn't reach the cloud. Will retry when online.", "⏳ ক্লাউড লোড হচ্ছে... একটু পরে আবার চাপুন।": "⏳ Cloud is loading... try again in a moment.", "❌ Google উইন্ডো বন্ধ করা হয়েছে।": "❌ Google window was closed.", "❌ Google উইন্ডো খোলেনি। নিচের বাটন চাপুন।": "❌ Google window didn't open. Tap the button below.", "❌ Firestore-এর Rules ঠিক করুন (ধাপ ৫)।": "❌ Fix the Firestore Rules (step 5).", "❌ Firestore Database তৈরি করুন (ধাপ ৪)।": "❌ Create the Firestore Database (step 4).", "❌ Firebase Authentication-এ Google চালু করুন।": "❌ Enable Google in Firebase Authentication.", "❌ লগইন ব্যর্থ (": "❌ Login failed (", "❌ ব্যর্থ (": "❌ Failed (", "✅ ফিরিয়ে আনা হয়েছে: ": "✅ Restored: "});
+Object.assign(EN,{"🚫 বাতিল": "🚫 Cancelled", "🚫 সব বাতিল": "🚫 All cancelled", "বাতিল ক্লাস": "Cancelled", "✓ উপস্থিত": "✓ Present", "গতকাল চিহ্নিত হয়নি": "Unmarked yesterday", "👋 শুরু করবেন যেভাবে": "👋 How to get started", "\"রুটিন\" ট্যাবে সপ্তাহের ক্লাসগুলো যোগ করুন": "Add your weekly classes in the Routine tab", "আজকের ক্লাস এই পেজেই এক ট্যাপে উপস্থিত/অনুপস্থিত/বাতিল দিন": "Mark today's classes here in one tap: present / absent / cancelled", "\"ক্যালেন্ডার\" ও \"হিসাব\" ট্যাবে পুরো চিত্র দেখুন": "See the full picture in the Calendar and Stats tabs", "🗓 রুটিনে যান": "🗓 Go to Routine", "সব বাদ দিন": "Skip all", "আজকের আগের চিহ্নিত-না-করা সব ক্লাস \"বাতিল\" ধরে গণনা থেকে বাদ যাবে। ঠিক আছে?": "All unmarked classes before today will be counted as cancelled and left out of the stats. OK?", "এই Phase-এর শুরুর তারিখ আজ করবেন? তাহলে আজকের আগের ক্লাস গোনা হবে না।": "Set this Phase's start date to today? Classes before today won't be counted.", "বাকি ক্লাস ": "left: "});
+Object.assign(EN,{"✅ মিস করা যাবে: ":"✅ Can still miss: ","⚠ টানা উপস্থিত লাগবে: ":"⚠ Need in a row: "," · বাকি ক্লাস: ":" · Classes left: "," ক্লাস · বাকি ":" classes · left "});
+Object.assign(EN,{"🔔 চিহ্নিত করার রিমাইন্ডার": "🔔 Daily check-in reminder", "সন্ধ্যা ৬টা": "6 PM", "রাত ৮টা": "8 PM", "রাত ৯টা": "9 PM", "রাত ১০টা": "10 PM", "ক্লাসের দিনগুলোতে প্রতি সন্ধ্যায় মনে করিয়ে দেবে।": "Reminds you on class days to mark attendance.", "বন্ধ": "Off"});
 var ENK=Object.keys(EN).sort(function(a,b){return b.length-a.length});
 var IC="icon-v2-192.png";
 var uid=Date.now();function id(){return"i"+(uid++)}
@@ -179,7 +200,8 @@ function newP(i,n,pre){return{id:i,name:n,target:75,cy:0,years:pre?preset():[mk(
 try{var raw=localStorage.getItem("att-v4");if(raw)R=JSON.parse(raw);else{var o=localStorage.getItem("att-v3");if(o){var od=JSON.parse(o);if(od&&od.years)R={lang:"bn",pid:"p1",profiles:[Object.assign({id:"p1",name:"আমার প্রোফাইল"},od)]}}}}catch(e){}
 if(!R||!R.profiles||!R.profiles.length)R={lang:"bn",pid:"p1",profiles:[newP("p1","আমার প্রোফাইল",true)]};
 function fix(y){var yr=new Date().getFullYear();y.start=y.start||yr+"-01-01";y.end=y.end||yr+"-12-31";y.rt=y.rt||[];y.off=y.off||[];y.rec=y.rec||{}}
-function act(){S=R.profiles.filter(function(p){return p.id===R.pid})[0]||R.profiles[0];R.pid=S.id;S.years.forEach(fix);if(S.cy>=S.years.length)S.cy=0}
+function migR(){R.profiles.forEach(function(p){p.rim=p.rim||[];(p.years||[]).forEach(function(y){if(y.rimg){if(!p.rim.some(function(i){return i.id===y.id}))p.rim.push({id:y.id,y:y.id,name:"রুটিন",ts:y.rimg.ts||0,up:y.rimg.up||0});y.rimg=null}})})}
+function act(){migR();S=R.profiles.filter(function(p){return p.id===R.pid})[0]||R.profiles[0];R.pid=S.id;S.years.forEach(fix);if(S.cy>=S.years.length)S.cy=0}
 act();
 var PT=0;
 function save(ch){try{if(ch)R.ts=Date.now();localStorage.setItem("att-v4",JSON.stringify(R))}catch(e){}if(ch){snap();sched()}}
@@ -237,7 +259,7 @@ async function fbLoad(){
   FB.loading=0;fbstat()}
 function fbAuth(u){FB.ready=1;FB.user=u||null;if(FB.unsub){try{FB.unsub()}catch(e){}FB.unsub=null}
   if(u){FB.msg="⏳ সিঙ্ক হচ্ছে...";FB.unsub=FB.api.watch(u.uid,fbSnap,function(e){FB.msg=fbErr(e);fbstat()})}else FB.msg="";
-  RU=null;render()}
+  IMU={};render()}
 function linked(){try{return localStorage.getItem("att-fl")===FB.user.uid}catch(e){return true}}
 async function fbSnap(o,pend,cache){
   if(pend||!FB.user||(cache&&!o))return;
@@ -246,7 +268,7 @@ async function fbSnap(o,pend,cache){
     if(!o)await fbPush();
     else if(ct>lt){var c=JSON.parse(await unpack(o));if(!okd(c))throw 0;
       if(!linked()&&hasData()&&!confirm(tr("ক্লাউডে আগের ডাটা আছে। ক্লাউডের ডাটা নিতে OK চাপুন। এই ফোনের ডাটা ক্লাউডে পাঠাতে Cancel চাপুন।"))){R.ts=Date.now();save(false);await fbPush()}
-      else{try{localStorage.setItem("att-bak",JSON.stringify(R))}catch(e){}snap();R=c;act();opn=null;hist={};RU=null;save(false);FB.msg=done();render()}}
+      else{try{localStorage.setItem("att-bak",JSON.stringify(R))}catch(e){}snap();R=c;act();opn=null;hist={};IMU={};save(false);FB.msg=done();render()}}
     else if(ct<lt)await fbPush();
     else FB.msg=done();
     try{localStorage.setItem("att-fl",u.uid)}catch(e){}
@@ -268,7 +290,7 @@ function fbOut(){if(!FB.api)return;if(!confirm(tr("লগআউট করবে�
 /* ---------- Trend graph ---------- */
 var GO=false,GM="w";
 function trendSvg(Y,mode){var g={};
-  Object.keys(Y.rec).forEach(function(k){var ds=k.split("|")[0],d=parse(ds),key=mode==="m"?ds.slice(0,7):fmt(addDays(d,-((d.getDay()+1)%7))),o=g[key]=g[key]||{a:0,t:0};o.t++;if(Y.rec[k]==="p")o.a++});
+  Object.keys(Y.rec).forEach(function(k){if(Y.rec[k]==="c")return;var ds=k.split("|")[0],d=parse(ds),key=mode==="m"?ds.slice(0,7):fmt(addDays(d,-((d.getDay()+1)%7))),o=g[key]=g[key]||{a:0,t:0};o.t++;if(Y.rec[k]==="p")o.a++});
   var ks=Object.keys(g).sort().slice(-12);
   if(!ks.length)return'<div class="mu" style="margin-top:8px">ক্যালেন্ডারে ক্লাস মার্ক করলে এখানে ধারা দেখাবে।</div>';
   var W=320,H=150,pl=24,pb=20,pt=8,bw=(W-pl-4)/ks.length,s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="উপস্থিতির ধারা" style="margin-top:6px">';
@@ -332,11 +354,19 @@ function mkIcs(Y,min){
     else{L.push("DTSTART;VALUE=DATE:"+icsD(d),"DTEND;VALUE=DATE:"+icsD(addDays(d,1)));if(ex.length)L.push("EXDATE;VALUE=DATE:"+ex.map(function(x){return icsD(parse(x))}).join(","))}
     L.push("RRULE:FREQ=WEEKLY;UNTIL="+(tp?un:icsD(e)));
     if(tp)L=L.concat(alarm(min,title));L.push("END:VEVENT");n++});
+  var ck=(document.getElementById("remck")||{}).value;
+  if(ck){var ds0={},bd=["SU","MO","TU","WE","TH","FR","SA"],td=parse(TD);valid(Y).forEach(function(r){ds0[r.day]=1});var dl=Object.keys(ds0).map(Number);
+    if(dl.length&&td<=e){var d0=parse(Y.start)>td?parse(Y.start):td,g0=0;while(!ds0[d0.getDay()]&&g0<8){d0=addDays(d0,1);g0++}
+      if(d0<=e){var ch=ck.split(":").map(Number),ex0=Y.off.filter(function(x){var xd=parse(x);return ds0[xd.getDay()]&&xd>=d0&&xd<=e}),ttl="✅ আজকের ক্লাসগুলো চিহ্নিত করেছেন?";
+        L.push("BEGIN:VEVENT","UID:checkin-"+Y.id+"@attendance","DTSTAMP:"+st,"SUMMARY:"+icsEsc(ttl),"DESCRIPTION:"+icsEsc("Attendance অ্যাপ খুলে আজকের ক্লাস চিহ্নিত করুন: "+location.href.split("#")[0].split("?")[0]),"DTSTART:"+icsT(d0,ch),"DTEND:"+icsT(d0,[ch[0],ch[1]+15>59?59:ch[1]+15]));
+        if(ex0.length)L.push("EXDATE:"+ex0.map(function(x){return icsT(parse(x),ch)}).join(","));
+        L.push("RRULE:FREQ=WEEKLY;BYDAY="+dl.map(function(x){return bd[x]}).join(",")+";UNTIL="+un);
+        L=L.concat(alarm(0,ttl));L.push("END:VEVENT");n++}}}
   (Y.exams||[]).forEach(function(x){if(!x.date)return;var d=parse(x.date),f=find(x.sid)[0];L.push("BEGIN:VEVENT","UID:"+x.id+"@attendance","DTSTAMP:"+st,"SUMMARY:"+icsEsc("📝 "+x.name+(f?" – "+f.name:"")),"DTSTART;VALUE=DATE:"+icsD(d),"DTEND;VALUE=DATE:"+icsD(addDays(d,1)));
     L=L.concat(alarm(1440,x.name));L.push("END:VEVENT");n++});
   L.push("END:VCALENDAR");
   SM2=n?(dlFile("attendance-"+Y.name.replace(/\s+/g,"")+".ics",L.join("\r\n"),"text/calendar")?"✅ ফাইল নামানো হয়েছে। এখন Downloads থেকে ফাইলটা ট্যাপ করে Calendar-এ যোগ করুন।":"❌ ব্যর্থ হয়েছে।"):"❌ কোনো ক্লাস বা পরীক্ষা নেই।"}
-function icsCard(){return'<div class="card"><b>📆 ফোনের Calendar-এ রিমাইন্ডার</b><div class="mu" style="margin-top:4px">রুটিনের সব ক্লাস (ছুটি বাদে) ও পরীক্ষা ফোনের Calendar-এ যাবে, ক্লাসের আগে নোটিফিকেশন আসবে।</div><div class="row" style="margin-top:8px"><label class="mu">ক্লাসের কত মিনিট আগে <select id="remmin"><option value="5">৫</option><option value="10">১০</option><option value="15" selected>১৫</option><option value="30">৩০</option><option value="60">৬০</option></select></label><button class="p" data-act="ics" style="flex:none">⬇ .ics</button></div><div class="mu" style="margin-top:6px">'+SM2+'</div></div>'}
+function icsCard(){return'<div class="card"><b>📆 ফোনের Calendar-এ রিমাইন্ডার</b><div class="mu" style="margin-top:4px">রুটিনের সব ক্লাস (ছুটি বাদে) ও পরীক্ষা ফোনের Calendar-এ যাবে, ক্লাসের আগে নোটিফিকেশন আসবে।</div><div class="row" style="margin-top:8px"><label class="mu">ক্লাসের কত মিনিট আগে <select id="remmin"><option value="5">৫</option><option value="10">১০</option><option value="15" selected>১৫</option><option value="30">৩০</option><option value="60">৬০</option></select></label><button class="p" data-act="ics" style="flex:none">⬇ .ics</button></div><div class="row" style="margin-top:8px"><label class="mu">🔔 চিহ্নিত করার রিমাইন্ডার <select id="remck"><option value="">বন্ধ</option><option value="18:00">সন্ধ্যা ৬টা</option><option value="20:00">রাত ৮টা</option><option value="21:00" selected>রাত ৯টা</option><option value="22:00">রাত ১০টা</option></select></label></div><div class="mu" style="margin-top:4px">ক্লাসের দিনগুলোতে প্রতি সন্ধ্যায় মনে করিয়ে দেবে।</div><div class="mu" style="margin-top:6px">'+SM2+'</div></div>'}
 
 /* ---------- Data safety ---------- */
 var SM2="";
@@ -383,43 +413,65 @@ function safeCard(){if(!sfo)return'<div class="card sfh" data-act="sfo"><b>🛡 
 /* ---------- Gemini routine reader ---------- */
 
 /* ---------- Routine image ---------- */
-var RU=null,RM="",IZ=1;
+var RM="",IZ=1,IMU={},RPT=0,RERR="";
 var IDBP=null;
 function idb(){if(IDBP)return IDBP;IDBP=new Promise(function(res,rej){var q=indexedDB.open("att-img",1);q.onupgradeneeded=function(){q.result.createObjectStore("i")};q.onsuccess=function(){var d=q.result;d.onversionchange=function(){d.close();IDBP=null};d.onclose=function(){IDBP=null};res(d)};q.onerror=function(){IDBP=null;rej()}});return IDBP}
 async function iget(k){var d=await idb();return new Promise(function(res){var t=d.transaction("i").objectStore("i").get(k);t.onsuccess=function(){res(t.result||null)};t.onerror=function(){res(null)}})}
 async function iset(k,v){var d=await idb();return new Promise(function(res,rej){var s=d.transaction("i","readwrite").objectStore("i"),t=v?s.put(v,k):s.delete(k);t.onsuccess=function(){res()};t.onerror=function(){rej()}})}
 function toBlobQ(c,q){return new Promise(function(res,rej){c.toBlob(function(b){b?res(b):rej()},"image/jpeg",q)})}
 function shrinkBlob(file){return new Promise(function(res,rej){var im=new Image(),u=URL.createObjectURL(file);im.onload=async function(){
-  try{var best=null,sz=[1800,1500,1200,1000],qs=[.8,.7,.6];
+  try{var best=null,sz=[1600,1400,1200,1000],qs=[.8,.7,.6];
     outer:for(var i=0;i<sz.length;i++){var sc=Math.min(1,sz[i]/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);
-      for(var j=0;j<qs.length;j++){var b=await toBlobQ(c,qs[j]);best=b;if(b.size<=650000)break outer}}
+      for(var j=0;j<qs.length;j++){var b=await toBlobQ(c,qs[j]);best=b;if(b.size<=450000)break outer}}
     URL.revokeObjectURL(u);best?res(best):rej()}catch(e){rej()}};im.onerror=function(){rej()};im.src=u})}
-async function rload(Y){var k=Y.id,b=null,ct=0;
-  if(Y.rimg){try{b=await iget("r"+k);ct=+(await iget("rt"+k))||0}catch(e){}
-    if((!b||ct<(Y.rimg.ts||0))&&FB.user&&FB.api){try{var o=await FB.api.getImg(FB.user.uid,k);if(o&&o.d&&(o.ts||0)>=ct){b=new Blob([b64d(o.d)],{type:"image/jpeg"});await iset("r"+k,b);await iset("rt"+k,o.ts||0)}}catch(e){}}}
-  if(RU&&RU.key===k){RU.ld=0;RU.url=b?URL.createObjectURL(b):"";render()}}
-function rimgCard(Y){
-  if(!RU||RU.key!==Y.id){RU={key:Y.id,url:"",ld:1};rload(Y)}
-  var lb=function(t,c){return'<label class="'+c+'" style="margin:0;flex:1;text-align:center;cursor:pointer;border:1px dashed var(--bd);border-radius:9px;padding:6px 10px">'+t+'<input type="file" accept="image/*" hidden data-f="rimg"></label>'};
+function rims(){S.rim=S.rim||[];return S.rim}
+async function rget(it){var b=null,ct=0;
+  try{b=await iget("r"+it.id);ct=+(await iget("rt"+it.id))||0}catch(e){}
+  if((!b||ct<(it.ts||0))&&FB.user&&FB.api){try{var o=await FB.api.getImg(FB.user.uid,it.id);if(o&&o.d&&(o.ts||0)>=ct){b=new Blob([b64d(o.d)],{type:"image/jpeg"});await iset("r"+it.id,b);await iset("rt"+it.id,o.ts||0)}}catch(e){}}
+  return b}
+function rwarm(){rims().forEach(function(it){var c=IMU[it.id];if(c&&(c.ld||c.ts===it.ts))return;IMU[it.id]={url:"",ts:it.ts,ld:1};
+  rget(it).then(function(b){IMU[it.id]={url:b?URL.createObjectURL(b):"",ts:it.ts,ld:0};if(view==="r")render()})})}
+function rpf(Y){return rims().filter(function(i){return!i.y||i.y===Y.id})}
+function rimgCard(Y){var L=rpf(Y);rwarm();
+  var un=rims().filter(function(i){return i.up!==i.ts});
+  if(FB.user&&un.length&&Date.now()-RPT>30000){RPT=Date.now();rpush().then(function(){if(view==="r")render()}).catch(function(){})}
   var m='<div class="card"><b>🖼 আমার রুটিন</b>';
-  if(RU.url)m+='<img src="'+RU.url+'" alt="" data-act="iopen" style="display:block;width:100%;max-height:220px;object-fit:contain;background:var(--bg);border-radius:10px;margin-top:8px;cursor:pointer"><div class="mu" style="margin-top:4px">ছবিতে ট্যাপ করলে পূর্ণ পর্দায় খুলবে</div><div class="btns">'+lb("🔄 বদলান","")+dbtn("r"+Y.id,"🗑 মুছুন")+'</div>';
-  else if(RU.ld)m+='<div class="mu" style="margin-top:6px">⏳</div>';
-  else m+='<div class="mu" style="margin-top:4px">'+(Y.rimg?"ছবিটি এই ফোনে নেই। ক্লাউডে লগইন করলে আসবে।":"রুটিনের ছবি রেখে দিন, এখান থেকে এক ট্যাপে দেখতে পারবেন।")+'</div><div class="btns">'+lb("＋ রুটিনের ছবি যোগ","add")+'</div>';
-  return m+'<div class="mu" style="margin-top:6px">'+RM+'</div></div>'}
-async function setRimg(file){var Y=S.years[S.cy];RM="⏳ ...";render();
-  try{var bl=await shrinkBlob(file),ts=Date.now();await iset("r"+Y.id,bl);await iset("rt"+Y.id,ts);Y.rimg={ts:ts,up:0};RU=null;RM="✅ ছবি সেভ হয়েছে।";
-    if(FB.user&&FB.api&&navigator.onLine!==false){try{await FB.api.putImg(FB.user.uid,Y.id,{d:b64e(await bl.arrayBuffer()),ts:ts});Y.rimg.up=ts}catch(e){}}
-    save(true);render()}
+  if(!L.length)m+='<div class="mu" style="margin-top:4px">রুটিনের ছবি রেখে দিন (যেমন ক্লাস রুটিন, ওয়ার্ড রুটিন), এক ট্যাপে দেখতে পারবেন।</div>';
+  m+='<div class="rg">';
+  L.forEach(function(it){var c=IMU[it.id];
+    m+='<button class="rt" data-act="iopen" data-i="'+it.id+'"><span class="th">'+(c&&c.url?'<img src="'+c.url+'" alt="">':(c&&c.ld?"⏳":"🖼"))+'</span><small>'+esc(it.name)+'</small>'+(FB.user&&it.up!==it.ts?'<em>⚠</em>':'')+'</button>'});
+  if(L.length<10)m+='<label class="rt rta"><span class="th">＋</span><small>নতুন ছবি</small><input type="file" accept="image/*" hidden data-f="rimg"></label>';
+  m+='</div>';
+  if(L.length&&!FB.user)m+='<div class="mu" style="margin-top:8px">⚠ ক্লাউডে সেভ রাখতে Google দিয়ে লগইন করুন।</div>';
+  else if(un.length)m+='<div class="mu" style="margin-top:8px">⚠ '+bn(un.length)+'টি ছবি এখনো ক্লাউডে যায়নি। নেট থাকলে নিজে চলে যাবে।'+(RERR?' ('+esc(RERR)+')':'')+'</div>';
+  return m+(RM?'<div class="mu" style="margin-top:6px">'+RM+'</div>':'')+'</div>'}
+async function setRimg(file){var p=S,Yc=S.years[S.cy];
+  if(rpf(Yc).length>=10){RM="সর্বোচ্চ ১০টি ছবি রাখা যায়।";render();return}
+  var nm=prompt(tr("রুটিনের নাম"),"রুটিন "+bn(rpf(Yc).length+1));if(nm===null)return;nm=nm.trim()||"রুটিন";
+  RM="⏳ ...";render();
+  try{var bl=await shrinkBlob(file),ts=Date.now(),iid=id();await iset("r"+iid,bl);await iset("rt"+iid,ts);
+    try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
+    var tp=R.profiles.filter(function(x){return x.id===p.id})[0]||S;tp.rim=tp.rim||[];tp.rim.push({id:iid,y:Yc.id,name:nm,ts:ts,up:0});
+    save(true);RM="✅ এই ফোনে সেভ হয়েছে।";render();
+    if(FB.user&&FB.api){RERR="";await rpush();var it=(tp.rim||[]).filter(function(x){return x.id===iid})[0];RM=it&&it.up===it.ts?"✅ ক্লাউডেও সেভ হয়েছে।":"⚠ ক্লাউডে যায়নি, নেট এলে নিজে চেষ্টা করবে।"}
+    else RM="✅ এই ফোনে সেভ হয়েছে। ক্লাউডে রাখতে লগইন করুন।";
+    render()}
   catch(e){RM="❌ ছবি খোলা যায়নি। JPG বা PNG ছবি দিন।";render()}}
-async function delRimg(Y){Y.rimg=null;RU=null;try{await iset("r"+Y.id,null);await iset("rt"+Y.id,null)}catch(e){}if(FB.user&&FB.api)FB.api.delImg(FB.user.uid,Y.id).catch(function(){})}
 async function rpush(){if(!FB.user||!FB.api)return;var ch=0;
-  for(var pi=0;pi<R.profiles.length;pi++)for(var yi=0;yi<R.profiles[pi].years.length;yi++){var y=R.profiles[pi].years[yi],ri=y.rimg;if(!ri||ri.up===ri.ts)continue;
-    var bl=null;try{bl=await iget("r"+y.id)}catch(e){}if(!bl)continue;
-    try{await FB.api.putImg(FB.user.uid,y.id,{d:b64e(await bl.arrayBuffer()),ts:ri.ts});ri.up=ri.ts;ch=1}catch(e){}}
+  for(var pi=0;pi<R.profiles.length;pi++){var L=R.profiles[pi].rim||[];for(var i=0;i<L.length;i++){var it=L[i];if(it.up===it.ts)continue;
+    var bl=null;try{bl=await iget("r"+it.id)}catch(e){}if(!bl)continue;
+    try{await FB.api.putImg(FB.user.uid,it.id,{d:b64e(await bl.arrayBuffer()),ts:it.ts});it.up=it.ts;ch=1}catch(e){RERR=(e&&e.code)||"error"}}}
   if(ch)save(true)}
-function ivOpen(){if(!RU||!RU.url||document.getElementById("iv"))return;var o=document.createElement("div");o.id="iv";IZ=1;
-  o.innerHTML=tr('<div class="h"><button data-act="iclose">✕</button><b>আমার রুটিন</b><button data-act="iz" data-n="-0.5">−</button><button data-act="iz" data-n="0.5">＋</button></div><div class="s"><img id="ivi" src="'+RU.url+'" alt=""></div>');document.body.appendChild(o)}
-function ivAct(a,b){if(a==="iopen")ivOpen();else if(a==="iclose"){var o=document.getElementById("iv");if(o)o.remove()}
+function delRim(id0){var L=rims(),k=L.filter(function(i){return i.id===id0})[0];if(!k)return;S.rim=L.filter(function(i){return i.id!==id0});delete IMU[id0];
+  iset("r"+id0,null).catch(function(){});iset("rt"+id0,null).catch(function(){});if(FB.user&&FB.api)FB.api.delImg(FB.user.uid,id0).catch(function(){})}
+function ivOpen(i0){var c=IMU[i0],it=rims().filter(function(x){return x.id===i0})[0];
+  if(!it||document.getElementById("iv"))return;if(!c||!c.url){alert(tr("ছবিটি এই ফোনে নেই। ক্লাউডে লগইন করে নেট চালু করুন।"));return}
+  var o=document.createElement("div");o.id="iv";IZ=1;
+  o.innerHTML=tr('<div class="h"><button data-act="iclose">✕</button><b id="ivn">'+esc(it.name)+'</b><button data-act="irn" data-i="'+i0+'">✎</button><button data-act="idl" data-i="'+i0+'">🗑</button><button data-act="iz" data-n="-0.5">−</button><button data-act="iz" data-n="0.5">＋</button></div><div class="s"><img id="ivi" src="'+c.url+'" alt=""></div>');document.body.appendChild(o)}
+function ivAct(a,b){var o=document.getElementById("iv");
+  if(a==="iopen")ivOpen(b.dataset.i);else if(a==="iclose"){if(o)o.remove()}
+  else if(a==="irn"){var it=rims().filter(function(x){return x.id===b.dataset.i})[0];if(!it)return;var n=prompt(tr("রুটিনের নাম"),it.name);if(n&&n.trim()){it.name=n.trim();save(true);var t=document.getElementById("ivn");if(t)t.textContent=it.name;render()}}
+  else if(a==="idl"){if(confirm(tr("এই ছবিটি মুছে ফেলবেন?"))){delRim(b.dataset.i);if(o)o.remove();save(true);render()}}
   else{IZ=Math.min(4,Math.max(1,IZ+ +b.dataset.n));var i=document.getElementById("ivi");if(i)i.style.width=IZ*100+"%"}}
 
 /* ---------- PDF notes (Drive folder) ---------- */
@@ -463,9 +515,9 @@ function stats(Y){ST={};UN=0;UF=null;if(!Y.rt.length)return;
   var d=parse(Y.start),e=parse(Y.end),g=0;
   for(;d<=e&&g<800;d=addDays(d,1),g++){var ds=fmt(d);if(Y.off.indexOf(ds)>=0)continue;
     Y.rt.forEach(function(r){if(r.day!==d.getDay())return;
-      var s=ST[r.cid]=ST[r.cid]||{a:0,t:0,R:0},m=Y.rec[ds+"|"+r.id];
-      if(m){s.t++;if(m==="p")s.a++}else if(ds>=TD)s.R++;else{UN++;if(!UF)UF=ds}})}}
-function eff(c){var s=ST[c.id]||{a:0,t:0,R:0};return{a:c.a+s.a,t:c.t+s.t,R:s.R}}
+      var s=ST[r.cid]=ST[r.cid]||{a:0,t:0,R:0,c:0},m=Y.rec[ds+"|"+r.id];
+      if(m){if(m==="c")s.c++;else{s.t++;if(m==="p")s.a++}}else if(ds>=TD)s.R++;else{UN++;if(!UF)UF=ds}})}}
+function eff(c){var s=ST[c.id]||{a:0,t:0,R:0};return{a:c.a+s.a,t:c.t+s.t,R:s.R,c:s.c||0}}
 function tot(cats){var a=0,t=0,r=0;cats.forEach(function(c){var e=eff(c);a+=e.a;t+=e.t;r+=e.R});return{a:a,t:t,R:r}}
 function calc(o){var a=o.a,t=o.t,Rm=o.R,p=S.target/100;
   if(!t&&!Rm)return{cls:"",txt:"এখনো কিছু যোগ হয়নি",v:0};
@@ -482,17 +534,26 @@ function barx(v,c){return'<div class="bar"><i style="width:'+Math.min(100,v)+'%;
 function find(sid,cid){var s=S.years[S.cy].subs.filter(function(z){return z.id===sid})[0];return[s,s&&s.cats.filter(function(z){return z.id===cid})[0]]}
 function opts(list,v){return list.map(function(o){return'<option value="'+o[0]+'"'+(o[0]===v?" selected":"")+'>'+esc(o[1])+'</option>'}).join("")}
 function pctOf(e){return e.t?e.a*100/e.t:0}
-function tView(Y){
+function ydRows(Y){var y=addDays(parse(TD),-1),ds=fmt(y);if(Y.off.indexOf(ds)>=0||ds<Y.start||ds>Y.end)return"";
+  var L=valid(Y).filter(function(r){return r.day===y.getDay()&&!Y.rec[ds+"|"+r.id]}).sort(function(a,b){return(a.time||"").localeCompare(b.time||"")});if(!L.length)return"";
+  var m='<div class="mu" style="margin-top:12px"><b>গতকাল চিহ্নিত হয়নি</b></div>';
+  L.forEach(function(r){var f=find(r.sid,r.cid),at='data-e="'+r.id+'" data-ds="'+ds+'"',i=Y.subs.indexOf(f[0]);
+    m+='<div class="ln"><div class="row"><span class="row" style="justify-content:flex-start"><span class="dot" style="background:'+SC[i%8]+'"></span><b>'+esc(f[0].name)+'</b><span class="tag" style="--c:'+cc(f[1].name)+'">'+esc(f[1].name)+'</span></span><span class="mu">'+esc(r.time||"")+'</span></div><div class="btns mk"><button class="p" data-act="mk" data-m="p" '+at+'>✓ উপস্থিত</button><button class="a" data-act="mk" data-m="a" '+at+'>✗ অনুপস্থিত</button><button class="cn" data-act="mk" data-m="c" '+at+'>🚫 বাতিল</button></div></div>'});
+  return m}
+function tView(Y){var h=tView0(Y),yd=ydRows(Y);return yd?h.replace(/<\/div>$/,yd+'</div>'):h}
+function gdCard(){return'<div class="card gd"><div class="row"><b>👋 শুরু করবেন যেভাবে</b><button data-act="gd" style="padding:2px 8px">✕</button></div><ol class="mu"><li>"রুটিন" ট্যাবে সপ্তাহের ক্লাসগুলো যোগ করুন</li><li>আজকের ক্লাস এই পেজেই এক ট্যাপে উপস্থিত/অনুপস্থিত/বাতিল দিন</li><li>"ক্যালেন্ডার" ও "হিসাব" ট্যাবে পুরো চিত্র দেখুন</li></ol><div class="btns"><button class="p" data-act="view" data-v="r">🗓 রুটিনে যান</button></div></div>'}
+function tView0(Y){
   var d=new Date(),m='<div class="card"><b>📅 আজকের ক্লাস</b> <span class="mu">'+DN[d.getDay()]+'</span>';
   if(!Y.rt.length)return m+'<div class="mu" style="margin-top:6px">রুটিন ট্যাবে ছবি দিন বা হাতে যোগ করুন, তাহলে এখানে আজকের ক্লাস অটোমেটিক দেখাবে।</div></div>';
   if(Y.off.indexOf(TD)>=0)return m+'<div class="mu" style="margin-top:6px">🏖 আজ ছুটি</div></div>';
   var L=valid(Y).filter(function(r){return r.day===d.getDay()}).sort(function(a,b){return(a.time||"").localeCompare(b.time||"")});
   if(!L.length)return m+'<div class="mu" style="margin-top:6px">আজ কোনো ক্লাস নেই।</div></div>';
+  m+=' <span class="mu">· '+bn(L.length)+' ক্লাস · বাকি '+bn(L.filter(function(r){return!Y.rec[TD+"|"+r.id]}).length)+'</span>';
   L.forEach(function(r){var f=find(r.sid,r.cid),v=Y.rec[TD+"|"+r.id],at='data-e="'+r.id+'" data-ds="'+TD+'"',i=Y.subs.indexOf(f[0]);
-    m+='<div class="ln"><div class="row"><span class="row" style="justify-content:flex-start"><span class="dot" style="background:'+SC[i%8]+'"></span><b>'+esc(f[0].name)+'</b><span class="tag" style="--c:'+cc(f[1].name)+'">'+esc(f[1].name)+'</span></span><span class="mu">'+esc(r.time||"")+'</span></div><div class="btns"><button class="p'+(v==="p"?" ps":"")+'" data-act="mk" data-m="p" '+at+'>✓ উপস্থিত</button><button class="a'+(v==="a"?" as":"")+'" data-act="mk" data-m="a" '+at+'>✗ অনুপস্থিত</button><button data-act="mk" data-m="" '+at+'>↩︎</button></div></div>'});
+    m+='<div class="ln"><div class="row"><span class="row" style="justify-content:flex-start"><span class="dot" style="background:'+SC[i%8]+'"></span><b>'+esc(f[0].name)+'</b><span class="tag" style="--c:'+cc(f[1].name)+'">'+esc(f[1].name)+'</span></span><span class="mu">'+esc(r.time||"")+'</span></div><div class="btns mk"><button class="p'+(v==="p"?" ps":"")+'" data-act="mk" data-m="p" '+at+'>✓ উপস্থিত</button><button class="a'+(v==="a"?" as":"")+'" data-act="mk" data-m="a" '+at+'>✗ অনুপস্থিত</button><button class="cn'+(v==="c"?" cns":"")+'" data-act="mk" data-m="c" '+at+'>🚫 বাতিল</button><button data-act="mk" data-m="" '+at+'>↩︎</button></div></div>'});
   m+=allBtns(TD)+'<div class="btns"><button data-act="offd" data-ds="'+TD+'" style="flex:1">🏖 আজ ছুটি</button></div>';
   return m+'</div>'}
-function allBtns(ds){return'<div class="btns"><button class="p" data-act="all" data-m="p" data-ds="'+ds+'">✓ সব উপস্থিত</button><button class="a" data-act="all" data-m="a" data-ds="'+ds+'">✗ সব অনুপস্থিত</button><button data-act="all" data-m="" data-ds="'+ds+'">↩︎ সব মুছুন</button></div>'}
+function allBtns(ds){var d=' data-ds="'+ds+'"';return'<div class="btns"><button class="p" data-act="all" data-m="p"'+d+'>✓ সব উপস্থিত</button><button class="a" data-act="all" data-m="a"'+d+'>✗ সব অনুপস্থিত</button></div><div class="btns"><button class="cn" data-act="all" data-m="c"'+d+'>🚫 সব বাতিল</button><button data-act="all" data-m=""'+d+' style="flex:1">↩︎ সব মুছুন</button></div>'}
 function riskCard(Y){var L=[];Y.subs.forEach(function(s){var e=tot(s.cats);if(!e.t)return;var k=calc(e);if(k.cls==="bad")L.push({n:s.name,v:k.v,t:k.txt.split("<br>")[0]})});
   if(!L.length)return'<div class="card ok" style="margin-top:10px">✅ সব সাবজেক্ট লক্ষ্যের ওপরে আছে।</div>';
   L.sort(function(a,b){return a.v-b.v});
@@ -501,15 +562,16 @@ function riskCard(Y){var L=[];Y.subs.forEach(function(s){var e=tot(s.cats);if(!e
   return m+'</div>'}
 function hView(Y){
   var all=[];Y.subs.forEach(function(s){all=all.concat(s.cats)});
-  var c=calc(tot(all)),m=warnBox()+tView(Y)+'<div class="hero" style="margin-top:10px"><div class="row"><input class="nm" id="yn" value="'+esc(Y.name)+'" style="font-size:16px;color:#fff"><label style="font-size:12px;white-space:nowrap">লক্ষ্য <input id="tg" class="num" type="number" min="1" max="100" value="'+S.target+'">%</label></div><div class="row" style="margin-top:4px"><span style="font-size:12px;opacity:.85">এই Phase-এর মোট</span><span class="pct">'+bn(c.v.toFixed(1))+'%</span></div>'+barx(c.v,"#fff")+'<div class="msg">'+c.txt+'</div></div>';m+=riskCard(Y);
+  var c=calc(tot(all)),m=warnBox()+((!Y.rt.length&&!R.gd)?gdCard():tView(Y))+'<div class="hero" style="margin-top:10px"><div class="row"><input class="nm" id="yn" value="'+esc(Y.name)+'" style="font-size:16px;color:#fff"><label style="font-size:12px;white-space:nowrap">লক্ষ্য <input id="tg" class="num" type="number" min="1" max="100" value="'+S.target+'">%</label></div><div class="row" style="margin-top:4px"><span style="font-size:12px;opacity:.85">এই Phase-এর মোট</span><span class="pct">'+bn(c.v.toFixed(1))+'%</span></div>'+barx(c.v,"#fff")+'<div class="msg">'+c.txt+'</div></div>';m+=riskCard(Y);
   Y.subs.forEach(function(s,i){
     var col=SC[i%8],k=calc(tot(s.cats)),o=opn===s.id;
     m+='<div class="card sub" style="--c:'+col+'"><div class="row hd" data-act="tog" data-s="'+s.id+'"><b>'+esc(s.name)+'</b><span class="pct" style="color:'+stc(k.v)+'">'+bn(k.v.toFixed(1))+'% <small class="mu">'+(o?"▴":"▾")+'</small></span></div>';
-    if(!o)m+=barx(k.v,col)+'<div class="tags">'+s.cats.map(function(x){return'<span class="tag" style="--c:'+cc(x.name)+'">'+esc(x.name)+' '+bn(pctOf(eff(x)).toFixed(0))+'%</span>'}).join("")+((s.files&&s.files.length)?'<span class="tag" style="--c:#64748b">📎 '+bn(s.files.length)+'</span>':'')+'</div>';
+    if(!o)m+=barx(k.v,col)+'<div class="tags">'+s.cats.map(function(x){return'<span class="tag" style="--c:'+cc(x.name)+'">'+esc(x.name)+' '+bn(pctOf(eff(x)).toFixed(0))+'% · ✓'+bn(eff(x).a)+' ✗'+bn(eff(x).t-eff(x).a)+'</span>'}).join("")+((s.files&&s.files.length)?'<span class="tag" style="--c:#64748b">📎 '+bn(s.files.length)+'</span>':'')+'</div>'+sline(tot(s.cats));
     else{
       m+='<input class="nm" style="width:100%;margin-top:6px" data-f="sn" data-s="'+s.id+'" value="'+esc(s.name)+'">';
       s.cats.forEach(function(x){var e=eff(x),q=calc(e),at='data-s="'+s.id+'" data-c="'+x.id+'"',cl=cc(x.name);
         m+='<div class="cat"><div class="row"><span class="dot" style="background:'+cl+'"></span><input class="nm" data-f="cn" '+at+' value="'+esc(x.name)+'"><span class="pct" style="color:'+stc(q.v)+'">'+bn(q.v.toFixed(1))+'%</span></div>'+barx(q.v,cl)+
+        '<div class="row mu" style="margin-top:6px"><span>✓ উপস্থিত <b>'+bn(e.a)+'</b></span><span>✗ অনুপস্থিত <b>'+bn(e.t-e.a)+'</b></span><span>🚫 বাতিল <b>'+bn(e.c)+'</b></span><span>মোট <b>'+bn(e.t)+'</b></span></div>'+
         '<div class="row mu"><span>উপস্থিত <input class="num" type="number" min="0" data-f="a" '+at+' value="'+x.a+'"></span><span>মোট <input class="num" type="number" min="0" data-f="t" '+at+' value="'+x.t+'"></span></div>'+
         (ST[x.id]?'<div class="mu" style="margin-top:3px">ক্যালেন্ডার থেকে যোগ: '+bn(ST[x.id].a)+' / '+bn(ST[x.id].t)+' → সর্বমোট '+bn(e.a)+' / '+bn(e.t)+'</div>':'')+
         '<div class="btns"><button class="p" data-act="p" '+at+'>＋ উপস্থিত</button><button class="a" data-act="ab" '+at+'>＋ অনুপস্থিত</button><button data-act="u" '+at+'>↩︎</button></div><div class="msg '+q.cls+'">'+q.txt+'</div>'+dbtn("c"+x.id,"🗑 মুছুন")+'</div>'});
@@ -517,6 +579,8 @@ function hView(Y){
       m+='<button class="add" data-act="addcat" data-s="'+s.id+'">＋ নতুন ধরন (যেমন: প্র্যাক্টিক্যাল)</button>'+dbtn("s"+s.id,"🗑 এই সাবজেক্ট মুছুন")}
     m+='</div>'});
   return m+gCard(Y)+'<button class="add" data-act="addsub">＋ নতুন সাবজেক্ট</button><div style="text-align:center;margin-top:6px">'+dbtn("y"+Y.id,"🗑 এই Phase মুছুন")+'</div>'}
+function sline(t){if(!t.t&&!t.R)return"";var p=S.target/100,ok=t.t&&t.a/t.t>=p,x=ok?"✅ মিস করা যাবে: "+bn(Math.floor(t.a/p-t.t+1e-9)):"⚠ টানা উপস্থিত লাগবে: "+bn(Math.ceil((p*t.t-t.a)/(1-p)-1e-9));
+  return'<div class="mu" style="margin-top:6px;color:'+(ok?"var(--ok)":"var(--bad)")+'">'+x+(t.R?' · বাকি ক্লাস: '+bn(t.R):'')+'</div>'}
 function valid(Y){return Y.rt.filter(function(r){return find(r.sid,r.cid)[1]})}
 function cMonth(Y){var d=parse(sel),y=d.getFullYear(),mo=d.getMonth(),n=new Date(y,mo+1,0).getDate(),f=new Date(y,mo,1).getDay(),en=R.lang==="en",
   hd=en?["S","M","T","W","T","F","S"]:["র","সো","ম","বু","বৃ","শু","শ"],lab;
@@ -526,20 +590,20 @@ function cMonth(Y){var d=parse(sel),y=d.getFullYear(),mo=d.getMonth(),n=new Date
   for(var i=0;i<f;i++)m+='<button class="dc e"></button>';
   for(var k=1;k<=n;k++){var ds=y+"-"+p2(mo+1)+"-"+p2(k),dw=(f+k-1)%7,off=Y.off.indexOf(ds)>=0,col="",
     cl=(!off&&ds>=Y.start&&ds<=Y.end)?rt.filter(function(r){return r.day===dw}):[];
-    if(cl.length){var mk=0,ab=0;cl.forEach(function(r){var v=Y.rec[ds+"|"+r.id];if(v){mk++;if(v==="a")ab++}});
-      col=ab?"var(--bad)":mk===cl.length?"var(--ok)":ds<TD?"#f59e0b":"var(--mu)"}
+    if(cl.length){var mk=0,ab=0,cx=0;cl.forEach(function(r){var v=Y.rec[ds+"|"+r.id];if(v){mk++;if(v==="a")ab++;if(v==="c")cx++}});
+      col=ab?"var(--bad)":mk===cl.length?(cx===cl.length?"#94a3b8":"var(--ok)"):ds<TD?"#f59e0b":"var(--mu)"}
     m+='<button class="dc'+(ds===sel?" s":"")+(ds===TD?" t":"")+(off?" o":"")+'" data-act="pick" data-d="'+ds+'"><span>'+bn(k)+'</span><i style="background:'+(col||"transparent")+'"></i></button>'}
-  return m+'</div><div class="cl"><span><i style="background:var(--ok)"></i>উপস্থিত</span><span><i style="background:var(--bad)"></i>অনুপস্থিত</span><span><i style="background:#f59e0b"></i>বাকি</span></div></div>'}
+  return m+'</div><div class="cl"><span><i style="background:var(--ok)"></i>উপস্থিত</span><span><i style="background:var(--bad)"></i>অনুপস্থিত</span><span><i style="background:#94a3b8"></i>বাতিল ক্লাস</span><span><i style="background:#f59e0b"></i>চিহ্নিত হয়নি</span></div></div>'}
 function cView(Y){
   var d=parse(sel),ds=sel,off=Y.off.indexOf(ds)>=0;
-  var m=cMonth(Y)+'<div class="row" style="margin:12px 4px 0"><b>'+DN[d.getDay()]+(ds===TD?" · আজ":"")+' <span class="mu" style="font-weight:400">'+bn(d.getDate())+"/"+bn(d.getMonth()+1)+'</span></b><span style="display:flex;gap:6px"><button data-act="today">আজকে যান</button><button data-act="off">'+(off?"ছুটি বাতিল":"🏖 ছুটি")+'</button></span></div>';
-  if(UN)m+='<div class="warn">⚠ '+bn(UN)+'টি আগের ক্লাস এখনো চিহ্নিত হয়নি। <button data-act="gounm" style="padding:2px 8px;margin-left:6px">প্রথমটিতে যান</button></div>';
+  var m=cMonth(Y)+'<div class="row" style="margin:12px 4px 0"><b>'+DN[d.getDay()]+(ds===TD?" · আজ":"")+' <span class="mu" style="font-weight:400">'+bn(d.getDate())+"/"+bn(d.getMonth()+1)+'</span></b><span style="display:flex;gap:6px"><button data-act="today">আজকে যান</button><button data-act="off">'+(off?"ছুটি বাতিল":"🏖 এদিন ছুটি")+'</button></span></div>';
+  if(UN)m+='<div class="warn">⚠ '+bn(UN)+'টি আগের ক্লাস এখনো চিহ্নিত হয়নি। <button data-act="gounm" style="padding:2px 8px;margin-left:6px">প্রথমটিতে যান</button><button data-act="skp" style="padding:2px 8px;margin-left:6px">সব বাদ দিন</button></div>';
   if(!Y.rt.length)return m+'<div class="card mu">আগে "রুটিন" ট্যাবে সাপ্তাহিক ক্লাস যোগ করুন।</div>';
   if(off)return m+'<div class="card">🏖 এদিন ছুটি, কোনো ক্লাস গোনা হবে না।</div>';
   var L=valid(Y).filter(function(r){return r.day===d.getDay()}).sort(function(a,b){return(a.time||"").localeCompare(b.time||"")});
   if(!L.length)return m+'<div class="card mu">এই দিনে কোনো ক্লাস নেই।</div>';
   L.forEach(function(r){var f=find(r.sid,r.cid),v=Y.rec[ds+"|"+r.id],at='data-e="'+r.id+'"',i=Y.subs.indexOf(f[0]);
-    m+='<div class="card sub" style="--c:'+SC[i%8]+'"><div class="row"><b>'+esc(f[0].name)+'</b>'+(r.time?'<span class="mu">'+esc(r.time)+'</span>':'')+'</div><span class="tag" style="--c:'+cc(f[1].name)+'">'+esc(f[1].name)+'</span><div class="btns"><button class="p'+(v==="p"?" ps":"")+'" data-act="mk" data-m="p" '+at+'>✓ উপস্থিত</button><button class="a'+(v==="a"?" as":"")+'" data-act="mk" data-m="a" '+at+'>✗ অনুপস্থিত</button><button data-act="mk" data-m="" '+at+'>↩︎</button></div></div>'});
+    m+='<div class="card sub" style="--c:'+SC[i%8]+'"><div class="row"><b>'+esc(f[0].name)+'</b>'+(r.time?'<span class="mu">'+esc(r.time)+'</span>':'')+'</div><span class="tag" style="--c:'+cc(f[1].name)+'">'+esc(f[1].name)+'</span><div class="btns mk"><button class="p'+(v==="p"?" ps":"")+'" data-act="mk" data-m="p" '+at+'>✓ উপস্থিত</button><button class="a'+(v==="a"?" as":"")+'" data-act="mk" data-m="a" '+at+'>✗ অনুপস্থিত</button><button class="cn'+(v==="c"?" cns":"")+'" data-act="mk" data-m="c" '+at+'>🚫 বাতিল</button><button data-act="mk" data-m="" '+at+'>↩︎</button></div></div>'});
   return m+'<div class="card">'+allBtns(ds)+'</div>'}
 function dleft(ds){return Math.round((parse(ds)-parse(TD))/86400000)}
 function exCard(x,Y,subs){
@@ -592,7 +656,7 @@ document.addEventListener("click",function(e){
   var a=b.dataset.act,Y=S.years[S.cy],B=JSON.stringify(R);
   if(a!=="del")armed=null;
   if(/^v(pdf|close|find|go|go2|z)$/.test(a)){e.preventDefault();vact(a,b);return}
-  if(a==="iopen"||a==="iclose"||a==="iz"){ivAct(a,b);return}
+  if(a==="iopen"||a==="iclose"||a==="iz"||a==="irn"||a==="idl"){ivAct(a,b);return}
   if(a==="gdrive"){gIn(GS.last);return}
   if(a==="fbin"){fbIn();return}
   if(a==="fbout"){fbOut();return}
@@ -618,18 +682,21 @@ document.addEventListener("click",function(e){
   else if(a==="del"){var k=b.dataset.k;if(armed!==k){armed=k;render();return}armed=null;
     if(k[0]==="y"){if(S.years.length>1){S.years.splice(S.cy,1);S.cy=0}}
     else if(k[0]==="p"){var pid=k.slice(1);R.profiles=R.profiles.filter(function(p){return p.id!==pid});if(R.pid===pid)R.pid=R.profiles[0].id;act()}
-    else if(k[0]==="r"){delRimg(Y)}
     else if(k[0]==="x"){var xid=k.slice(1);Y.exams=(Y.exams||[]).filter(function(x){return x.id!==xid})}
     else if(k[0]==="f"){var fid=k.slice(1);Y.subs.forEach(function(z){z.files=(z.files||[]).filter(function(f){return f.id!==fid})});if(gok())gf("https://www.googleapis.com/drive/v3/files/"+fid,{method:"DELETE"}).catch(function(){})}
     else if(k[0]==="s"){var sid=k.slice(1);Y.subs=Y.subs.filter(function(z){return z.id!==sid});Y.rt=Y.rt.filter(function(r){return r.sid!==sid})}
     else{var cid=k.slice(1);Y.subs.forEach(function(z){z.cats=z.cats.filter(function(c){return c.id!==cid})});Y.rt=Y.rt.filter(function(r){return r.cid!==cid})}}
-  else if(a==="addrt"){var s=Y.subs[0];Y.rt.push({id:id(),day:+b.dataset.d,sid:s.id,cid:s.cats[0]?s.cats[0].id:"",time:""})}
+  else if(a==="addrt"){var s=Y.subs[0];if(!Y.rt.length&&!Object.keys(Y.rec).length&&Y.start<TD&&confirm(tr("এই Phase-এর শুরুর তারিখ আজ করবেন? তাহলে আজকের আগের ক্লাস গোনা হবে না।")))Y.start=TD;Y.rt.push({id:id(),day:+b.dataset.d,sid:s.id,cid:s.cats[0]?s.cats[0].id:"",time:""})}
   else if(a==="delrt")Y.rt=Y.rt.filter(function(r){return r.id!==b.dataset.e});
   else if(a==="day")sel=fmt(addDays(parse(sel),+b.dataset.n));
   else if(a==="today")sel=TD;
   else if(a==="pick")sel=b.dataset.d;
   else if(a==="mon"){var q=parse(sel),nm=new Date(q.getFullYear(),q.getMonth()+(+b.dataset.n),1);sel=fmt(new Date(nm.getFullYear(),nm.getMonth(),Math.min(q.getDate(),new Date(nm.getFullYear(),nm.getMonth()+1,0).getDate())))}
   else if(a==="gounm"&&UF)sel=UF;
+  else if(a==="gd")R.gd=1;
+  else if(a==="skp"){if(!confirm(tr("আজকের আগের চিহ্নিত-না-করা সব ক্লাস \"বাতিল\" ধরে গণনা থেকে বাদ যাবে। ঠিক আছে?")))return;
+    var sd=parse(Y.start),se=parse(TD),sg=0;for(;sd<se&&fmt(sd)<=Y.end&&sg<800;sd=addDays(sd,1),sg++){var sds=fmt(sd);if(Y.off.indexOf(sds)>=0)continue;
+      Y.rt.forEach(function(r){if(r.day!==sd.getDay())return;var kk=sds+"|"+r.id;if(!Y.rec[kk])Y.rec[kk]="c"})}}
   else if(a==="off"){var i=Y.off.indexOf(sel);if(i>=0)Y.off.splice(i,1);else Y.off.push(sel)}
   else if(a==="addoff"){var v=document.getElementById("hd").value;if(v&&Y.off.indexOf(v)<0)Y.off.push(v)}
   else if(a==="deloff")Y.off=Y.off.filter(function(x){return x!==b.dataset.ds});
