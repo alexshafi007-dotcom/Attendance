@@ -102,6 +102,20 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .pbig .cam{position:absolute;right:-2px;bottom:-2px;width:28px;height:28px;border-radius:50%;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid var(--card)}
 .pbig .nm{text-align:center;font-size:20px;margin-top:10px;width:100%;box-sizing:border-box}
 .sfh{display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #sp{background:#0f1117}:root:not([data-theme="light"]) .spbg{background:#8b8cff;opacity:.12}:root:not([data-theme="light"]) .splg{background:#1a1d27;box-shadow:0 10px 30px rgba(0,0,0,.5)}:root:not([data-theme="light"]) .spn{color:#eceef5}:root:not([data-theme="light"]) .spk{color:#8e95a8}}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;margin-top:8px}
+.cal .h{font-size:11px;color:var(--mu);padding:2px 0}
+.cal button.dc{aspect-ratio:1;border:none;background:transparent;border-radius:12px;font-size:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--tx);padding:0;min-width:0}
+.cal .dc.t{box-shadow:inset 0 0 0 1.5px var(--ac)}
+.cal .dc.s{background:var(--ac);color:#fff}
+.cal .dc.o{opacity:.45}
+.cal .dc i{width:6px;height:6px;border-radius:50%;display:block}
+.cal .dc.s i{box-shadow:0 0 0 1.5px #fff}
+.cal .dc.e{visibility:hidden}
+.cl{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;font-size:11px;color:var(--mu);margin-top:8px}
+.cl i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:baseline}
+.mh{display:flex;align-items:center;justify-content:space-between}
+.mh b{font-size:16px}
 </style>
 </head>
 <body>
@@ -504,9 +518,21 @@ function hView(Y){
     m+='</div>'});
   return m+gCard(Y)+'<button class="add" data-act="addsub">＋ নতুন সাবজেক্ট</button><div style="text-align:center;margin-top:6px">'+dbtn("y"+Y.id,"🗑 এই Phase মুছুন")+'</div>'}
 function valid(Y){return Y.rt.filter(function(r){return find(r.sid,r.cid)[1]})}
+function cMonth(Y){var d=parse(sel),y=d.getFullYear(),mo=d.getMonth(),n=new Date(y,mo+1,0).getDate(),f=new Date(y,mo,1).getDay(),en=R.lang==="en",
+  hd=en?["S","M","T","W","T","F","S"]:["র","সো","ম","বু","বৃ","শু","শ"],lab;
+  try{lab=new Intl.DateTimeFormat(en?"en-US":"bn-BD",{month:"long",year:"numeric"}).format(d)}catch(e){lab=bn(mo+1)+"/"+bn(y)}
+  var rt=valid(Y),m='<div class="card"><div class="mh"><button data-act="mon" data-n="-1">◀</button><b>'+lab+'</b><button data-act="mon" data-n="1">▶</button></div><div class="cal">';
+  hd.forEach(function(x){m+='<span class="h">'+x+'</span>'});
+  for(var i=0;i<f;i++)m+='<button class="dc e"></button>';
+  for(var k=1;k<=n;k++){var ds=y+"-"+p2(mo+1)+"-"+p2(k),dw=(f+k-1)%7,off=Y.off.indexOf(ds)>=0,col="",
+    cl=(!off&&ds>=Y.start&&ds<=Y.end)?rt.filter(function(r){return r.day===dw}):[];
+    if(cl.length){var mk=0,ab=0;cl.forEach(function(r){var v=Y.rec[ds+"|"+r.id];if(v){mk++;if(v==="a")ab++}});
+      col=ab?"var(--bad)":mk===cl.length?"var(--ok)":ds<TD?"#f59e0b":"var(--mu)"}
+    m+='<button class="dc'+(ds===sel?" s":"")+(ds===TD?" t":"")+(off?" o":"")+'" data-act="pick" data-d="'+ds+'"><span>'+bn(k)+'</span><i style="background:'+(col||"transparent")+'"></i></button>'}
+  return m+'</div><div class="cl"><span><i style="background:var(--ok)"></i>উপস্থিত</span><span><i style="background:var(--bad)"></i>অনুপস্থিত</span><span><i style="background:#f59e0b"></i>বাকি</span></div></div>'}
 function cView(Y){
   var d=parse(sel),ds=sel,off=Y.off.indexOf(ds)>=0;
-  var m='<div class="card"><div class="row"><button data-act="day" data-n="-1">◀</button><div style="text-align:center"><input type="date" id="sd" value="'+ds+'"><div class="mu">'+DN[d.getDay()]+(ds===TD?" · আজ":"")+'</div></div><button data-act="day" data-n="1">▶</button></div><div class="btns"><button data-act="today" style="flex:1">আজকে যান</button><button data-act="off" style="flex:1">'+(off?"ছুটি বাতিল":"🏖 এদিন ছুটি")+'</button></div></div>';
+  var m=cMonth(Y)+'<div class="row" style="margin:12px 4px 0"><b>'+DN[d.getDay()]+(ds===TD?" · আজ":"")+' <span class="mu" style="font-weight:400">'+bn(d.getDate())+"/"+bn(d.getMonth()+1)+'</span></b><span style="display:flex;gap:6px"><button data-act="today">আজকে যান</button><button data-act="off">'+(off?"ছুটি বাতিল":"🏖 ছুটি")+'</button></span></div>';
   if(UN)m+='<div class="warn">⚠ '+bn(UN)+'টি আগের ক্লাস এখনো চিহ্নিত হয়নি। <button data-act="gounm" style="padding:2px 8px;margin-left:6px">প্রথমটিতে যান</button></div>';
   if(!Y.rt.length)return m+'<div class="card mu">আগে "রুটিন" ট্যাবে সাপ্তাহিক ক্লাস যোগ করুন।</div>';
   if(off)return m+'<div class="card">🏖 এদিন ছুটি, কোনো ক্লাস গোনা হবে না।</div>';
@@ -601,6 +627,8 @@ document.addEventListener("click",function(e){
   else if(a==="delrt")Y.rt=Y.rt.filter(function(r){return r.id!==b.dataset.e});
   else if(a==="day")sel=fmt(addDays(parse(sel),+b.dataset.n));
   else if(a==="today")sel=TD;
+  else if(a==="pick")sel=b.dataset.d;
+  else if(a==="mon"){var q=parse(sel),nm=new Date(q.getFullYear(),q.getMonth()+(+b.dataset.n),1);sel=fmt(new Date(nm.getFullYear(),nm.getMonth(),Math.min(q.getDate(),new Date(nm.getFullYear(),nm.getMonth()+1,0).getDate())))}
   else if(a==="gounm"&&UF)sel=UF;
   else if(a==="off"){var i=Y.off.indexOf(sel);if(i>=0)Y.off.splice(i,1);else Y.off.push(sel)}
   else if(a==="addoff"){var v=document.getElementById("hd").value;if(v&&Y.off.indexOf(v)<0)Y.off.push(v)}
