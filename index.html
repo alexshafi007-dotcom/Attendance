@@ -97,7 +97,7 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 @media (prefers-reduced-motion:reduce){.splg,.spn,.spk,.spa{animation:none;opacity:1}.spbg{animation:none}#sp{animation:spOut .4s ease 1.4s forwards}}
 .av{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;object-fit:cover;color:#fff;font-weight:700;flex:none;vertical-align:middle}
 .chip.pc{display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 4px}
-.pbig{text-align:center;padding:18px 12px}
+.pbig{text-align:center;padding:12px}
 .pbig label{position:relative;display:inline-block;cursor:pointer}
 .pbig .cam{position:absolute;right:-2px;bottom:-2px;width:28px;height:28px;border-radius:50%;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid var(--card)}
 .pbig .nm{text-align:center;font-size:20px;margin-top:10px;width:100%;box-sizing:border-box}
@@ -133,6 +133,8 @@ button{min-height:36px}
 .btns button.cn{min-height:42px}
 .btns.mk button{padding:6px 6px;font-size:12.5px}
 .gd ol{margin:6px 0 0;padding-left:20px}.gd li{margin:3px 0}
+.pcb{border:none;background:transparent;font-size:24px;font-weight:700;padding:0 4px;min-height:0}
+.row>div>.mu{margin-top:1px}
 </style>
 </head>
 <body>
@@ -180,6 +182,7 @@ Object.assign(EN,{"আমার রুটিন": "My routines", "রুটি�
 Object.assign(EN,{"🚫 বাতিল": "🚫 Cancelled", "🚫 সব বাতিল": "🚫 All cancelled", "বাতিল ক্লাস": "Cancelled", "✓ উপস্থিত": "✓ Present", "গতকাল চিহ্নিত হয়নি": "Unmarked yesterday", "👋 শুরু করবেন যেভাবে": "👋 How to get started", "\"রুটিন\" ট্যাবে সপ্তাহের ক্লাসগুলো যোগ করুন": "Add your weekly classes in the Routine tab", "আজকের ক্লাস এই পেজেই এক ট্যাপে উপস্থিত/অনুপস্থিত/বাতিল দিন": "Mark today's classes here in one tap: present / absent / cancelled", "\"ক্যালেন্ডার\" ও \"হিসাব\" ট্যাবে পুরো চিত্র দেখুন": "See the full picture in the Calendar and Stats tabs", "🗓 রুটিনে যান": "🗓 Go to Routine", "সব বাদ দিন": "Skip all", "আজকের আগের চিহ্নিত-না-করা সব ক্লাস \"বাতিল\" ধরে গণনা থেকে বাদ যাবে। ঠিক আছে?": "All unmarked classes before today will be counted as cancelled and left out of the stats. OK?", "এই Phase-এর শুরুর তারিখ আজ করবেন? তাহলে আজকের আগের ক্লাস গোনা হবে না।": "Set this Phase's start date to today? Classes before today won't be counted.", "বাকি ক্লাস ": "left: "});
 Object.assign(EN,{"✅ মিস করা যাবে: ":"✅ Can still miss: ","⚠ টানা উপস্থিত লাগবে: ":"⚠ Need in a row: "," · বাকি ক্লাস: ":" · Classes left: "," ক্লাস · বাকি ":" classes · left "});
 Object.assign(EN,{"🔔 চিহ্নিত করার রিমাইন্ডার": "🔔 Daily check-in reminder", "সন্ধ্যা ৬টা": "6 PM", "রাত ৮টা": "8 PM", "রাত ৯টা": "9 PM", "রাত ১০টা": "10 PM", "ক্লাসের দিনগুলোতে প্রতি সন্ধ্যায় মনে করিয়ে দেবে।": "Reminds you on class days to mark attendance.", "বন্ধ": "Off"});
+Object.assign(EN,{"হোম": "Home", "📊 হিসাব": "📊 Stats", "👤 প্রোফাইল": "👤 Profile"});
 var ENK=Object.keys(EN).sort(function(a,b){return b.length-a.length});
 var IC="icon-v2-192.png";
 var uid=Date.now();function id(){return"i"+(uid++)}
@@ -393,9 +396,12 @@ function shrinkAv(file){return new Promise(function(res,rej){var im=new Image(),
   try{var z=192,c=document.createElement("canvas");c.width=c.height=z;var m=Math.min(im.width,im.height),x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,z,z);x.drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,z,z);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",.82))}catch(e){rej(e)}};
   im.onerror=function(){URL.revokeObjectURL(u);rej(new Error("img"))};im.src=u})}
 var sfo=false;
+var PT="s";
 function pView(){var Y=S.years[S.cy],all=[];Y.subs.forEach(function(x){all=all.concat(x.cats)});var c=calc(tot(all));
-  var m='<div class="card pbig"><label>'+avh(S,96)+'<span class="cam">📷</span><input type="file" accept="image/*" hidden data-f="av"></label><input class="nm" data-f="pn" data-p="'+S.id+'" value="'+esc(S.name)+'">'
+  var m='<div class="card pbig"><label>'+avh(S,72)+'<span class="cam">📷</span><input type="file" accept="image/*" hidden data-f="av"></label><input class="nm" data-f="pn" data-p="'+S.id+'" value="'+esc(S.name)+'">'
    +'<div class="mu">'+esc(Y.name)+' · '+bn(c.v.toFixed(1))+'%'+(FB.user&&R.profiles[0]===S?' · '+esc(FB.user.email||""):'')+'</div>'+(S.av?'<div class="btns" style="justify-content:center"><button data-act="avdel">ছবি সরান</button></div>':'')+'</div>';
+  m+='<div class="seg"><button class="'+(PT==="s"?"on":"")+'" data-act="pt" data-t="s">📊 হিসাব</button><button class="'+(PT==="p"?"on":"")+'" data-act="pt" data-t="p">👤 প্রোফাইল</button></div>';
+  if(PT==="s"){var ch='<div class="ys" style="margin-top:10px">';S.years.forEach(function(y,i){ch+='<button class="y'+(i==S.cy?" on":"")+'" data-act="year" data-i="'+i+'">'+esc(y.name)+'</button>'});ch+='<button class="y" data-act="addyear">＋ Phase</button></div>';return m+ch+statsBody(Y)}
   m+='<div class="card"><b>প্রোফাইল বদলান</b>';
   R.profiles.forEach(function(p){var on=p.id===R.pid;
     m+='<div class="row ln"><span style="display:flex;align-items:center;gap:10px;min-width:0">'+avh(p,34)+'<b style="font-weight:600;overflow:hidden;text-overflow:ellipsis">'+esc(p.name)+'</b></span><span style="display:flex;gap:6px"><button class="'+(on?"on":"")+'" data-act="usep" data-p="'+p.id+'">'+(on?"✓ চলমান":"ব্যবহার")+'</button>'+(R.profiles.length>1?dbtn("p"+p.id,"🗑"):"")+'</span></div>'});
@@ -543,12 +549,13 @@ function ydRows(Y){var y=addDays(parse(TD),-1),ds=fmt(y);if(Y.off.indexOf(ds)>=0
 function tView(Y){var h=tView0(Y),yd=ydRows(Y);return yd?h.replace(/<\/div>$/,yd+'</div>'):h}
 function gdCard(){return'<div class="card gd"><div class="row"><b>👋 শুরু করবেন যেভাবে</b><button data-act="gd" style="padding:2px 8px">✕</button></div><ol class="mu"><li>"রুটিন" ট্যাবে সপ্তাহের ক্লাসগুলো যোগ করুন</li><li>আজকের ক্লাস এই পেজেই এক ট্যাপে উপস্থিত/অনুপস্থিত/বাতিল দিন</li><li>"ক্যালেন্ডার" ও "হিসাব" ট্যাবে পুরো চিত্র দেখুন</li></ol><div class="btns"><button class="p" data-act="view" data-v="r">🗓 রুটিনে যান</button></div></div>'}
 function tView0(Y){
-  var d=new Date(),m='<div class="card"><b>📅 আজকের ক্লাস</b> <span class="mu">'+DN[d.getDay()]+'</span>';
+  var d=new Date(),all=[];Y.subs.forEach(function(x){all=all.concat(x.cats)});var c=calc(tot(all)),tt=tot(all),
+  L=(Y.rt.length&&Y.off.indexOf(TD)<0)?valid(Y).filter(function(r){return r.day===d.getDay()}).sort(function(a,b){return(a.time||"").localeCompare(b.time||"")}):[],
+  ex=L.length?' · '+bn(L.length)+' ক্লাস · বাকি '+bn(L.filter(function(r){return!Y.rec[TD+"|"+r.id]}).length):'',
+  m='<div class="card"><div class="row"><div><b>📅 আজকের ক্লাস</b><div class="mu">'+DN[d.getDay()]+' · '+esc(Y.name)+ex+'</div></div><button class="pcb" data-act="stats" style="color:'+(tt.t?stc(c.v):"var(--mu)")+'">'+(tt.t?bn(c.v.toFixed(1))+"%":"—")+'</button></div>';
   if(!Y.rt.length)return m+'<div class="mu" style="margin-top:6px">রুটিন ট্যাবে ছবি দিন বা হাতে যোগ করুন, তাহলে এখানে আজকের ক্লাস অটোমেটিক দেখাবে।</div></div>';
   if(Y.off.indexOf(TD)>=0)return m+'<div class="mu" style="margin-top:6px">🏖 আজ ছুটি</div></div>';
-  var L=valid(Y).filter(function(r){return r.day===d.getDay()}).sort(function(a,b){return(a.time||"").localeCompare(b.time||"")});
   if(!L.length)return m+'<div class="mu" style="margin-top:6px">আজ কোনো ক্লাস নেই।</div></div>';
-  m+=' <span class="mu">· '+bn(L.length)+' ক্লাস · বাকি '+bn(L.filter(function(r){return!Y.rec[TD+"|"+r.id]}).length)+'</span>';
   L.forEach(function(r){var f=find(r.sid,r.cid),v=Y.rec[TD+"|"+r.id],at='data-e="'+r.id+'" data-ds="'+TD+'"',i=Y.subs.indexOf(f[0]);
     m+='<div class="ln"><div class="row"><span class="row" style="justify-content:flex-start"><span class="dot" style="background:'+SC[i%8]+'"></span><b>'+esc(f[0].name)+'</b><span class="tag" style="--c:'+cc(f[1].name)+'">'+esc(f[1].name)+'</span></span><span class="mu">'+esc(r.time||"")+'</span></div><div class="btns mk"><button class="p'+(v==="p"?" ps":"")+'" data-act="mk" data-m="p" '+at+'>✓ উপস্থিত</button><button class="a'+(v==="a"?" as":"")+'" data-act="mk" data-m="a" '+at+'>✗ অনুপস্থিত</button><button class="cn'+(v==="c"?" cns":"")+'" data-act="mk" data-m="c" '+at+'>🚫 বাতিল</button><button data-act="mk" data-m="" '+at+'>↩︎</button></div></div>'});
   m+=allBtns(TD)+'<div class="btns"><button data-act="offd" data-ds="'+TD+'" style="flex:1">🏖 আজ ছুটি</button></div>';
@@ -560,9 +567,10 @@ function riskCard(Y){var L=[];Y.subs.forEach(function(s){var e=tot(s.cats);if(!e
   var m='<div class="card" style="margin-top:10px;border-color:var(--bad)"><b style="color:var(--bad)">⚠ ঝুঁকির তালিকা ('+bn(L.length)+')</b>';
   L.forEach(function(x){m+='<div class="ln"><div class="row"><b>'+esc(x.n)+'</b><span class="pct" style="color:var(--bad)">'+bn(x.v.toFixed(1))+'%</span></div><div class="mu">'+x.t.replace("⚠️ ","")+'</div></div>'});
   return m+'</div>'}
-function hView(Y){
+function hView(Y){return warnBox()+((!Y.rt.length&&!R.gd)?gdCard():tView(Y))}
+function statsBody(Y){
   var all=[];Y.subs.forEach(function(s){all=all.concat(s.cats)});
-  var c=calc(tot(all)),m=warnBox()+((!Y.rt.length&&!R.gd)?gdCard():tView(Y))+'<div class="hero" style="margin-top:10px"><div class="row"><input class="nm" id="yn" value="'+esc(Y.name)+'" style="font-size:16px;color:#fff"><label style="font-size:12px;white-space:nowrap">লক্ষ্য <input id="tg" class="num" type="number" min="1" max="100" value="'+S.target+'">%</label></div><div class="row" style="margin-top:4px"><span style="font-size:12px;opacity:.85">এই Phase-এর মোট</span><span class="pct">'+bn(c.v.toFixed(1))+'%</span></div>'+barx(c.v,"#fff")+'<div class="msg">'+c.txt+'</div></div>';m+=riskCard(Y);
+  var c=calc(tot(all)),m='<div class="hero" style="margin-top:10px"><div class="row"><input class="nm" id="yn" value="'+esc(Y.name)+'" style="font-size:16px;color:#fff"><label style="font-size:12px;white-space:nowrap">লক্ষ্য <input id="tg" class="num" type="number" min="1" max="100" value="'+S.target+'">%</label></div><div class="row" style="margin-top:4px"><span style="font-size:12px;opacity:.85">এই Phase-এর মোট</span><span class="pct">'+bn(c.v.toFixed(1))+'%</span></div>'+barx(c.v,"#fff")+'<div class="msg">'+c.txt+'</div></div>';m+=riskCard(Y);
   Y.subs.forEach(function(s,i){
     var col=SC[i%8],k=calc(tot(s.cats)),o=opn===s.id;
     m+='<div class="card sub" style="--c:'+col+'"><div class="row hd" data-act="tog" data-s="'+s.id+'"><b>'+esc(s.name)+'</b><span class="pct" style="color:'+stc(k.v)+'">'+bn(k.v.toFixed(1))+'% <small class="mu">'+(o?"▴":"▾")+'</small></span></div>';
@@ -647,9 +655,9 @@ function render(){
   var Y=S.years[S.cy],h="";stats(Y);
   function put(i,x){document.getElementById(i).innerHTML=tr(x)}
   put("top",'<div class="brand"><img src="'+IC+'" alt=""><div><h1>Attendance</h1></div></div><div class="chips"><button class="chip" id="gchip" data-act="view" data-v="s">'+chipTxt()+'</button><button class="chip pc" data-act="view" data-v="p">'+avh(S,22)+esc(S.name)+'</button></div>');
-  if(view!=="s"&&view!=="p"){S.years.forEach(function(y,i){h+='<button class="y'+(i==S.cy?" on":"")+'" data-act="year" data-i="'+i+'">'+esc(y.name)+'</button>'});h+='<button class="y" data-act="addyear">＋ Phase</button>'}
+  if(view==="c"||view==="r"||view==="e"){S.years.forEach(function(y,i){h+='<button class="y'+(i==S.cy?" on":"")+'" data-act="year" data-i="'+i+'">'+esc(y.name)+'</button>'})}
   put("ys",h);
-  put("nav",[["h","📊","হিসাব"],["c","📅","ক্যালেন্ডার"],["r","🗓","রুটিন"],["e","📝","পরীক্ষা"],["s","⚙️","সেটিং"]].map(function(x){return'<button class="'+(view===x[0]?"act":"")+'" data-act="view" data-v="'+x[0]+'"><span>'+x[1]+'</span>'+x[2]+'</button>'}).join(""));
+  put("nav",[["h","🏠","হোম"],["c","📅","ক্যালেন্ডার"],["r","🗓","রুটিন"],["e","📝","পরীক্ষা"],["s","⚙️","সেটিং"]].map(function(x){return'<button class="'+(view===x[0]?"act":"")+'" data-act="view" data-v="'+x[0]+'"><span>'+x[1]+'</span>'+x[2]+'</button>'}).join(""));
   put("main",view==="h"?hView(Y):view==="c"?cView(Y):view==="r"?rView(Y):view==="e"?eView(Y):view==="p"?pView():sView());var tb=document.getElementById("bk");if(tb)tb.value=bk}
 document.addEventListener("click",function(e){
   var b=e.target.closest("[data-act]");if(!b)return;
@@ -672,6 +680,8 @@ document.addEventListener("click",function(e){
   else if(a==="exp"){bk=JSON.stringify(R);bkm="নিচের লেখাটি কপি করুন (ট্যাপ করলে সিলেক্ট হবে), তারপর অন্য ডিভাইসে ইমপোর্টে পেস্ট করুন।";try{navigator.clipboard.writeText(bk).catch(function(){})}catch(x){}}
   else if(a==="imp"){var tv=(document.getElementById("ib")||{}).value||"";try{var dd=JSON.parse(tv);if(!dd||!dd.profiles||!dd.profiles.length)throw 0;dd.profiles.forEach(function(p){p.id=id();p.name=(p.name||"Profile")+" (import)";R.profiles.push(p)});R.pid=R.profiles[R.profiles.length-1].id;act();bkm="✅ ইমপোর্ট হয়েছে (নতুন প্রোফাইল হিসেবে)।"}catch(x){bkm="❌ ডাটা ঠিক নেই।"}}
   else if(a==="sfo")sfo=!sfo;
+  else if(a==="pt")PT=b.dataset.t;
+  else if(a==="stats"){view="p";PT="s"}
   else if(a==="avdel")delete S.av;
   else if(a==="usep"){R.pid=b.dataset.p;act();opn=null;sel=TD}
   else if(a==="addp"){var nv=document.getElementById("np").value.trim()||"প্রোফাইল "+bn(R.profiles.length+1),np=newP(id(),nv,b.dataset.pre==="1");R.profiles.push(np);R.pid=np.id;act();opn=null;view="h"}
