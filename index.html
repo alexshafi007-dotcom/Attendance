@@ -135,6 +135,11 @@ button{min-height:36px}
 .gd ol{margin:6px 0 0;padding-left:20px}.gd li{margin:3px 0}
 .pcb{border:none;background:transparent;font-size:24px;font-weight:700;padding:0 4px;min-height:0}
 .row>div>.mu{margin-top:1px}
+input.tg{-webkit-appearance:none;appearance:none;width:42px;height:24px;border-radius:99px;background:color-mix(in srgb,var(--mu) 35%,var(--card));border:none;position:relative;flex:none;cursor:pointer;margin:0;padding:0;transition:background .2s}
+input.tg::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .2s}
+input.tg:checked{background:var(--ac)}input.tg:checked::after{left:21px}
+label.sw{display:flex;align-items:center;gap:10px;min-width:0}
+select:disabled{opacity:.45}
 </style>
 </head>
 <body>
@@ -183,6 +188,7 @@ Object.assign(EN,{"🚫 বাতিল": "🚫 Cancelled", "🚫 সব বা�
 Object.assign(EN,{"✅ মিস করা যাবে: ":"✅ Can still miss: ","⚠ টানা উপস্থিত লাগবে: ":"⚠ Need in a row: "," · বাকি ক্লাস: ":" · Classes left: "," ক্লাস · বাকি ":" classes · left "});
 Object.assign(EN,{"🔔 চিহ্নিত করার রিমাইন্ডার": "🔔 Daily check-in reminder", "সন্ধ্যা ৬টা": "6 PM", "রাত ৮টা": "8 PM", "রাত ৯টা": "9 PM", "রাত ১০টা": "10 PM", "ক্লাসের দিনগুলোতে প্রতি সন্ধ্যায় মনে করিয়ে দেবে।": "Reminds you on class days to mark attendance.", "বন্ধ": "Off"});
 Object.assign(EN,{"হোম": "Home", "📊 হিসাব": "📊 Stats", "👤 প্রোফাইল": "👤 Profile"});
+Object.assign(EN,{"⏰ ক্লাসের আগে মনে করান": "⏰ Remind before class", "মিনিট আগে": "min before", "🔔 দিনশেষের চেক-ইন": "🔔 End-of-day check-in", "ক্লাস, পরীক্ষা ও রিমাইন্ডার ফোনের Calendar-এ যাবে।": "Classes, exams and reminders go to your phone Calendar.", "⬇ ক্যালেন্ডার ফাইল (.ics)": "⬇ Calendar file (.ics)", "✏️ চিহ্নিত করুন": "✏️ Mark attendance", "✓ চিহ্নিত করা শেষ": "✓ Done marking", "— চিহ্নিত নয়": "— Not marked"});
 var ENK=Object.keys(EN).sort(function(a,b){return b.length-a.length});
 var IC="icon-v2-192.png";
 var uid=Date.now();function id(){return"i"+(uid++)}
@@ -348,16 +354,18 @@ function icsD(d){return d.getFullYear()+p2(d.getMonth()+1)+p2(d.getDate())}
 function tparse(t){t=String(t||"");var m=t.match(/(\d{1,2})[:.](\d{2})\s*(?:-|–|—|~|to)\s*(\d{1,2})[:.](\d{2})/);if(m)return[[+m[1],+m[2]],[+m[3],+m[4]]];var o=t.match(/(\d{1,2})[:.](\d{2})/);return o?[[+o[1],+o[2]],[+o[1]+1,+o[2]]]:null}
 function icsT(d,hm){return icsD(d)+"T"+p2(Math.min(23,hm[0]))+p2(hm[1])+"00"}
 function alarm(min,txt){return["BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+icsEsc(txt),"TRIGGER:-PT"+min+"M","END:VALARM"]}
+function tk(t){var m=tparse(t);return m?m[0][0]*60+m[0][1]:9999}
+function rm(){R.rm=R.rm||{c:1,d:1,m:15,t:"21:00"};return R.rm}
 function mkIcs(Y,min){
   var L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Attendance//BN","CALSCALE:GREGORIAN"],st=new Date().toISOString().replace(/[-:]/g,"").split(".")[0]+"Z",n=0,e=parse(Y.end),un=icsD(e)+"T235959";
-  valid(Y).forEach(function(r){var f=find(r.sid,r.cid),d=parse(Y.start),g=0;while(d.getDay()!==r.day&&g<8){d=addDays(d,1);g++}
+  (rm().c?valid(Y):[]).forEach(function(r){var f=find(r.sid,r.cid),d=parse(Y.start),g=0;while(d.getDay()!==r.day&&g<8){d=addDays(d,1);g++}
     if(d>e)return;var tp=tparse(r.time),title=f[0].name+" ("+f[1].name+")",ex=Y.off.filter(function(x){var xd=parse(x);return xd.getDay()===r.day&&xd>=d&&xd<=e});
     L.push("BEGIN:VEVENT","UID:"+r.id+"@attendance","DTSTAMP:"+st,"SUMMARY:"+icsEsc(title));
     if(tp){L.push("DTSTART:"+icsT(d,tp[0]),"DTEND:"+icsT(d,tp[1]));if(ex.length)L.push("EXDATE:"+ex.map(function(x){return icsT(parse(x),tp[0])}).join(","))}
     else{L.push("DTSTART;VALUE=DATE:"+icsD(d),"DTEND;VALUE=DATE:"+icsD(addDays(d,1)));if(ex.length)L.push("EXDATE;VALUE=DATE:"+ex.map(function(x){return icsD(parse(x))}).join(","))}
     L.push("RRULE:FREQ=WEEKLY;UNTIL="+(tp?un:icsD(e)));
     if(tp)L=L.concat(alarm(min,title));L.push("END:VEVENT");n++});
-  var ck=(document.getElementById("remck")||{}).value;
+  var ck=rm().d?rm().t:"";
   if(ck){var ds0={},bd=["SU","MO","TU","WE","TH","FR","SA"],td=parse(TD);valid(Y).forEach(function(r){ds0[r.day]=1});var dl=Object.keys(ds0).map(Number);
     if(dl.length&&td<=e){var d0=parse(Y.start)>td?parse(Y.start):td,g0=0;while(!ds0[d0.getDay()]&&g0<8){d0=addDays(d0,1);g0++}
       if(d0<=e){var ch=ck.split(":").map(Number),ex0=Y.off.filter(function(x){var xd=parse(x);return ds0[xd.getDay()]&&xd>=d0&&xd<=e}),ttl="✅ আজকের ক্লাসগুলো চিহ্নিত করেছেন?";
@@ -369,7 +377,12 @@ function mkIcs(Y,min){
     L=L.concat(alarm(1440,x.name));L.push("END:VEVENT");n++});
   L.push("END:VCALENDAR");
   SM2=n?(dlFile("attendance-"+Y.name.replace(/\s+/g,"")+".ics",L.join("\r\n"),"text/calendar")?"✅ ফাইল নামানো হয়েছে। এখন Downloads থেকে ফাইলটা ট্যাপ করে Calendar-এ যোগ করুন।":"❌ ব্যর্থ হয়েছে।"):"❌ কোনো ক্লাস বা পরীক্ষা নেই।"}
-function icsCard(){return'<div class="card"><b>📆 ফোনের Calendar-এ রিমাইন্ডার</b><div class="mu" style="margin-top:4px">রুটিনের সব ক্লাস (ছুটি বাদে) ও পরীক্ষা ফোনের Calendar-এ যাবে, ক্লাসের আগে নোটিফিকেশন আসবে।</div><div class="row" style="margin-top:8px"><label class="mu">ক্লাসের কত মিনিট আগে <select id="remmin"><option value="5">৫</option><option value="10">১০</option><option value="15" selected>১৫</option><option value="30">৩০</option><option value="60">৬০</option></select></label><button class="p" data-act="ics" style="flex:none">⬇ .ics</button></div><div class="row" style="margin-top:8px"><label class="mu">🔔 চিহ্নিত করার রিমাইন্ডার <select id="remck"><option value="">বন্ধ</option><option value="18:00">সন্ধ্যা ৬টা</option><option value="20:00">রাত ৮টা</option><option value="21:00" selected>রাত ৯টা</option><option value="22:00">রাত ১০টা</option></select></label></div><div class="mu" style="margin-top:4px">ক্লাসের দিনগুলোতে প্রতি সন্ধ্যায় মনে করিয়ে দেবে।</div><div class="mu" style="margin-top:6px">'+SM2+'</div></div>'}
+function icsCard(){var r=rm(),mins=[5,10,15,30,60].map(function(v){return'<option value="'+v+'"'+(r.m===v?" selected":"")+'>'+bn(v)+'</option>'}).join(""),
+  tms=[["18:00","সন্ধ্যা ৬টা"],["20:00","রাত ৮টা"],["21:00","রাত ৯টা"],["22:00","রাত ১০টা"]].map(function(v){return'<option value="'+v[0]+'"'+(r.t===v[0]?" selected":"")+'>'+v[1]+'</option>'}).join("");
+  return'<div class="card"><b>📆 ফোনের Calendar-এ রিমাইন্ডার</b><div class="mu" style="margin-top:4px">ক্লাস, পরীক্ষা ও রিমাইন্ডার ফোনের Calendar-এ যাবে।</div>'+
+  '<div class="row ln"><label class="sw"><input type="checkbox" class="tg" data-f="rm" data-k="c"'+(r.c?" checked":"")+'><span>⏰ ক্লাসের আগে মনে করান</span></label><label class="mu"><select data-f="rm" data-k="m"'+(r.c?"":" disabled")+'>'+mins+'</select> মিনিট আগে</label></div>'+
+  '<div class="row ln"><label class="sw"><input type="checkbox" class="tg" data-f="rm" data-k="d"'+(r.d?" checked":"")+'><span>🔔 দিনশেষের চেক-ইন</span></label><select data-f="rm" data-k="t"'+(r.d?"":" disabled")+'>'+tms+'</select></div>'+
+  '<button class="p" data-act="ics" style="width:100%;margin-top:8px">⬇ ক্যালেন্ডার ফাইল (.ics)</button><div class="mu" style="margin-top:6px">'+SM2+'</div></div>'}
 
 /* ---------- Data safety ---------- */
 var SM2="";
@@ -541,7 +554,7 @@ function find(sid,cid){var s=S.years[S.cy].subs.filter(function(z){return z.id==
 function opts(list,v){return list.map(function(o){return'<option value="'+o[0]+'"'+(o[0]===v?" selected":"")+'>'+esc(o[1])+'</option>'}).join("")}
 function pctOf(e){return e.t?e.a*100/e.t:0}
 function ydRows(Y){var y=addDays(parse(TD),-1),ds=fmt(y);if(Y.off.indexOf(ds)>=0||ds<Y.start||ds>Y.end)return"";
-  var L=valid(Y).filter(function(r){return r.day===y.getDay()&&!Y.rec[ds+"|"+r.id]}).sort(function(a,b){return(a.time||"").localeCompare(b.time||"")});if(!L.length)return"";
+  var L=valid(Y).filter(function(r){return r.day===y.getDay()&&!Y.rec[ds+"|"+r.id]}).sort(function(a,b){return tk(a.time)-tk(b.time)});if(!L.length)return"";
   var m='<div class="mu" style="margin-top:12px"><b>গতকাল চিহ্নিত হয়নি</b></div>';
   L.forEach(function(r){var f=find(r.sid,r.cid),at='data-e="'+r.id+'" data-ds="'+ds+'"',i=Y.subs.indexOf(f[0]);
     m+='<div class="ln"><div class="row"><span class="row" style="justify-content:flex-start"><span class="dot" style="background:'+SC[i%8]+'"></span><b>'+esc(f[0].name)+'</b><span class="tag" style="--c:'+cc(f[1].name)+'">'+esc(f[1].name)+'</span></span><span class="mu">'+esc(r.time||"")+'</span></div><div class="btns mk"><button class="p" data-act="mk" data-m="p" '+at+'>✓ উপস্থিত</button><button class="a" data-act="mk" data-m="a" '+at+'>✗ অনুপস্থিত</button><button class="cn" data-act="mk" data-m="c" '+at+'>🚫 বাতিল</button></div></div>'});
@@ -550,7 +563,7 @@ function tView(Y){var h=tView0(Y),yd=ydRows(Y);return yd?h.replace(/<\/div>$/,yd
 function gdCard(){return'<div class="card gd"><div class="row"><b>👋 শুরু করবেন যেভাবে</b><button data-act="gd" style="padding:2px 8px">✕</button></div><ol class="mu"><li>"রুটিন" ট্যাবে সপ্তাহের ক্লাসগুলো যোগ করুন</li><li>আজকের ক্লাস এই পেজেই এক ট্যাপে উপস্থিত/অনুপস্থিত/বাতিল দিন</li><li>"ক্যালেন্ডার" ও "হিসাব" ট্যাবে পুরো চিত্র দেখুন</li></ol><div class="btns"><button class="p" data-act="view" data-v="r">🗓 রুটিনে যান</button></div></div>'}
 function tView0(Y){
   var d=new Date(),all=[];Y.subs.forEach(function(x){all=all.concat(x.cats)});var c=calc(tot(all)),tt=tot(all),
-  L=(Y.rt.length&&Y.off.indexOf(TD)<0)?valid(Y).filter(function(r){return r.day===d.getDay()}).sort(function(a,b){return(a.time||"").localeCompare(b.time||"")}):[],
+  L=(Y.rt.length&&Y.off.indexOf(TD)<0)?valid(Y).filter(function(r){return r.day===d.getDay()}).sort(function(a,b){return tk(a.time)-tk(b.time)}):[],
   ex=L.length?' · '+bn(L.length)+' ক্লাস · বাকি '+bn(L.filter(function(r){return!Y.rec[TD+"|"+r.id]}).length):'',
   m='<div class="card"><div class="row"><div><b>📅 আজকের ক্লাস</b><div class="mu">'+DN[d.getDay()]+' · '+esc(Y.name)+ex+'</div></div><button class="pcb" data-act="stats" style="color:'+(tt.t?stc(c.v):"var(--mu)")+'">'+(tt.t?bn(c.v.toFixed(1))+"%":"—")+'</button></div>';
   if(!Y.rt.length)return m+'<div class="mu" style="margin-top:6px">রুটিন ট্যাবে ছবি দিন বা হাতে যোগ করুন, তাহলে এখানে আজকের ক্লাস অটোমেটিক দেখাবে।</div></div>';
@@ -602,17 +615,22 @@ function cMonth(Y){var d=parse(sel),y=d.getFullYear(),mo=d.getMonth(),n=new Date
       col=ab?"var(--bad)":mk===cl.length?(cx===cl.length?"#94a3b8":"var(--ok)"):ds<TD?"#f59e0b":"var(--mu)"}
     m+='<button class="dc'+(ds===sel?" s":"")+(ds===TD?" t":"")+(off?" o":"")+'" data-act="pick" data-d="'+ds+'"><span>'+bn(k)+'</span><i style="background:'+(col||"transparent")+'"></i></button>'}
   return m+'</div><div class="cl"><span><i style="background:var(--ok)"></i>উপস্থিত</span><span><i style="background:var(--bad)"></i>অনুপস্থিত</span><span><i style="background:#94a3b8"></i>বাতিল ক্লাস</span><span><i style="background:#f59e0b"></i>চিহ্নিত হয়নি</span></div></div>'}
+var CE="";
+function stBadge(v){return v==="p"?'<span class="tag" style="--c:#10b981">✓ উপস্থিত</span>':v==="a"?'<span class="tag" style="--c:#ef4444">✗ অনুপস্থিত</span>':v==="c"?'<span class="tag" style="--c:#64748b">🚫 বাতিল</span>':'<span class="mu">— চিহ্নিত নয়</span>'}
 function cView(Y){
   var d=parse(sel),ds=sel,off=Y.off.indexOf(ds)>=0;
   var m=cMonth(Y)+'<div class="row" style="margin:12px 4px 0"><b>'+DN[d.getDay()]+(ds===TD?" · আজ":"")+' <span class="mu" style="font-weight:400">'+bn(d.getDate())+"/"+bn(d.getMonth()+1)+'</span></b><span style="display:flex;gap:6px"><button data-act="today">আজকে যান</button><button data-act="off">'+(off?"ছুটি বাতিল":"🏖 এদিন ছুটি")+'</button></span></div>';
   if(UN)m+='<div class="warn">⚠ '+bn(UN)+'টি আগের ক্লাস এখনো চিহ্নিত হয়নি। <button data-act="gounm" style="padding:2px 8px;margin-left:6px">প্রথমটিতে যান</button><button data-act="skp" style="padding:2px 8px;margin-left:6px">সব বাদ দিন</button></div>';
   if(!Y.rt.length)return m+'<div class="card mu">আগে "রুটিন" ট্যাবে সাপ্তাহিক ক্লাস যোগ করুন।</div>';
   if(off)return m+'<div class="card">🏖 এদিন ছুটি, কোনো ক্লাস গোনা হবে না।</div>';
-  var L=valid(Y).filter(function(r){return r.day===d.getDay()}).sort(function(a,b){return(a.time||"").localeCompare(b.time||"")});
+  var L=valid(Y).filter(function(r){return r.day===d.getDay()}).sort(function(a,b){return tk(a.time)-tk(b.time)});
   if(!L.length)return m+'<div class="card mu">এই দিনে কোনো ক্লাস নেই।</div>';
+  if(CE!==ds){m+='<div class="card">';L.forEach(function(r,k){var f=find(r.sid,r.cid),v=Y.rec[ds+"|"+r.id],i=Y.subs.indexOf(f[0]);
+    m+='<div class="row'+(k?' ln':'')+'"><span style="display:flex;align-items:center;gap:8px;min-width:0;flex-wrap:wrap"><span class="dot" style="background:'+SC[i%8]+'"></span><b>'+esc(f[0].name)+'</b><span class="tag" style="--c:'+cc(f[1].name)+'">'+esc(f[1].name)+'</span></span><span style="display:flex;gap:8px;align-items:center">'+(r.time?'<span class="mu">'+esc(r.time)+'</span>':'')+stBadge(v)+'</span></div>'});
+    return m+'<button class="add" data-act="ce" style="width:100%;margin-top:10px">✏️ চিহ্নিত করুন</button></div>'}
   L.forEach(function(r){var f=find(r.sid,r.cid),v=Y.rec[ds+"|"+r.id],at='data-e="'+r.id+'"',i=Y.subs.indexOf(f[0]);
     m+='<div class="card sub" style="--c:'+SC[i%8]+'"><div class="row"><b>'+esc(f[0].name)+'</b>'+(r.time?'<span class="mu">'+esc(r.time)+'</span>':'')+'</div><span class="tag" style="--c:'+cc(f[1].name)+'">'+esc(f[1].name)+'</span><div class="btns mk"><button class="p'+(v==="p"?" ps":"")+'" data-act="mk" data-m="p" '+at+'>✓ উপস্থিত</button><button class="a'+(v==="a"?" as":"")+'" data-act="mk" data-m="a" '+at+'>✗ অনুপস্থিত</button><button class="cn'+(v==="c"?" cns":"")+'" data-act="mk" data-m="c" '+at+'>🚫 বাতিল</button><button data-act="mk" data-m="" '+at+'>↩︎</button></div></div>'});
-  return m+'<div class="card">'+allBtns(ds)+'</div>'}
+  return m+'<div class="card">'+allBtns(ds)+'<button class="add" data-act="ce" style="width:100%;margin-top:10px">✓ চিহ্নিত করা শেষ</button></div>'}
 function dleft(ds){return Math.round((parse(ds)-parse(TD))/86400000)}
 function exCard(x,Y,subs){
   var d=x.date?dleft(x.date):null,tag=d===null?"":d<0?"শেষ":d===0?"আজ":bn(d)+" দিন বাকি",hot=d!==null&&d>=0&&d<=3,
@@ -638,7 +656,7 @@ function rView(Y){
   m+=icsCard();
   var subs=Y.subs.map(function(s){return[s.id,s.name]});
   ORD.forEach(function(dy){
-    var L=Y.rt.filter(function(r){return r.day===dy}).sort(function(a,b){return(a.time||"").localeCompare(b.time||"")});
+    var L=Y.rt.filter(function(r){return r.day===dy}).sort(function(a,b){return tk(a.time)-tk(b.time)});
     m+='<div class="card"><b>'+DN[dy]+'</b>';
     L.forEach(function(r){var s=Y.subs.filter(function(z){return z.id===r.sid})[0],cs=s?s.cats.map(function(c){return[c.id,c.name]}):[];
       m+='<div class="ln"><div class="row"><input data-f="rt" data-e="'+r.id+'" value="'+esc(r.time||"")+'" placeholder="সময়" style="width:110px"><button class="del" data-act="delrt" data-e="'+r.id+'">✕ মুছুন</button></div><div class="row" style="margin-top:6px"><select data-f="rs" data-e="'+r.id+'" style="flex:1">'+opts(subs,r.sid)+'</select><select data-f="rc" data-e="'+r.id+'" style="flex:1">'+opts(cs,r.cid)+'</select></div></div>'});
@@ -680,6 +698,7 @@ document.addEventListener("click",function(e){
   else if(a==="exp"){bk=JSON.stringify(R);bkm="নিচের লেখাটি কপি করুন (ট্যাপ করলে সিলেক্ট হবে), তারপর অন্য ডিভাইসে ইমপোর্টে পেস্ট করুন।";try{navigator.clipboard.writeText(bk).catch(function(){})}catch(x){}}
   else if(a==="imp"){var tv=(document.getElementById("ib")||{}).value||"";try{var dd=JSON.parse(tv);if(!dd||!dd.profiles||!dd.profiles.length)throw 0;dd.profiles.forEach(function(p){p.id=id();p.name=(p.name||"Profile")+" (import)";R.profiles.push(p)});R.pid=R.profiles[R.profiles.length-1].id;act();bkm="✅ ইমপোর্ট হয়েছে (নতুন প্রোফাইল হিসেবে)।"}catch(x){bkm="❌ ডাটা ঠিক নেই।"}}
   else if(a==="sfo")sfo=!sfo;
+  else if(a==="ce")CE=(CE===sel?"":sel);
   else if(a==="pt")PT=b.dataset.t;
   else if(a==="stats"){view="p";PT="s"}
   else if(a==="avdel")delete S.av;
@@ -713,7 +732,7 @@ document.addEventListener("click",function(e){
   else if(a==="all"){var dd=parse(b.dataset.ds);valid(Y).filter(function(r){return r.day===dd.getDay()}).forEach(function(r){var k=b.dataset.ds+"|"+r.id;if(b.dataset.m)Y.rec[k]=b.dataset.m;else delete Y.rec[k]})}
   else if(a==="offd"){var oi=Y.off.indexOf(b.dataset.ds);if(oi>=0)Y.off.splice(oi,1);else Y.off.push(b.dataset.ds)}
   else if(a==="addexam"){var xn=document.getElementById("xn").value.trim();if(!xn||!Y.subs.length)return;Y.exams=Y.exams||[];Y.exams.push({id:id(),name:xn,date:document.getElementById("xd").value,sid:document.getElementById("xs").value,marks:null,total:+document.getElementById("xt").value||0})}
-  else if(a==="ics")mkIcs(Y,+(document.getElementById("remmin")||{}).value||15);
+  else if(a==="ics")mkIcs(Y,rm().m||15);
   else if(a==="mk"){var key=(b.dataset.ds||sel)+"|"+b.dataset.e;if(b.dataset.m)Y.rec[key]=b.dataset.m;else delete Y.rec[key]}
   else{var x=find(b.dataset.s,b.dataset.c)[1];if(!x)return;
     hist[x.id]=hist[x.id]||[];
@@ -723,6 +742,7 @@ document.addEventListener("click",function(e){
 document.addEventListener("change",function(e){
   var el=e.target,f=el.dataset.f,Y=S.years[S.cy],B=JSON.stringify(R);
   if(el.id==="sd"){if(el.value)sel=el.value}
+  else if(f==="rm"){var rk=el.dataset.k;rm()[rk]=(rk==="c"||rk==="d")?(el.checked?1:0):(rk==="m"?(+el.value||15):el.value)}
   else if(f&&f[0]==="x"&&el.dataset.x){var xx=(Y.exams||[]).filter(function(z){return z.id===el.dataset.x})[0];if(!xx)return;
     if(f==="xname")xx.name=el.value||"পরীক্ষা";else if(f==="xdate")xx.date=el.value;else if(f==="xsub")xx.sid=el.value;else if(f==="xm")xx.marks=el.value===""?null:+el.value;else if(f==="xtot")xx.total=+el.value||0}
   else if(f==="av"){var af=el.files[0];el.value="";if(af)shrinkAv(af).then(function(u){S.av=u;save(true);render()}).catch(function(){alert(tr("ছবি পড়া যায়নি।"))});return}
